@@ -1,6 +1,6 @@
 {
   "pack_name": "Software Inc Mod Studio",
-  "pack_version": "0.1.0-structural-preview",
+  "pack_version": "0.1.0",
   "canonical_target_game": "Beta 1.8.42",
   "canonical_spec_sha256": "7b77f04c522fb48e087e1b1a0be190a27b8614cd598abf7f7ed243e3e52c31f2",
   "mandatory_knowledge_files": [
@@ -28,8 +28,6 @@
   "file_sha256": "AUTO",
   "eval_suite_revision": "E01-E74",
   "research_cutoff": "2026-09-01",
-  "exact_target_generation_grade": false,
-  "known_gaps": [
-    "Exact Beta 1.8.42 installation/corpus capture is not yet supplied; generation-grade release remains blocked."
-  ]
+  "exact_target_generation_grade": "AUTO",
+  "known_gaps": []
 }
