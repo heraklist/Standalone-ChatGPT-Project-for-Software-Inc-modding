@@ -59,6 +59,18 @@ def safe_component(value: str) -> str:
     return value.strip().strip(".") or "unnamed"
 
 
+def private_textasset_path(source_asset: str, path_id: int, object_name: str) -> Path:
+    # Use only numeric path IDs in filenames. Unity TextAsset names can contain
+    # surrogate-escaped bytes that are not valid filesystem Unicode.
+    return Path("PRIVATE-EVIDENCE") / "textassets" / safe_component(Path(source_asset).name) / f"{int(path_id)}.bin"
+
+
+def should_export_private_textasset(record: dict[str, object]) -> bool:
+    # Private probe policy: export every TextAsset payload so exact-target Data
+    # classification does not depend on token heuristics or older-version names.
+    return True
+
+
 def build_textasset_record(*, source_asset: str, path_id: int, object_name: str, payload: bytes) -> dict[str, object]:
     return {
         "source_asset": source_asset,
@@ -79,7 +91,7 @@ def _get_textasset_payload(data: object) -> bytes:
             if isinstance(value, bytearray):
                 return bytes(value)
             if isinstance(value, str):
-                return value.encode("utf-8")
+                return value.encode("utf-8", "surrogateescape")
     raise ValueError("TextAsset payload property not found")
 
 
@@ -168,9 +180,9 @@ def run_probe(game_root: Path, output_dir: Path) -> Path:
 
                 if record["tokens"]:
                     relevant_count += 1
-                    asset_component = safe_component(Path(rel).name)
-                    filename = f"{path_id}__{safe_component(name)}.bin"
-                    private_path = Path("PRIVATE-EVIDENCE") / "textassets" / asset_component / filename
+
+                if should_export_private_textasset(record):
+                    private_path = private_textasset_path(rel, path_id, name)
                     target = staging / private_path
                     target.parent.mkdir(parents=True, exist_ok=True)
                     target.write_bytes(payload)
@@ -204,6 +216,7 @@ def run_probe(game_root: Path, output_dir: Path) -> Path:
         "errors": len(all_errors),
         "raw_game_binaries_copied": False,
         "private_textassets_only": True,
+        "private_export_policy": "ALL_TEXTASSETS",
     }
 
     (staging / "probe-summary.json").write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
