@@ -1,0 +1,6 @@
+original_name,repo_path,lifecycle,classification,sha256,notes
+ChatGPT_Project_Knowledge_Audit.md,archive/research/2026-08-31-chatgpt-project-knowledge-audit.md,archive,RESEARCH,84ceb956bd91e7a5c2cc6415498728fabe287670f6142a884fc8fe0e9903c98a,Historical knowledge audit; not production truth
+Software Inc Mod Studio Canonical Design Spec v1.1_ Verification.md,archive/research/2026-08-31-v1.1-verification.md,archive,RESEARCH,2f2a5f5763d1173804134aad5996b9dd33bce4eef8e3bcc7c5969eeef26706ef,Historical verification artifact
+Standalone_ChatGPT_PROJECT_INSTRUCTIONS_DRAFT.md,archive/legacy-guides/project-instructions-draft.md,archive,DRAFT,42658b8b50f97f93ed69a6583a463dc641971b1d182273f2a6345739e4a31583,Superseded draft; migrate claims selectively
+Οδηγίες για Software.txt,archive/legacy-guides/software-guidance-el.txt,archive,LEGACY_GUIDE,a05591ca9d353c6d36c910d5ed1149b158f854424e8f27e2a6015973253bebf9,Legacy Greek guidance; contains superseded rules
+Οδηγίες για SIPL Scripting Guide - Software Inc.txt,archive/legacy-guides/sipl-guidance-el.txt,archive,LEGACY_GUIDE,c85cd45c50b245ca92e9d55b4c394e4955c9b034c75449f8c92353d54f1cd8d2,Legacy SIPL guidance; preserve historically and rewrite claims

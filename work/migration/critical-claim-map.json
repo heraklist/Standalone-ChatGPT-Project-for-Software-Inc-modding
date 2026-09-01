@@ -1,0 +1,26 @@
+{
+  "source_archive": {
+    "repo_path": "archive/raw/knowledge.zip",
+    "git_blob_sha": "cf6fd2f369a2375dab7454ceca56c136a4c0b9c3",
+    "size_bytes": 86708,
+    "entry_count": 91,
+    "file_count": 77
+  },
+  "claims": [
+    {"claim_id":"L001","legacy_pattern":"ModSpec","new_owner":"production/knowledge/02_MOD_ECOSYSTEM_AND_ROUTER.md","evidence_status":"CONFLICT_RESOLVED","action":"DROP_PRODUCT_COUPLING","release_blocker":false},
+    {"claim_id":"L002","legacy_pattern":"support_matrix","new_owner":"production/knowledge/02_MOD_ECOSYSTEM_AND_ROUTER.md","evidence_status":"CONFLICT_RESOLVED","action":"DROP_PRODUCT_COUPLING","release_blocker":false},
+    {"claim_id":"L003","legacy_pattern":"ModForge validator/writer support as engine truth","new_owner":"production/knowledge/01_EVIDENCE_VERSION_AND_TRUTH.md","evidence_status":"CONFLICT_RESOLVED","action":"REJECT_PRODUCT_POLICY_AS_ENGINE_TRUTH","release_blocker":false},
+    {"claim_id":"L004","legacy_pattern":"Greek semicolon","new_owner":"production/knowledge/03_TYD_FOUNDATIONS.md","evidence_status":"CORROBORATED","action":"REJECT_FOLKLORE","release_blocker":false},
+    {"claim_id":"L005","legacy_pattern":"lowercase-only boolean parser rule","new_owner":"production/knowledge/03_TYD_FOUNDATIONS.md","evidence_status":"CORROBORATED","action":"REJECT_FOLKLORE","release_blocker":false},
+    {"claim_id":"L006","legacy_pattern":"mandatory universal TyD field order","new_owner":"production/knowledge/03_TYD_FOUNDATIONS.md","evidence_status":"CORROBORATED","action":"SCOPED_REWRITE_FURNITURE_ONLY_WHERE_DOCUMENTED","release_blocker":false},
+    {"claim_id":"L007","legacy_pattern":"Data/Features.tyd","new_owner":"production/knowledge/04_DATA_MODDING.md","evidence_status":"CORROBORATED","action":"REJECT_INVENTED_PATH","release_blocker":false},
+    {"claim_id":"L008","legacy_pattern":"Data/AddOns.tyd","new_owner":"production/knowledge/04_DATA_MODDING.md","evidence_status":"CORROBORATED","action":"REJECT_INVENTED_PATH","release_blocker":false},
+    {"claim_id":"L009","legacy_pattern":"Data/Manufacturing.tyd","new_owner":"production/knowledge/04_DATA_MODDING.md","evidence_status":"CORROBORATED","action":"REJECT_INVENTED_PATH","release_blocker":false},
+    {"claim_id":"L010","legacy_pattern":"Mods/Buildings","new_owner":"production/knowledge/11_EDITOR_CONTENT_HARDWARE_BLUEPRINTS_BUILDINGS.md","evidence_status":"CORROBORATED","action":"REJECT_UNVERIFIED_FILESYSTEM","release_blocker":false},
+    {"claim_id":"L011","legacy_pattern":"Mods/Blueprints","new_owner":"production/knowledge/11_EDITOR_CONTENT_HARDWARE_BLUEPRINTS_BUILDINGS.md","evidence_status":"CORROBORATED","action":"REJECT_UNVERIFIED_FILESYSTEM","release_blocker":false},
+    {"claim_id":"L012","legacy_pattern":"~[ presented as TyD","new_owner":"production/knowledge/03_TYD_FOUNDATIONS.md","evidence_status":"CORROBORATED","action":"SEPARATE_TYD_FROM_SIPL","release_blocker":false},
+    {"claim_id":"L013","legacy_pattern":"C#3 forbids var","new_owner":"production/knowledge/06_CODE_MODDING_CORE_AND_DISTRIBUTION.md","evidence_status":"CORROBORATED","action":"REJECT_FALSE_COMPILER_RULE","release_blocker":false},
+    {"claim_id":"L014","legacy_pattern":"C#3 forbids LINQ","new_owner":"production/knowledge/06_CODE_MODDING_CORE_AND_DISTRIBUTION.md","evidence_status":"CORROBORATED","action":"REJECT_FALSE_COMPILER_RULE","release_blocker":false},
+    {"claim_id":"L015","legacy_pattern":"custom-enum-only narrowing of the straight-.cs enum caveat","new_owner":"production/knowledge/06_CODE_MODDING_CORE_AND_DISTRIBUTION.md","evidence_status":"DOCUMENTED","action":"BLOCK_ENUM_USAGE_IN_GAME_COMPILED_PROFILE","release_blocker":false}
+  ]
+}

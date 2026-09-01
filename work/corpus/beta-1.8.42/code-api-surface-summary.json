@@ -1,0 +1,17 @@
+{
+  "assembly": {
+    "assembly_version": "0.0.0.0",
+    "mvid": "07b4923c-0ada-443f-8df8-7bcf49af9bd0",
+    "name": "Assembly-CSharp.dll",
+    "sha256": "c877dbc50f0b9b94ba3c07aa9125675792de4df74448e33be799144757e58bd0"
+  },
+  "captured": true,
+  "currency": "EXACT_TARGET",
+  "evidence_class": "ASSEMBLY_SURFACE",
+  "game_version": "Beta 1.8.42",
+  "includes_persistence": true,
+  "includes_security": true,
+  "persistence_members_observed": ["SaveSetting", "LoadSetting", "TryLoadSetting", "DeleteSetting", "Serialize", "Deserialize"],
+  "security_members_observed": ["RegisterNetworkID"],
+  "verification": "VANILLA_OBSERVED"
+}

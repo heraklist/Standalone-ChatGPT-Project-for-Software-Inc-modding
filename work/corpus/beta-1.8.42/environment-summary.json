@@ -1,0 +1,31 @@
+{
+  "assembly_csharp": {
+    "assembly_version": "0.0.0.0",
+    "mvid": "07b4923c-0ada-443f-8df8-7bcf49af9bd0",
+    "sha256": "c877dbc50f0b9b94ba3c07aa9125675792de4df74448e33be799144757e58bd0"
+  },
+  "capture_bundle_sha256": "b87eda4d5c4c6da1ba5a70c7c74d1cfea6c2e376d81375cc12d5446daa7f8278",
+  "capture_timestamp_utc": "2026-09-01T15:38:36.6538901Z",
+  "capture_tools": [
+    "Capture-SoftwareInc-Beta1842.ps1 v1.3",
+    "Discover-SoftwareInc-Beta1842-Supplement.ps1 v1.0"
+  ],
+  "currency": "EXACT_TARGET",
+  "distribution": "Steam",
+  "executable": {
+    "name": "Software Inc.exe",
+    "sha256": "89b36700316d8b3ba554550f1d47f5eac68c38a9110b4a5509278ca243aef46f"
+  },
+  "game_version": "Beta 1.8.42",
+  "managed_assembly_count": 86,
+  "platform": "Windows",
+  "raw_binaries_committed": false,
+  "steam": {
+    "appid": "362620",
+    "branch": "default-steam-branch",
+    "build_id": "24837201"
+  },
+  "supplement_bundle_sha256": "096bd29e63342c68cad69c36251e1b46e8a3845466e068d26abdf3456b3fd07a",
+  "unity_runtime_version": "2018.4.36.7132039",
+  "verification": "VANILLA_OBSERVED"
+}

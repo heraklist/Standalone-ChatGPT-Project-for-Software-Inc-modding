@@ -1,0 +1,134 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "sources",
+    "claims",
+    "corpora",
+    "media"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "sources": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "source_id",
+          "source_class",
+          "source_role",
+          "canonical_url_or_origin",
+          "currency",
+          "scope",
+          "retrieved_at",
+          "status"
+        ],
+        "properties": {
+          "source_id": {"type": "string"},
+          "source_class": {"type": "string"},
+          "source_role": {
+            "enum": [
+              "DEVELOPER_WIKI",
+              "OFFICIAL_PATCH_NOTE",
+              "ENGINE_FORK_SOURCE",
+              "UPSTREAM_SPEC",
+              "LINKED_ENGINE_API",
+              "EXACT_VANILLA_CORPUS",
+              "OLDER_VANILLA_CORPUS",
+              "ASSEMBLY_SURFACE",
+              "PRIMARY_MOD_SOURCE",
+              "WORKSHOP_METADATA",
+              "OFFICIAL_WORKSHOP_METADATA",
+              "COMMUNITY",
+              "RUNTIME_EVIDENCE"
+            ]
+          },
+          "canonical_url_or_origin": {"type": "string"},
+          "currency": {"type": "string"},
+          "scope": {"type": "string"},
+          "retrieved_at": {"type": "string"},
+          "status": {"type": "string"},
+          "revision_id": {},
+          "delegated_by": {"type": "string"},
+          "linked_from": {"type": "string"}
+        },
+        "additionalProperties": true
+      }
+    },
+    "claims": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "claim_id",
+          "owner_document",
+          "description",
+          "evidence_refs",
+          "currency",
+          "scope",
+          "confidence",
+          "verification",
+          "conflict_state",
+          "hard_generation_rule"
+        ],
+        "properties": {
+          "claim_id": {"type": "string"},
+          "owner_document": {"type": "string"},
+          "description": {"type": "string"},
+          "evidence_refs": {"type": "array", "items": {"type": "string"}},
+          "currency": {"type": "string"},
+          "scope": {"type": "string"},
+          "confidence": {"type": "string"},
+          "verification": {"type": "string"},
+          "conflict_state": {
+            "enum": [
+              "CONSISTENT",
+              "SOURCE_CONFLICT",
+              "VERSION_CONFLICT",
+              "SCOPE_CONFLICT",
+              "UNRESOLVED"
+            ]
+          },
+          "hard_generation_rule": {"type": "boolean"}
+        },
+        "additionalProperties": true
+      }
+    },
+    "corpora": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "corpus_id",
+          "source_role",
+          "game_version",
+          "capture_provenance"
+        ],
+        "properties": {
+          "corpus_id": {"type": "string"},
+          "source_role": {"type": "string"},
+          "game_version": {"type": "string"},
+          "capture_provenance": {"type": "object"}
+        },
+        "additionalProperties": true
+      }
+    },
+    "media": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "media_id",
+          "parent_source",
+          "supported_claims"
+        ],
+        "properties": {
+          "media_id": {"type": "string"},
+          "parent_source": {"type": "string"},
+          "supported_claims": {"type": "array", "items": {"type": "string"}}
+        },
+        "additionalProperties": true
+      }
+    }
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/software-inc-mod-studio/corpus-manifest.schema.json",
+  "title": "Software Inc Corpus Manifest",
+  "type": "object",
+  "required": ["game_version","source_class","source_role","currency","verification","archive_sha256","file_count","uncompressed_bytes","raw_archive_committed"],
+  "properties": {
+    "game_version": {"type":"string","minLength":1},
+    "source_class": {"type":"string"},
+    "source_role": {"type":"string"},
+    "currency": {"type":"string"},
+    "verification": {"type":"string"},
+    "capture_status": {"type":"string"},
+    "archive_sha256": {"oneOf":[{"type":"string","pattern":"^[0-9a-f]{64}$"},{"const":"UNKNOWN"},{"type":"null"}]},
+    "file_count": {"type":["integer","null"],"minimum":0},
+    "uncompressed_bytes": {"type":["integer","null"],"minimum":0},
+    "raw_archive_committed": {"type":"boolean"},
+    "release_channel": {"type":"string"},
+    "platform": {"type":"string"},
+    "distribution": {"type":"string"},
+    "capture_timestamp": {"type":["string","null"]},
+    "capture_method": {"type":"string"},
+    "steam_build_id_or_equivalent": {"type":["string","null"]},
+    "executable_sha256": {"oneOf":[{"type":"string","pattern":"^[0-9a-f]{64}$"},{"type":"null"}]},
+    "managed_assembly_count": {"type":["integer","null"],"minimum":0},
+    "managed_assemblies": {"type":"array","items":{"type":"object","required":["name","sha256","assembly_version","mvid"],"properties":{"name":{"type":"string"},"sha256":{"type":["string","null"]},"assembly_version":{"type":["string","null"]},"mvid":{"type":["string","null"]}},"additionalProperties":false}},
+    "vanilla_data_manifest_sha256": {"type":["string","null"]},
+    "localization_manifest_sha256": {"type":["string","null"]},
+    "loader_root_snapshot_sha256": {"type":["string","null"]},
+    "identifiers_collision_index_sha256": {"type":["string","null"]},
+    "vanilla_data_evidence": {
+      "type":"object",
+      "properties": {
+        "captured":{"type":"boolean"},
+        "manifest_sha256":{"type":["string","null"]},
+        "scope_isolated":{"type":"boolean"},
+        "content_resolved":{"type":"boolean"},
+        "embedded_asset_container_count":{"type":"integer","minimum":0},
+        "reason":{"type":["string","null"]}
+      },
+      "additionalProperties":false
+    },
+    "identifiers_collision_index": {
+      "type":"object",
+      "properties": {
+        "captured":{"type":"boolean"},
+        "manifest_sha256":{"type":["string","null"]},
+        "entry_count":{"type":"integer","minimum":0},
+        "reason":{"type":["string","null"]}
+      },
+      "additionalProperties":false
+    },
+    "code_api_surface": {"type":"object","properties":{"captured":{"type":"boolean"},"manifest_sha256":{"type":["string","null"]},"includes_persistence":{"type":"boolean"},"includes_security":{"type":"boolean"}},"additionalProperties":false},
+    "hardware_design_observations": {"type":"object","properties":{"captured":{"type":"boolean"},"manifest_sha256":{"type":["string","null"]},"unavailable_reason":{"type":["string","null"]},"evidence_class":{"type":"string"},"public_filesystem_schema_observed":{"type":"boolean"}},"additionalProperties":false},
+    "capture_bundles": {
+      "type":"array",
+      "items": {
+        "type":"object",
+        "required":["name","sha256","raw_committed"],
+        "properties": {
+          "name":{"type":"string"},
+          "sha256":{"type":"string","pattern":"^[0-9a-f]{64}$"},
+          "raw_committed":{"type":"boolean"}
+        },
+        "additionalProperties":false
+      }
+    },
+    "unity_runtime_version": {"type":["string","null"]}
+  },
+  "additionalProperties": true
+}

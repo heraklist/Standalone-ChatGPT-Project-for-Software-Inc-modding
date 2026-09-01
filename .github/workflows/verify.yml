@@ -1,0 +1,31 @@
+name: verify
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install test dependencies
+        run: python -m pip install --upgrade pip pytest jsonschema
+      - name: Run tests
+        run: python -m pytest -v
+      - name: Verify repository structure and release gates
+        run: python tools/verify_repo.py
+      - name: Validate evidence registry
+        run: python tools/validate_registry.py production/knowledge/17_EVIDENCE_REGISTRY.json
+      - name: Validate eval suites
+        run: python tools/validate_evals.py production/evals
+      - name: Verify exact-target template remains fail-closed
+        run: python tools/validate_exact_target.py work/corpus/beta-1.8.42/capture-manifest.template.json --structural
+      - name: Verify exact-target generation-grade evidence
+        run: python tools/validate_exact_target.py
+      - name: Build generation-grade release bundle
+        run: python tools/build_release.py --generation-grade

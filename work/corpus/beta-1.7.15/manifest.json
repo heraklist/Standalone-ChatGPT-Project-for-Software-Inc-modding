@@ -1,0 +1,11 @@
+{
+  "game_version": "Beta 1.7.15",
+  "source_class": "VANILLA",
+  "source_role": "OLDER_VANILLA_CORPUS",
+  "currency": "OLDER_VERSION",
+  "verification": "VANILLA_OBSERVED",
+  "archive_sha256": "29685ddc23cbcf1d3e1488c29aeeb09612d9ddd79c346949361b863fd325b02d",
+  "file_count": 50,
+  "uncompressed_bytes": 121991,
+  "raw_archive_committed": false
+}

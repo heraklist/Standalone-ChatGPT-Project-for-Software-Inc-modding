@@ -1,0 +1,68 @@
+{
+  "archive_sha256": "b87eda4d5c4c6da1ba5a70c7c74d1cfea6c2e376d81375cc12d5446daa7f8278",
+  "capture_bundles": [
+    {"name": "Beta1842-capture.zip", "raw_committed": false, "sha256": "b87eda4d5c4c6da1ba5a70c7c74d1cfea6c2e376d81375cc12d5446daa7f8278"},
+    {"name": "Beta1842-supplement.zip", "raw_committed": false, "sha256": "096bd29e63342c68cad69c36251e1b46e8a3845466e068d26abdf3456b3fd07a"},
+    {"name": "Beta1842-unity-data-probe.zip", "raw_committed": false, "sha256": "0057763b41f7433229b137cf73138fef8f8cd3a5a82512b6b757108e72a50746"},
+    {"name": "Beta1842-sanitized-analysis.zip", "raw_committed": false, "sha256": "dc35c7d07bce42d1ee9168bd3797fae7e4615cc980ca0f386b6faa75f4e63571"}
+  ],
+  "capture_method": "Capture-SoftwareInc-Beta1842.ps1 v1.3 + Discover-SoftwareInc-Beta1842-Supplement.ps1 v1.0 + UnityPy TextAsset probe v1.2 + sanitized analyzer",
+  "capture_status": "GENERATION_GRADE_EXACT_TARGET",
+  "capture_timestamp": "2026-09-01T15:38:36.6538901Z",
+  "code_api_surface": {
+    "captured": true,
+    "includes_persistence": true,
+    "includes_security": true,
+    "manifest_sha256": "46c4277ebf17b2ce19551442bca35d40dea14e4f255e36884f3c59714ff8a612"
+  },
+  "currency": "EXACT_TARGET",
+  "distribution": "Steam",
+  "executable_sha256": "89b36700316d8b3ba554550f1d47f5eac68c38a9110b4a5509278ca243aef46f",
+  "file_count": null,
+  "game_version": "Beta 1.8.42",
+  "hardware_design_observations": {
+    "captured": true,
+    "evidence_class": "ASSEMBLY_SURFACE",
+    "manifest_sha256": "d25f5756acc586730f2853092b51e9f671f0b707aef8838d90b6b7eafb24d5e8",
+    "public_filesystem_schema_observed": false,
+    "unavailable_reason": null
+  },
+  "identifiers_collision_index": {
+    "captured": true,
+    "complete": true,
+    "entry_count": 61,
+    "collision_count": 0,
+    "manifest_sha256": "7834f0838fbe0da111298e131eba97d787586cf7a89f17e9c6699fc6abdcedd9",
+    "source_sanitized_bundle_sha256": "dc35c7d07bce42d1ee9168bd3797fae7e4615cc980ca0f386b6faa75f4e63571"
+  },
+  "identifiers_collision_index_sha256": "7834f0838fbe0da111298e131eba97d787586cf7a89f17e9c6699fc6abdcedd9",
+  "loader_root_snapshot_sha256": "423fbf2263bd75e10a7e9bf137ca103b04309da249b88a3ec2c70066596e4378",
+  "localization_manifest_sha256": "4dadf996ed5576821fe11d3fb7ee8365e6b6d75b5932e34fd3781e5204fd2627",
+  "managed_assemblies": [
+    {"assembly_version": "0.0.0.0", "mvid": "07b4923c-0ada-443f-8df8-7bcf49af9bd0", "name": "Assembly-CSharp.dll", "sha256": "c877dbc50f0b9b94ba3c07aa9125675792de4df74448e33be799144757e58bd0"},
+    {"assembly_version": "0.0.0.0", "mvid": "b7c4230c-cc57-4e01-8486-ade9c74200b8", "name": "Assembly-CSharp-firstpass.dll", "sha256": "d1cf7a8c31adb20dfeea2b4b31b14f9943bcc22f0c36124d1e778c60a033d1ac"},
+    {"assembly_version": "0.0.0.0", "mvid": "2774ccc3-e0de-4aef-8525-f5fbd178bef1", "name": "UnityEngine.CoreModule.dll", "sha256": "3670754bf8aaacc634b50cbe565ea38712a244b643a1e2e214a019b737024dca"},
+    {"assembly_version": "1.0.0.0", "mvid": "5be33540-e4fa-4c1f-acd1-f4993a529fab", "name": "UnityEngine.UI.dll", "sha256": "57270e258e604ad27dc12e9e94eeeeb64573552170b9e7ef37c66bd82ab7b8c0"},
+    {"assembly_version": "0.0.0.0", "mvid": "a8b04776-cb00-47a6-94fb-bf9e9cbd10e0", "name": "UnityEngine.dll", "sha256": "4a436f325c99de49d030bdc7d9f12d019f716da384c55266360f4fac113a40d5"}
+  ],
+  "managed_assembly_count": 86,
+  "platform": "Windows",
+  "raw_archive_committed": false,
+  "release_channel": "default-steam-branch",
+  "source_class": "RUNTIME",
+  "source_role": "RUNTIME_EVIDENCE",
+  "steam_build_id_or_equivalent": "24837201",
+  "uncompressed_bytes": null,
+  "unity_runtime_version": "2018.4.36.7132039",
+  "vanilla_data_evidence": {
+    "captured": true,
+    "content_resolved": true,
+    "scope_isolated": true,
+    "recognized_data_entries": 46,
+    "manifest_sha256": "d8bf330086f96c05b13662eea7ed6aa3622e85e61374fb0c1384104a94381eca",
+    "source_probe_zip_sha256": "0057763b41f7433229b137cf73138fef8f8cd3a5a82512b6b757108e72a50746",
+    "source_sanitized_bundle_sha256": "dc35c7d07bce42d1ee9168bd3797fae7e4615cc980ca0f386b6faa75f4e63571"
+  },
+  "vanilla_data_manifest_sha256": "d8bf330086f96c05b13662eea7ed6aa3622e85e61374fb0c1384104a94381eca",
+  "verification": "VANILLA_OBSERVED"
+}
