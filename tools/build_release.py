@@ -3,9 +3,14 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from zipfile import ZIP_DEFLATED, ZipFile
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 from tools.validate_exact_target import default_manifest_path, generation_grade_errors
 from tools.verify_repo import KNOWLEDGE_FILES, verify
@@ -80,7 +85,7 @@ def build_release(root: Path, *, generation_grade: bool = False, out_dir: Path |
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--generation-grade", action="store_true")
-    parser.add_argument("--root", type=Path, default=Path(__file__).resolve().parents[1])
+    parser.add_argument("--root", type=Path, default=ROOT)
     args = parser.parse_args(argv)
     try:
         zip_path, _, release = build_release(args.root, generation_grade=args.generation_grade)
