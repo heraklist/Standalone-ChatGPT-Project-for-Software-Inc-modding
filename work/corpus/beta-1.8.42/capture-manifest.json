@@ -2,10 +2,12 @@
   "archive_sha256": "b87eda4d5c4c6da1ba5a70c7c74d1cfea6c2e376d81375cc12d5446daa7f8278",
   "capture_bundles": [
     {"name": "Beta1842-capture.zip", "raw_committed": false, "sha256": "b87eda4d5c4c6da1ba5a70c7c74d1cfea6c2e376d81375cc12d5446daa7f8278"},
-    {"name": "Beta1842-supplement.zip", "raw_committed": false, "sha256": "096bd29e63342c68cad69c36251e1b46e8a3845466e068d26abdf3456b3fd07a"}
+    {"name": "Beta1842-supplement.zip", "raw_committed": false, "sha256": "096bd29e63342c68cad69c36251e1b46e8a3845466e068d26abdf3456b3fd07a"},
+    {"name": "Beta1842-unity-data-probe.zip", "raw_committed": false, "sha256": "0057763b41f7433229b137cf73138fef8f8cd3a5a82512b6b757108e72a50746"},
+    {"name": "Beta1842-sanitized-analysis.zip", "raw_committed": false, "sha256": "dc35c7d07bce42d1ee9168bd3797fae7e4615cc980ca0f386b6faa75f4e63571"}
   ],
-  "capture_method": "Capture-SoftwareInc-Beta1842.ps1 v1.3 + Discover-SoftwareInc-Beta1842-Supplement.ps1 v1.0",
-  "capture_status": "PARTIAL_EXACT_TARGET",
+  "capture_method": "Capture-SoftwareInc-Beta1842.ps1 v1.3 + Discover-SoftwareInc-Beta1842-Supplement.ps1 v1.0 + UnityPy TextAsset probe v1.2 + sanitized analyzer",
+  "capture_status": "GENERATION_GRADE_EXACT_TARGET",
   "capture_timestamp": "2026-09-01T15:38:36.6538901Z",
   "code_api_surface": {
     "captured": true,
@@ -26,12 +28,14 @@
     "unavailable_reason": null
   },
   "identifiers_collision_index": {
-    "captured": false,
-    "entry_count": 0,
-    "manifest_sha256": null,
-    "reason": "Exact-target vanilla identifiers cannot be indexed until the embedded Data definitions are extracted."
+    "captured": true,
+    "complete": true,
+    "entry_count": 61,
+    "collision_count": 0,
+    "manifest_sha256": "7834f0838fbe0da111298e131eba97d787586cf7a89f17e9c6699fc6abdcedd9",
+    "source_sanitized_bundle_sha256": "dc35c7d07bce42d1ee9168bd3797fae7e4615cc980ca0f386b6faa75f4e63571"
   },
-  "identifiers_collision_index_sha256": null,
+  "identifiers_collision_index_sha256": "7834f0838fbe0da111298e131eba97d787586cf7a89f17e9c6699fc6abdcedd9",
   "loader_root_snapshot_sha256": "423fbf2263bd75e10a7e9bf137ca103b04309da249b88a3ec2c70066596e4378",
   "localization_manifest_sha256": "4dadf996ed5576821fe11d3fb7ee8365e6b6d75b5932e34fd3781e5204fd2627",
   "managed_assemblies": [
@@ -52,12 +56,13 @@
   "unity_runtime_version": "2018.4.36.7132039",
   "vanilla_data_evidence": {
     "captured": true,
-    "content_resolved": false,
-    "embedded_asset_container_count": 3,
-    "manifest_sha256": "a4e4a2a57afb81d2e3cd8d90fd26c7e2a4ddc45aba98b0a408f5f9b0efe9d014",
-    "reason": "Relevant exact-target Data tokens are present in Unity asset containers, but exact vanilla definitions have not yet been extracted.",
-    "scope_isolated": true
+    "content_resolved": true,
+    "scope_isolated": true,
+    "recognized_data_entries": 46,
+    "manifest_sha256": "d8bf330086f96c05b13662eea7ed6aa3622e85e61374fb0c1384104a94381eca",
+    "source_probe_zip_sha256": "0057763b41f7433229b137cf73138fef8f8cd3a5a82512b6b757108e72a50746",
+    "source_sanitized_bundle_sha256": "dc35c7d07bce42d1ee9168bd3797fae7e4615cc980ca0f386b6faa75f4e63571"
   },
-  "vanilla_data_manifest_sha256": "a4e4a2a57afb81d2e3cd8d90fd26c7e2a4ddc45aba98b0a408f5f9b0efe9d014",
+  "vanilla_data_manifest_sha256": "d8bf330086f96c05b13662eea7ed6aa3622e85e61374fb0c1384104a94381eca",
   "verification": "VANILLA_OBSERVED"
 }
