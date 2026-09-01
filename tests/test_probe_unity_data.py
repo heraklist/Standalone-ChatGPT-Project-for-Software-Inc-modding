@@ -44,3 +44,33 @@ def test_textasset_record_hashes_payload_without_embedding_raw_content():
 
 def test_safe_component_removes_path_and_windows_reserved_characters():
     assert safe_component('Hardware:Design/Primary*?') == 'Hardware_Design_Primary__'
+
+
+def test_get_textasset_payload_roundtrips_surrogateescaped_binary():
+    class Dummy:
+        m_Script = b'\x8bABC\xd2'.decode('utf-8', 'surrogateescape')
+    from tools.probe_unity_data import _get_textasset_payload
+    assert _get_textasset_payload(Dummy()) == b'\x8bABC\xd2'
+
+
+def test_private_textasset_path_uses_path_id_not_object_name():
+    from tools.probe_unity_data import private_textasset_path
+    path = private_textasset_path(
+        'Software Inc_Data/resources.assets',
+        624,
+        '\udc8bBad/Name',
+    )
+    assert path.as_posix() == 'PRIVATE-EVIDENCE/textassets/resources.assets/624.bin'
+
+
+def test_all_textassets_are_private_export_candidates_even_without_tokens():
+    from tools.probe_unity_data import should_export_private_textasset
+    record = {
+        'source_asset': 'Software Inc_Data/resources.assets',
+        'path_id': 625,
+        'object_name': 'femalefirstnames',
+        'payload_size': 3,
+        'payload_sha256': '0' * 64,
+        'tokens': [],
+    }
+    assert should_export_private_textasset(record) is True
