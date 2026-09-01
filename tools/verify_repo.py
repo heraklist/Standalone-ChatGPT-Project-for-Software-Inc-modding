@@ -1,4 +1,5 @@
 from __future__ import annotations
+import hashlib
 import json
 from pathlib import Path
 import sys
@@ -13,6 +14,10 @@ REQUIRED_DIRS=("archive","work","production","docs","schemas","tools","tests")
 KNOWLEDGE_FILES={
 "00_INDEX.md","01_EVIDENCE_VERSION_AND_TRUTH.md","02_MOD_ECOSYSTEM_AND_ROUTER.md","03_TYD_FOUNDATIONS.md","04_DATA_MODDING.md","05_SIPL.md","06_CODE_MODDING_CORE_AND_DISTRIBUTION.md","07_CODE_RUNTIME_UI_PERSISTENCE_SECURITY.md","08_FURNITURE.md","09_MATERIALS.md","10_LOCALIZATION.md","11_EDITOR_CONTENT_HARDWARE_BLUEPRINTS_BUILDINGS.md","12_DEBUGGING_CONSOLE_AND_RUNTIME.md","13_COMPATIBILITY_MIGRATION_AND_COLLISIONS.md","14_DISCOVERY_BRAINSTORM_AND_DESIGN.md","15_BUILD_EDIT_REPAIR_AND_DELIVERY.md","16_VERIFICATION_AND_QA.md","17_EVIDENCE_REGISTRY.json"}
 META_KEYS=("document_id","title","knowledge_type","canonical_target_version","last_researched","last_runtime_verified","aliases","use_for","do_not_use_for","source_classes","currency_summary","known_version_gaps")
+
+
+def _sha256(path:Path)->str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
 def verify(root:Path)->list[str]:
@@ -45,7 +50,8 @@ def verify(root:Path)->list[str]:
     if eval_dir.exists(): errors.extend(f'evals: {e}' for e in validate_evals(eval_dir))
     else: errors.append('missing production/evals')
 
-    template=root/'work/corpus/beta-1.8.42/capture-manifest.template.json'
+    corpus=root/'work/corpus/beta-1.8.42'
+    template=corpus/'capture-manifest.template.json'
     if not template.exists():
         errors.append('missing exact-target capture template')
     else:
@@ -53,18 +59,59 @@ def verify(root:Path)->list[str]:
         if not generation_grade_errors(data):
             errors.append('exact-target template must not qualify as generation-grade')
 
-    actual_capture=root/'work/corpus/beta-1.8.42/capture-manifest.json'
+    actual_capture=corpus/'capture-manifest.json'
     if not actual_capture.exists():
         errors.append('missing sanitized exact-target capture manifest')
     else:
         data=json.loads(actual_capture.read_text(encoding='utf-8'))
         gate_errors=generation_grade_errors(data)
-        if not gate_errors:
-            errors.append('exact-target capture unexpectedly qualifies as generation-grade')
+        if gate_errors:
+            errors.extend(f'exact-target generation-grade: {e}' for e in gate_errors)
         if data.get('game_version')!='Beta 1.8.42' or data.get('currency')!='EXACT_TARGET':
             errors.append('sanitized exact-target capture identity mismatch')
         if data.get('raw_archive_committed') is not False:
             errors.append('sanitized exact-target capture must not commit raw proprietary archive')
+
+        vanilla_path=corpus/'resolved-vanilla-data-manifest.json'
+        collision_path=corpus/'identifiers-collision-index.json'
+        if not vanilla_path.is_file():
+            errors.append('missing resolved exact-target vanilla Data manifest')
+        else:
+            vdigest=_sha256(vanilla_path)
+            if data.get('vanilla_data_manifest_sha256') != vdigest:
+                errors.append('committed vanilla Data manifest hash mismatch')
+            vanilla=json.loads(vanilla_path.read_text(encoding='utf-8'))
+            if vanilla.get('game_version')!='Beta 1.8.42' or vanilla.get('resolved') is not True:
+                errors.append('resolved vanilla Data manifest identity/state mismatch')
+            if vanilla.get('raw_payloads_committed') is not False:
+                errors.append('resolved vanilla Data manifest must remain metadata-only')
+            counts=vanilla.get('family_counts',{})
+            for family in ('SOFTWARE_TYPE','COMPANY_TYPE','NAME_GENERATOR','PERSONALITIES'):
+                if not isinstance(counts.get(family),int) or counts.get(family,0)<=0:
+                    errors.append(f'resolved vanilla Data missing {family} coverage')
+
+        if not collision_path.is_file():
+            errors.append('missing exact-target identifiers/collision index')
+        else:
+            cdigest=_sha256(collision_path)
+            if data.get('identifiers_collision_index_sha256') != cdigest:
+                errors.append('committed identifiers/collision index hash mismatch')
+            collision=json.loads(collision_path.read_text(encoding='utf-8'))
+            if collision.get('game_version')!='Beta 1.8.42' or collision.get('complete') is not True:
+                errors.append('identifiers/collision index identity/state mismatch')
+            namespaces=collision.get('namespaces',{})
+            total=0
+            for namespace in ('software_type','company_type','name_generator','personality'):
+                record=namespaces.get(namespace)
+                if not isinstance(record,dict) or not isinstance(record.get('identifier_count'),int) or record['identifier_count']<=0:
+                    errors.append(f'identifiers/collision index missing {namespace} namespace')
+                    continue
+                identifiers=record.get('identifiers')
+                if not isinstance(identifiers,list) or len(identifiers)!=record['identifier_count']:
+                    errors.append(f'identifiers/collision index {namespace} count mismatch')
+                total += record['identifier_count']
+            if collision.get('total_identifier_count') != total or total <= 0:
+                errors.append('identifiers/collision index total count mismatch')
 
     claim_map=root/'work/migration/critical-claim-map.json'
     if claim_map.exists():
