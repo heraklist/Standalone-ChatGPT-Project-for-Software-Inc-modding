@@ -1,0 +1,92 @@
+{
+  "game_version": "Beta 1.8.42",
+  "currency": "EXACT_TARGET",
+  "complete": true,
+  "source_probe_zip_sha256": "0057763b41f7433229b137cf73138fef8f8cd3a5a82512b6b757108e72a50746",
+  "source_sanitized_bundle_sha256": "dc35c7d07bce42d1ee9168bd3797fae7e4615cc980ca0f386b6faa75f4e63571",
+  "namespaces": {
+    "software_type": {
+      "identifier_count": 12,
+      "identifiers": [
+        "2D Editor",
+        "3D Editor",
+        "Antivirus",
+        "Audio Tool",
+        "Distribution platform",
+        "Embedded System",
+        "Game",
+        "Game Assets",
+        "Logistics Application",
+        "Office Software",
+        "Operating System",
+        "Website"
+      ]
+    },
+    "company_type": {
+      "identifier_count": 7,
+      "identifiers": [
+        "Antivirus",
+        "ComputerOS",
+        "ConsoleOS",
+        "CreativeTools",
+        "Games",
+        "Office",
+        "PhoneOS"
+      ]
+    },
+    "name_generator": {
+      "identifier_count": 26,
+      "identifiers": [
+        "2DEditor",
+        "3DEditor",
+        "Antivirus",
+        "Audio",
+        "Company",
+        "Console",
+        "ContentPack",
+        "ContractCompany",
+        "Distribution",
+        "Financial",
+        "Framework",
+        "GameAdventure",
+        "GameExpansion",
+        "GameFPS",
+        "GameRPG",
+        "GameRTS",
+        "GameSimulation",
+        "GameSport",
+        "Joystick",
+        "None",
+        "Office",
+        "OS",
+        "Phone",
+        "UMLNames",
+        "WebPublishing",
+        "Workflow"
+      ]
+    },
+    "personality": {
+      "identifier_count": 16,
+      "identifiers": [
+        "Cocky",
+        "Dramatic",
+        "Extrovert",
+        "Flirt",
+        "Generous",
+        "Goofy",
+        "Introvert",
+        "Mean",
+        "Misanthropist",
+        "Naive",
+        "Optimistic",
+        "Paranoid",
+        "Pessimistic",
+        "Short-tempered",
+        "Snob",
+        "Stubborn"
+      ]
+    }
+  },
+  "collisions": [],
+  "total_identifier_count": 61
+}
