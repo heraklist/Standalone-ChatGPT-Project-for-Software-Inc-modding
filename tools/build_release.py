@@ -7,7 +7,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from zipfile import ZIP_DEFLATED, ZipFile
 
-from tools.validate_exact_target import generation_grade_errors
+from tools.validate_exact_target import default_manifest_path, generation_grade_errors
 from tools.verify_repo import KNOWLEDGE_FILES, verify
 
 
@@ -20,8 +20,8 @@ def build_release(root: Path, *, generation_grade: bool = False, out_dir: Path |
     if errors:
         raise RuntimeError("repository verification failed: " + "; ".join(errors))
 
-    template_path = root / "work/corpus/beta-1.8.42/capture-manifest.template.json"
-    exact_manifest = json.loads(template_path.read_text(encoding="utf-8"))
+    exact_manifest_path = default_manifest_path(root)
+    exact_manifest = json.loads(exact_manifest_path.read_text(encoding="utf-8"))
     gate_errors = generation_grade_errors(exact_manifest)
     if generation_grade and gate_errors:
         raise RuntimeError("generation-grade release blocked: " + "; ".join(gate_errors))
@@ -50,6 +50,7 @@ def build_release(root: Path, *, generation_grade: bool = False, out_dir: Path |
     release["release_status"] = "GENERATION_GRADE" if generation_grade else "STRUCTURAL_PREVIEW"
     release["generation_grade"] = bool(generation_grade)
     release["generated_at"] = datetime.now(timezone.utc).isoformat()
+    release["exact_target_manifest"] = str(exact_manifest_path.relative_to(root)).replace("\\", "/")
     release["exact_target_gate_errors"] = gate_errors
 
     kp_bytes = (json.dumps(kp, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
