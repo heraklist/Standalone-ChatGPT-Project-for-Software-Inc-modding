@@ -26,30 +26,36 @@ The evidence registry is `production/knowledge/17_EVIDENCE_REGISTRY.json` and us
 
 ## Release status
 
-The repository can build a `STRUCTURAL_PREVIEW` ChatGPT Project bundle now. A `GENERATION_GRADE` Beta 1.8.42 release is intentionally blocked until a sanitized exact-target installation/corpus capture supplies every required item in `work/corpus/beta-1.8.42/capture-manifest.template.json`.
+`GENERATION_GRADE` is ready for the canonical Beta 1.8.42 target. The exact-target evidence gate is resolved and the current repository can produce the first release pack as version `0.1.0`.
 
-Build locally with:
+The unresolved capture template remains deliberately fail-closed. Generation-grade status is granted only from the resolved `work/corpus/beta-1.8.42/capture-manifest.json` and its hash-bound sanitized evidence.
+
+Build a structural preview with:
 
 ```bash
 python tools/build_release.py
 ```
 
-Generation-grade attempts fail closed until exact-target evidence is complete:
+Build the canonical generation-grade release with:
 
 ```bash
 python tools/build_release.py --generation-grade
 ```
 
+The release bundle contains Project Instructions, the exact 18 knowledge files, and generated manifests. Repository evals, migration work, research archives, and raw/private evidence are not part of the ChatGPT Project upload bundle.
+
 ## Verification
 
-Pull requests run the same public structural gates used locally:
+Pull requests run the same release gates used locally:
 
 ```bash
 python -m pytest -v
 python tools/verify_repo.py
 python tools/validate_registry.py production/knowledge/17_EVIDENCE_REGISTRY.json
 python tools/validate_evals.py production/evals
-python tools/validate_exact_target.py --structural
+python tools/validate_exact_target.py work/corpus/beta-1.8.42/capture-manifest.template.json --structural
+python tools/validate_exact_target.py
+python tools/build_release.py --generation-grade
 ```
 
 See `docs/governance/release-process.md` and `docs/governance/evidence-update-process.md` for maintenance rules.
