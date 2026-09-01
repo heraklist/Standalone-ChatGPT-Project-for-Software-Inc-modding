@@ -1,4 +1,4 @@
-import json, sys
+import hashlib, json, sys
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]; sys.path.insert(0,str(ROOT))
 from tools.validate_registry import validate_registry
@@ -46,6 +46,18 @@ def test_exact_target_capture_is_generation_grade_semantically():
  assert m['identifiers_collision_index']['entry_count'] >= 61
  assert m['hardware_design_observations']['captured'] is True
  assert m['code_api_surface']['captured'] is True
+
+
+def test_exact_target_manifest_hashes_bind_committed_sanitized_evidence():
+ m=json.loads((ROOT/'work/corpus/beta-1.8.42/capture-manifest.json').read_text())
+ v=ROOT/'work/corpus/beta-1.8.42/resolved-vanilla-data-manifest.json'
+ c=ROOT/'work/corpus/beta-1.8.42/identifiers-collision-index.json'
+ vd=hashlib.sha256(v.read_bytes()).hexdigest()
+ cd=hashlib.sha256(c.read_bytes()).hexdigest()
+ assert m['vanilla_data_manifest_sha256'] == vd
+ assert m['vanilla_data_evidence']['manifest_sha256'] == vd
+ assert m['identifiers_collision_index_sha256'] == cd
+ assert m['identifiers_collision_index']['manifest_sha256'] == cd
 
 
 def test_generation_grade_validator_rejects_empty_collision_index():
