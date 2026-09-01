@@ -1,0 +1,35 @@
+{
+  "game_version": "Beta 1.8.42",
+  "source_class": "VANILLA",
+  "source_role": "EXACT_VANILLA_CORPUS",
+  "currency": "EXACT_TARGET",
+  "verification": "DOCUMENT_ONLY",
+  "archive_sha256": "UNKNOWN",
+  "file_count": null,
+  "uncompressed_bytes": null,
+  "raw_archive_committed": false,
+  "release_channel": "UNKNOWN",
+  "platform": "UNKNOWN",
+  "distribution": "UNKNOWN",
+  "capture_timestamp": null,
+  "capture_method": "UNKNOWN",
+  "steam_build_id_or_equivalent": "UNKNOWN",
+  "executable_sha256": null,
+  "managed_assemblies": [],
+  "vanilla_data_manifest_sha256": null,
+  "localization_manifest_sha256": null,
+  "loader_root_snapshot_sha256": null,
+  "identifiers_collision_index_sha256": null,
+  "code_api_surface": {
+    "captured": false,
+    "manifest_sha256": null,
+    "includes_persistence": false,
+    "includes_security": false
+  },
+  "hardware_design_observations": {
+    "captured": false,
+    "manifest_sha256": null,
+    "unavailable_reason": null
+  },
+  "unity_runtime_version": "UNKNOWN"
+}

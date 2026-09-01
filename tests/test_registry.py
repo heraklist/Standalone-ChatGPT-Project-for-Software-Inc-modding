@@ -2,6 +2,7 @@ import json, sys
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]; sys.path.insert(0,str(ROOT))
 from tools.validate_registry import validate_registry
+from tools.validate_exact_target import generation_grade_errors
 
 def test_registry_has_required_critical_claims():
  r=json.loads((ROOT/'production/knowledge/17_EVIDENCE_REGISTRY.json').read_text())
@@ -23,3 +24,18 @@ def test_linked_engine_sources_remain_scoped():
  linked=[s for s in r['sources'].values() if s['source_role']=='LINKED_ENGINE_API']
  assert len(linked)==5
  assert all(s['currency']=='UNKNOWN_VERSION' and s['delegated_by']=='code_modding' for s in linked)
+
+def test_exact_target_template_fails_closed():
+ m=json.loads((ROOT/'work/corpus/beta-1.8.42/capture-manifest.template.json').read_text())
+ errors=generation_grade_errors(m)
+ expected={'missing release_channel','missing platform','missing distribution','missing capture_timestamp','missing capture_method','missing executable SHA-256','missing managed assembly hashes/versions/MVIDs','missing vanilla Data manifest hash','missing Localization manifest hash','missing loader-root snapshot hash','missing identifiers/collision index hash','missing current Code persistence/security API surface','missing current Hardware Design observations'}
+ assert expected <= set(errors)
+
+def test_generation_grade_manifest_passes_when_complete():
+ m=json.loads((ROOT/'work/corpus/beta-1.8.42/capture-manifest.template.json').read_text())
+ h='a'*64
+ m.update({'release_channel':'stable','platform':'Windows','distribution':'Steam','capture_timestamp':'2026-09-01T12:00:00+03:00','capture_method':'sanitized local capture','executable_sha256':h,'vanilla_data_manifest_sha256':h,'localization_manifest_sha256':h,'loader_root_snapshot_sha256':h,'identifiers_collision_index_sha256':h})
+ m['managed_assemblies']=[{'name':'Assembly-CSharp.dll','sha256':h,'assembly_version':'0.0.0.0','mvid':'00000000-0000-0000-0000-000000000001'}]
+ m['code_api_surface']={'captured':True,'manifest_sha256':h,'includes_persistence':True,'includes_security':True}
+ m['hardware_design_observations']={'captured':True,'manifest_sha256':h,'unavailable_reason':None}
+ assert generation_grade_errors(m)==[]
