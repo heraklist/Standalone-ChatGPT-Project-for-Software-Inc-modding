@@ -23,6 +23,7 @@ def test_local_and_dist_are_ignored():
     assert ".local-sources/" in ignore
     assert "dist/" in ignore
 
+
 import hashlib
 
 CANONICAL_SPEC_SHA256 = "7b77f04c522fb48e087e1b1a0be190a27b8614cd598abf7f7ed243e3e52c31f2"
@@ -33,3 +34,23 @@ def test_canonical_spec_hash_matches_approved_design():
     path = root / "docs/superpowers/specs/2026-08-31-software-inc-mod-studio-design-v1.2.md"
     digest = hashlib.sha256(path.read_bytes()).hexdigest()
     assert digest == CANONICAL_SPEC_SHA256
+
+
+import csv
+
+
+def test_migration_source_map_has_required_columns():
+    root = Path(__file__).resolve().parents[1]
+    path = root / "work/migration/source-map.csv"
+    with path.open(newline="", encoding="utf-8") as handle:
+        reader = csv.DictReader(handle)
+        assert reader.fieldnames == [
+            "original_name",
+            "repo_path",
+            "lifecycle",
+            "classification",
+            "sha256",
+            "notes",
+        ]
+        rows = list(reader)
+    assert len(rows) >= 5
