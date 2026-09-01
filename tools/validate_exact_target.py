@@ -1,5 +1,5 @@
 from __future__ import annotations
-import json, sys
+import argparse, json
 from pathlib import Path
 
 UNKNOWN={None,"","UNKNOWN"}
@@ -37,10 +37,19 @@ def generation_grade_errors(manifest: dict[str, object]) -> list[str]:
     return errors
 
 def main(argv=None):
-    args=argv or sys.argv[1:]
-    path=Path(args[0]) if args else Path("work/corpus/beta-1.8.42/capture-manifest.template.json")
+    ap=argparse.ArgumentParser()
+    ap.add_argument("manifest", nargs="?", default="work/corpus/beta-1.8.42/capture-manifest.template.json")
+    ap.add_argument("--structural", action="store_true")
+    ns=ap.parse_args(argv)
+    path=Path(ns.manifest)
     data=json.loads(path.read_text(encoding="utf-8"))
     errors=generation_grade_errors(data)
+    if ns.structural:
+        if not errors:
+            print("structural gate error: template unexpectedly qualifies as generation-grade")
+            return 1
+        print(f"STRUCTURAL_OK: exact-target generation-grade remains blocked by {len(errors)} evidence requirements")
+        return 0
     for e in errors: print(e)
     return 1 if errors else 0
 

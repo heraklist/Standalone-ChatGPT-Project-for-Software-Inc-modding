@@ -1,5 +1,13 @@
 from __future__ import annotations
+import json
 from pathlib import Path
+import sys
+
+ROOT=Path(__file__).resolve().parents[1]
+sys.path.insert(0,str(ROOT))
+from tools.validate_registry import validate_registry
+from tools.validate_evals import validate_dir as validate_evals
+from tools.validate_exact_target import generation_grade_errors
 
 REQUIRED_DIRS=("archive","work","production","docs","schemas","tools","tests")
 KNOWLEDGE_FILES={
@@ -16,6 +24,8 @@ def verify(root:Path)->list[str]:
         text=ignore.read_text(encoding='utf-8')
         for required in ('.local-sources/','dist/'):
             if required not in text: errors.append(f'.gitignore missing {required}')
+    if not (root/'production/PROJECT_INSTRUCTIONS.md').is_file():
+        errors.append('missing production/PROJECT_INSTRUCTIONS.md')
     kdir=root/'production/knowledge'
     if kdir.exists():
         actual={p.name for p in kdir.iterdir() if p.is_file()}
@@ -26,10 +36,27 @@ def verify(root:Path)->list[str]:
             head=text.split('---\n',2)[1]
             for key in META_KEYS:
                 if f'{key}:' not in head: errors.append(f'{p.name}: metadata missing {key}')
+    registry=root/'production/knowledge/17_EVIDENCE_REGISTRY.json'
+    if registry.exists(): errors.extend(f'registry: {e}' for e in validate_registry(registry))
+    else: errors.append('missing production evidence registry')
+    eval_dir=root/'production/evals'
+    if eval_dir.exists(): errors.extend(f'evals: {e}' for e in validate_evals(eval_dir))
+    else: errors.append('missing production/evals')
+    template=root/'work/corpus/beta-1.8.42/capture-manifest.template.json'
+    if not template.exists(): errors.append('missing exact-target capture template')
+    else:
+        data=json.loads(template.read_text(encoding='utf-8'))
+        if not generation_grade_errors(data):
+            errors.append('exact-target template must not qualify as generation-grade')
+    claim_map=root/'work/migration/critical-claim-map.json'
+    if claim_map.exists():
+        data=json.loads(claim_map.read_text(encoding='utf-8'))
+        if any(c.get('action')=='UNMAPPED' for c in data.get('claims',[])):
+            errors.append('legacy critical claim map contains UNMAPPED claim')
     return errors
 
 def main(root:Path|None=None)->int:
-    repo=root or Path(__file__).resolve().parents[1]
+    repo=root or ROOT
     errors=verify(repo)
     for e in errors: print(e)
     return 1 if errors else 0
