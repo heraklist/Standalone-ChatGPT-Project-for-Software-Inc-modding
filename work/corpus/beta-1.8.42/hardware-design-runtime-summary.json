@@ -1,0 +1,24 @@
+{
+  "assembly": {
+    "assembly_version": "0.0.0.0",
+    "mvid": "07b4923c-0ada-443f-8df8-7bcf49af9bd0",
+    "name": "Assembly-CSharp.dll",
+    "sha256": "c877dbc50f0b9b94ba3c07aa9125675792de4df74448e33be799144757e58bd0"
+  },
+  "captured": true,
+  "currency": "EXACT_TARGET",
+  "evidence_class": "ASSEMBLY_SURFACE",
+  "game_version": "Beta 1.8.42",
+  "hardware_type_count": 39,
+  "loader_errors_present": true,
+  "public_filesystem_schema_observed": false,
+  "referencing_member_count": 9,
+  "representative_references": [
+    {"member": "HardwareDesign", "owner_type": "AddOnProduct", "signature": "Byte[] HardwareDesign"},
+    {"member": "get_HardwareDesign", "owner_type": "SoftwareProduct", "signature": "Byte[] get_HardwareDesign()"},
+    {"member": "HardwareDesign", "owner_type": "IDisplayable", "signature": "Byte[] HardwareDesign"}
+  ],
+  "representative_types": ["HardwareDesignEditor", "HardwareDesignRenderer", "HardwareDesignFurn", "HardwareDesign", "HardwareDesignInstance", "HardwareDesignGroup"],
+  "scope_note": "Exact-target assembly evidence confirms the Hardware Design subsystem surface only; it does not establish a public filesystem authoring schema.",
+  "verification": "VANILLA_OBSERVED"
+}
