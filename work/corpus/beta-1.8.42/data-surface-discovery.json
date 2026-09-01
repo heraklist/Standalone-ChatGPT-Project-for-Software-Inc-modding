@@ -1,0 +1,30 @@
+{
+  "binary_container_matches": [
+    {
+      "path": "Software Inc_Data/globalgamemanagers.assets",
+      "sha256": "3326fa323740137c7154b9e1be91a7aa3c5004b565fc68a7e8833b3bb8d055bf",
+      "size": 27426928,
+      "tokens": ["SoftwareType", "CompanyType", "NameGenerator", "HardwareDesign", "TydCollection", "ModPackage"]
+    },
+    {
+      "path": "Software Inc_Data/resources.assets",
+      "sha256": "7652d7f1ac99b63a5bf8badb8dd7ecf43c434e43888067ae72a2c4c8548f5740",
+      "size": 35414316,
+      "tokens": ["SoftwareType", "SoftwareTypes", "CompanyType", "NameGenerator", "Personalities", "HardwareDesign"]
+    },
+    {
+      "path": "Software Inc_Data/sharedassets2.assets",
+      "sha256": "9aa220436585fefb2534acf4e55aaf21d531b36db7946ddb1dd167a4d225bb2d",
+      "size": 14083636,
+      "tokens": ["HardwareDesign"]
+    }
+  ],
+  "content_resolved": false,
+  "excluded_user_or_loader_roots": ["Blueprints", "Characters", "Mods", "Furniture", "Materials", "DLLMods", "Localization", "Saves", "Screenshots"],
+  "game_version": "Beta 1.8.42",
+  "generation_grade_note": "Relevant current Data tokens are embedded in Unity asset containers; exact vanilla definitions and identifier values have not yet been extracted.",
+  "method": "safe text discovery plus ASCII token presence in likely Unity asset containers",
+  "safe_text_files_scanned": 10,
+  "scope_isolated_from_known_user_mod_roots": true,
+  "text_matches": []
+}
