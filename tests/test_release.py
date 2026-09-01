@@ -16,7 +16,11 @@ def test_structural_preview_bundle_has_exact_upload_layout_and_hashes(tmp_path):
     zip_path, kp, release = build_release(ROOT, out_dir=tmp_path)
     assert release["release_status"] == "STRUCTURAL_PREVIEW"
     assert release["generation_grade"] is False
-    assert release["exact_target_gate_errors"]
+    assert release["exact_target_manifest"] == "work/corpus/beta-1.8.42/capture-manifest.json"
+    assert "vanilla Data content unresolved" in release["exact_target_gate_errors"]
+    assert "missing current identifiers/collision index evidence" in release["exact_target_gate_errors"]
+    assert "missing current Hardware Design observations" not in release["exact_target_gate_errors"]
+    assert "missing current Code persistence/security API surface" not in release["exact_target_gate_errors"]
     assert len(kp["mandatory_knowledge_files"]) == 18
     assert set(kp["mandatory_knowledge_files"]) == KNOWLEDGE_FILES
     assert len(kp["project_instructions_sha256"]) == 64
@@ -38,6 +42,6 @@ def test_structural_preview_bundle_has_exact_upload_layout_and_hashes(tmp_path):
     assert hashlib.sha256(zip_path.read_bytes()).hexdigest() == release["bundle_sha256"]
 
 
-def test_generation_grade_release_is_blocked_without_exact_target_capture(tmp_path):
-    with pytest.raises(RuntimeError, match="generation-grade release blocked"):
+def test_generation_grade_release_is_blocked_by_unresolved_exact_target_data(tmp_path):
+    with pytest.raises(RuntimeError, match="vanilla Data content unresolved"):
         build_release(ROOT, generation_grade=True, out_dir=tmp_path)
