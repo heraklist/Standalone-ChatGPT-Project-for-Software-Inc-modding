@@ -11,5 +11,6 @@ def test_ci_runs_generation_grade_and_template_fail_closed_validators():
         'python tools/validate_evals.py production/evals',
         'python tools/validate_exact_target.py work/corpus/beta-1.8.42/capture-manifest.template.json --structural',
         'python tools/validate_exact_target.py',
+        'python tools/build_release.py --generation-grade',
     ):
         assert command in text
