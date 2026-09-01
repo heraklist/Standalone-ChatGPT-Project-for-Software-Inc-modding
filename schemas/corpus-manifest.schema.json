@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/software-inc-mod-studio/corpus-manifest.schema.json",
+  "title": "Software Inc Corpus Manifest",
+  "type": "object",
+  "required": [
+    "game_version",
+    "source_class",
+    "source_role",
+    "currency",
+    "verification",
+    "archive_sha256",
+    "file_count",
+    "uncompressed_bytes",
+    "raw_archive_committed"
+  ],
+  "properties": {
+    "game_version": {"type": "string", "minLength": 1},
+    "source_class": {"type": "string"},
+    "source_role": {"type": "string"},
+    "currency": {"type": "string"},
+    "verification": {"type": "string"},
+    "archive_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "file_count": {"type": "integer", "minimum": 0},
+    "uncompressed_bytes": {"type": "integer", "minimum": 0},
+    "raw_archive_committed": {"type": "boolean"}
+  },
+  "additionalProperties": true
+}
