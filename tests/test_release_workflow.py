@@ -31,3 +31,16 @@ def test_release_workflow_verifies_bundle_sha_before_publish():
     text = WORKFLOW.read_text(encoding="utf-8")
     assert "verify_release_artifacts.py" in text
     assert "release-report.json" in text
+
+
+def test_release_workflow_supports_controlled_publish_branch_trigger():
+    text = WORKFLOW.read_text(encoding="utf-8")
+    for fragment in (
+        "branches:",
+        "- 'publish/v*'",
+        'GITHUB_REF_TYPE',
+        'publish/v${VERSION}',
+        'tag_name: v${{ env.VERSION }}',
+        'target_commitish: ${{ github.sha }}',
+    ):
+        assert fragment in text
