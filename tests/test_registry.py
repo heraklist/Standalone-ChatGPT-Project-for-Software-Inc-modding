@@ -36,21 +36,19 @@ def test_exact_target_template_fails_closed():
  assert expected <= set(errors)
 
 
-def test_partial_exact_target_capture_stays_fail_closed_semantically():
+def test_exact_target_capture_is_generation_grade_semantically():
  m=json.loads((ROOT/'work/corpus/beta-1.8.42/capture-manifest.json').read_text())
- errors=generation_grade_errors(m)
- assert 'vanilla Data content unresolved' in errors
- assert 'missing current identifiers/collision index evidence' in errors
- assert 'missing current Hardware Design observations' not in errors
- assert 'missing current Code persistence/security API surface' not in errors
- assert 'missing Steam build ID' not in errors
+ assert generation_grade_errors(m) == []
+ assert m['game_version'] == 'Beta 1.8.42'
+ assert m['currency'] == 'EXACT_TARGET'
+ assert m['vanilla_data_evidence']['content_resolved'] is True
+ assert m['identifiers_collision_index']['captured'] is True
+ assert m['identifiers_collision_index']['entry_count'] >= 61
+ assert m['hardware_design_observations']['captured'] is True
+ assert m['code_api_surface']['captured'] is True
 
 
-def test_generation_grade_manifest_passes_when_semantically_complete():
+def test_generation_grade_validator_rejects_empty_collision_index():
  m=json.loads((ROOT/'work/corpus/beta-1.8.42/capture-manifest.json').read_text())
- h='a'*64
- m['vanilla_data_manifest_sha256']=h
- m['identifiers_collision_index_sha256']=h
- m['vanilla_data_evidence']={'captured':True,'manifest_sha256':h,'scope_isolated':True,'content_resolved':True}
- m['identifiers_collision_index']={'captured':True,'manifest_sha256':h,'entry_count':1}
- assert generation_grade_errors(m)==[]
+ m['identifiers_collision_index']['entry_count']=0
+ assert 'empty current identifiers/collision index' in generation_grade_errors(m)
