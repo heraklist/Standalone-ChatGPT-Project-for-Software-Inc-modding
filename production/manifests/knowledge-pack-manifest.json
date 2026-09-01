@@ -1,0 +1,35 @@
+{
+  "pack_name": "Software Inc Mod Studio",
+  "pack_version": "0.1.0-structural-preview",
+  "canonical_target_game": "Beta 1.8.42",
+  "canonical_spec_sha256": "7b77f04c522fb48e087e1b1a0be190a27b8614cd598abf7f7ed243e3e52c31f2",
+  "mandatory_knowledge_files": [
+    "00_INDEX.md",
+    "01_EVIDENCE_VERSION_AND_TRUTH.md",
+    "02_MOD_ECOSYSTEM_AND_ROUTER.md",
+    "03_TYD_FOUNDATIONS.md",
+    "04_DATA_MODDING.md",
+    "05_SIPL.md",
+    "06_CODE_MODDING_CORE_AND_DISTRIBUTION.md",
+    "07_CODE_RUNTIME_UI_PERSISTENCE_SECURITY.md",
+    "08_FURNITURE.md",
+    "09_MATERIALS.md",
+    "10_LOCALIZATION.md",
+    "11_EDITOR_CONTENT_HARDWARE_BLUEPRINTS_BUILDINGS.md",
+    "12_DEBUGGING_CONSOLE_AND_RUNTIME.md",
+    "13_COMPATIBILITY_MIGRATION_AND_COLLISIONS.md",
+    "14_DISCOVERY_BRAINSTORM_AND_DESIGN.md",
+    "15_BUILD_EDIT_REPAIR_AND_DELIVERY.md",
+    "16_VERIFICATION_AND_QA.md",
+    "17_EVIDENCE_REGISTRY.json"
+  ],
+  "project_instructions_sha256": "AUTO",
+  "registry_sha256": "AUTO",
+  "file_sha256": "AUTO",
+  "eval_suite_revision": "E01-E74",
+  "research_cutoff": "2026-09-01",
+  "exact_target_generation_grade": false,
+  "known_gaps": [
+    "Exact Beta 1.8.42 installation/corpus capture is not yet supplied; generation-grade release remains blocked."
+  ]
+}
