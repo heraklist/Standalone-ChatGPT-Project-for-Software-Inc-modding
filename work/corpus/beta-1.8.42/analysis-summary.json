@@ -1,0 +1,19 @@
+{
+  "game_version": "Beta 1.8.42",
+  "complete": true,
+  "missing_payload_path_ids": [],
+  "hash_or_size_mismatch_path_ids": [],
+  "family_counts": {
+    "SOFTWARE_TYPE": 12,
+    "COMPANY_TYPE": 7,
+    "NAME_GENERATOR": 26,
+    "PERSONALITIES": 1,
+    "HARDWARE_DESIGN": 0,
+    "OTHER": 156
+  },
+  "recognized_data_entries": 46,
+  "total_identifier_count": 61,
+  "collision_count": 0,
+  "generation_grade_candidate": true,
+  "source_sanitized_bundle_sha256": "dc35c7d07bce42d1ee9168bd3797fae7e4615cc980ca0f386b6faa75f4e63571"
+}
