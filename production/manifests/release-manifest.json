@@ -1,0 +1,9 @@
+{
+  "release_status": "STRUCTURAL_PREVIEW",
+  "generation_grade": false,
+  "target_game": "Beta 1.8.42",
+  "bundle_sha256": "AUTO",
+  "files": "AUTO",
+  "generated_at": "AUTO",
+  "exact_target_gate_errors": "AUTO"
+}
