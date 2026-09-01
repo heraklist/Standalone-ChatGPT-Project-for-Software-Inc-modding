@@ -1,0 +1,462 @@
+# SIPL Scripting Guide - Software Inc Programming Language
+
+## Εισαγωγή στη SIPL
+
+Η SIPL (Software Inc Programming Language) είναι μια C#-based scripting γλώσσα που χρησιμοποιείται αποκλειστικά για **Level 3 features** στο Software Inc. Τα scripts εκτελούνται σε συγκεκριμένα events και επιτρέπουν custom game mechanics.
+
+## Βασικοί Κανόνες SIPL
+
+### Syntax Style
+- **C-style syntax** με `{}`
+- Statements τελειώνουν με `;`
+- Comments με `//`
+- Case-sensitive
+- Variables με `float`, `int`, `string`, `bool` types
+
+### Παράδειγμα Βασικής Δομής:
+```sipl
+if (condition)
+{
+    // Code here
+    variable = value;
+}
+```
+
+## Entry Points (Script Types)
+
+### 1. **Script_EndOfDay**
+Εκτελείται **κάθε μέρα** μετά το market simulation, μόνο για released products.
+
+**Scope:** `ProductScope`
+- `Product` - Το προϊόν
+- `Time` - Release date του προϊόντος
+
+```sipl
+Script_EndOfDay "
+    if (Product.Userbase > 100000)
+    {
+        Product.DevCompany.MakeTransaction(1000, Bills, \"Bonus\");
+    }
+"
+```
+
+### 2. **Script_AfterSales**
+Εκτελείται **μετά τον υπολογισμό πωλήσεων** κάθε μέρα.
+
+**Scope:** `SaleScope`
+- `Product` - Το προϊόν
+- `PhysicalSales`, `DigitalSales`, `Refunds` - Μπορούν να τροποποιηθούν
+- `Time` - Τρέχουσα ημερομηνία
+
+```sipl
+Script_AfterSales "
+    if (Product.GetVar(\"BonusDay\", false))
+    {
+        PhysicalSales = PhysicalSales * 2;
+        DigitalSales = DigitalSales * 2;
+    }
+"
+```
+
+### 3. **Script_OnRelease**
+Εκτελείται **μια φορά** όταν το προϊόν κυκλοφορεί.
+
+**Scope:** `ProductScope`
+- `Product` - Το προϊόν
+- `Time` - Release date
+
+```sipl
+Script_OnRelease "
+    Product.DevCompany.AddFans(5000, Product.Category);
+    AddPopup(\"Product launched successfully!\", 0.8, \"Money\", Good);
+"
+```
+
+### 4. **Script_NewCopies**
+Εκτελείται όταν **νέα physical copies** παράγονται.
+
+**Scope:** `CopyScope`
+- `Product` - Το προϊόν
+- `NewCopies` - Αριθμός νέων copies (read-only)
+
+```sipl
+Script_NewCopies "
+    float productionCost = NewCopies * 2.5;
+    Product.DevCompany.MakeTransaction(-productionCost, Bills, \"Production Cost\");
+"
+```
+
+### 5. **Script_WorkItemChange**
+Εκτελείται όταν **αλλάζει work task** που σχετίζεται με το προϊόν.
+
+**Scope:** `DevScope`
+- `WorkItem` - Το task
+- `Ended`, `Cancelled` - Boolean flags
+
+```sipl
+Script_WorkItemChange "
+    if (WorkItem is MarketingPlan && Ended)
+    {
+        Product.DevCompany.AddFans(500, Product.Category);
+    }
+"
+```
+
+## RunType Options
+
+### **Local** (default)
+- Εκτελείται μόνο για τον player που κατέχει το product
+- Χρήση: Για lawsuits, local notifications, personal effects
+
+### **Host**
+- Εκτελείται μόνο στον host player
+- Χρήση: Για synchronized operations που πρέπει να γίνουν μία φορά
+
+### **Everyone**
+- Εκτελείται για όλους τους players
+- Χρήση: Για αλλαγές σε local variables που δεν sync αυτομάτως
+
+```sipl
+RunType Local    # Default - για lawsuits, popups
+RunType Host     # Για money transactions
+RunType Everyone # Για product price changes
+```
+
+## Βασικές SIPL Functions
+
+### Math Functions
+```sipl
+Max(a, b)           // Μέγιστο από δύο τιμές
+Min(a, b)           // Ελάχιστο από δύο τιμές
+Random()            // Τυχαίος αριθμός 0.0-1.0
+```
+
+### Product Operations
+```sipl
+// User base management
+Product.ChangeUserbase(newAmount)
+Product.Userbase                     // Current active users (read-only)
+
+// Bug management
+Product.FixBugs(amount)             // Remove bugs
+Product.Bugs                        // Current bug count (read-only)
+
+// Marketing
+Product.KillAwareness()             // Remove all marketing
+Product.GetCashflow(includeMarketing).Last() // Last day's income
+
+// Product info
+Product.Sum                         // Total development cost
+Product.Name                        // Product name
+Product.Category                    // Product category
+Product.DevCompany                  // Company that developed it
+```
+
+### Company Operations
+```sipl
+// Financial
+Product.DevCompany.MakeTransaction(amount, type, description)
+// Types: Bills, Loan, Investment, Sales, etc.
+
+// Reputation & Fans
+Product.DevCompany.AddFans(amount, category)
+Product.DevCompany.GetReputation(category)
+
+// Company info
+PlayerCompany.Instance.Money        // Player's current money
+PlayerCompany.Instance.SpendMoney(amount) // Returns true if successful
+```
+
+### Variables (Product-Specific Storage)
+```sipl
+// Store/retrieve custom data
+Product.GetVar("VariableName", defaultValue)
+Product.PutVar("VariableName", value)
+
+// Example usage
+Product.PutVar("LastBonusDay", Now.Day);
+int lastBonus = Product.GetVar("LastBonusDay", 0);
+```
+
+### Game Actions
+```sipl
+// Lawsuits
+LaunchLawsuit("SpyingOnUsers", amount, difficulty)
+// difficulty: 0.0 (easy to win) to 1.0 (very hard)
+
+// Notifications
+AddPopup("Message", importance, "Icon", Sound)
+// importance: 0.0-1.0
+// Icons: "Info", "Money", "Exclamation", "Server"
+// Sounds: Good, Warning, Issue, Neutral
+
+// Localization
+Localize("LocalizationKey", optionalArguments)
+```
+
+### Date/Time Operations
+```sipl
+// Current game time
+Now.Year, Now.Month, Now.Day, Now.Hour, Now.Minute
+
+// Date arithmetic
+CreateDate(year, month, day, hour, minute)
+// Example: Now + CreateDate(0,1,0,0,0) // Add 1 month
+
+// Time utilities
+DaysPerMonth                        // Game's days per month setting
+```
+
+## Scopes και Available Variables
+
+### ProductScope (EndOfDay, OnRelease)
+```sipl
+SDateTime Now                       // Current game time
+int DaysPerMonth                    // Game setting
+Company PlayerCompany               // Player's company
+MarketSimulation MarketSimulation   // Market data
+SoftwareProduct Product             // The product
+SDateTime Time                      // Release date
+```
+
+### SaleScope (AfterSales)
+```sipl
+// Όλα από ProductScope plus:
+int PhysicalSales                   // Modifiable
+int DigitalSales                    // Modifiable  
+int Refunds                         // Modifiable
+```
+
+### DevScope (WorkItemChange)
+```sipl
+// Όλα από ProductScope plus:
+WorkItem WorkItem                   // The task
+bool Ended                          // Task ended?
+bool Cancelled                      // Task cancelled?
+```
+
+### CopyScope (NewCopies)
+```sipl
+// Όλα από ProductScope plus:
+uint NewCopies                      // Number of new copies (read-only)
+```
+
+## Παραδείγματα Πρακτικών Scripts
+
+### 1. **Daily Revenue Bonus Script**
+```sipl
+{
+    Name "Revenue Booster"
+    DevTime 3
+    Level 3
+    CodeArt 1
+    Submarkets 0
+    RunType Host
+    Script_EndOfDay "
+        float dailyRevenue = Product.GetCashflow(false).Last();
+        if (dailyRevenue > 50000)
+        {
+            float bonus = dailyRevenue * 0.1;
+            Product.DevCompany.MakeTransaction(bonus, Sales, \"Daily Bonus\");
+            AddPopup(\"Daily bonus: $\" + bonus.ToString(), 0.7, \"Money\", Good);
+        }
+    "
+}
+```
+
+### 2. **Bug Reduction Script**
+```sipl
+{
+    Name "Auto Bug Fix"
+    DevTime 4
+    Level 3
+    CodeArt 1
+    Submarkets 0
+    RunType Local
+    Script_EndOfDay "
+        if (Product.Bugs > 0)
+        {
+            float fixRate = Product.Userbase * 0.001;
+            Product.FixBugs(fixRate);
+            
+            if (Random() < 0.05 && Product.Bugs > 100)
+            {
+                AddPopup(\"Critical bugs detected!\", 1.0, \"Exclamation\", Issue);
+            }
+        }
+    "
+}
+```
+
+### 3. **Market Event Script**
+```sipl
+{
+    Name "Market Fluctuation"
+    DevTime 5
+    Level 3
+    CodeArt 1
+    Submarkets 0
+    RunType Everyone
+    Script_EndOfDay "
+        // Monthly market event
+        if (Now.Day == 1)
+        {
+            if (Random() < 0.3) // 30% chance
+            {
+                // Positive market event
+                Product.DevCompany.AddFans(1000, Product.Category);
+                AddPopup(\"Positive market trend!\", 0.8, \"Info\", Good);
+            }
+            else if (Random() < 0.1) // 10% chance
+            {
+                // Negative market event  
+                Product.ChangeUserbase(Product.Userbase * 0.9);
+                AddPopup(\"Market downturn affects userbase\", 0.9, \"Exclamation\", Warning);
+            }
+        }
+    "
+}
+```
+
+### 4. **Surveillance Feature (από vanilla)**
+```sipl
+{
+    Name "Microphone surveillance"
+    Description "Listen in on users to fix bugs, but risk getting caught"
+    Server 0.0002
+    DevTime 3
+    Level 3
+    CodeArt 1
+    Submarkets 0
+    RunType Local
+    Script_EndOfDay "
+        if (Product.GetVar(\"MicMining\", true))
+        {
+            // Fix bugs based on userbase
+            Product.FixBugs(Product.Userbase * 0.01);
+            
+            // Risk of getting caught
+            if (Random() * Product.Userbase > 1000000 * Product.Category.Popularity)
+            {
+                LaunchLawsuit(\"SpyingOnUsers\", Product.Sum, 1);
+                Product.DevCompany.AddFans(-Product.Userbase, Product.Category);
+                Product.ChangeUserbase(Product.Userbase * 0.05);
+                Product.KillAwareness();
+                Product.PutVar(\"MicMining\", false);
+                AddPopup(Localize(\"SurveillanceNotification\", Product.Name), 1, \"Exclamation\", Issue);
+            }
+        }
+    "
+}
+```
+
+### 5. **Sales Boost Script**
+```sipl
+{
+    Name "Weekend Sales Boost"
+    DevTime 2
+    Level 3
+    CodeArt 1
+    Submarkets 0
+    RunType Host
+    Script_AfterSales "
+        // Boost weekend sales
+        if (Now.Day % 7 == 6 || Now.Day % 7 == 0) // Weekend
+        {
+            PhysicalSales = (int)(PhysicalSales * 1.5);
+            DigitalSales = (int)(DigitalSales * 1.3);
+        }
+        
+        // Reduce refunds for high-quality products
+        if (Product.GetVar(\"HighQuality\", false))
+        {
+            Refunds = (int)(Refunds * 0.5);
+        }
+    "
+}
+```
+
+## Debugging Tips
+
+### Console Commands
+```
+LIST_SCOPE_MEMBERS ProductScope    # Show available variables
+LIST_SCOPE_MEMBERS SaleScope       # Show SaleScope variables  
+LIST_SCOPE_MEMBERS DevScope        # Show DevScope variables
+```
+
+### Common Issues
+1. **Syntax Errors:** Βεβαιώσου ότι χρησιμοποιείς C-style syntax
+2. **RunType Problems:** Χρησιμοποίησε Local για lawsuits, Host για money
+3. **Variable Persistence:** Χρησιμοποίησε `Product.GetVar/PutVar` για persistent data
+4. **Performance:** Level 3 features επηρεάζουν performance - κράτησε τα απλά
+
+### Error Prevention
+- Πάντα χρησιμοποίησε `Product.GetVar()` με default value
+- Έλεγχε για null values πριν χρησιμοποιήσεις variables
+- Χρησιμοποίησε `try-catch` για risky operations
+- Test scripts με διαφορετικά scenarios
+
+## Script File Organization
+
+### Inline Scripts
+```sipl
+Script_EndOfDay "
+    // Short script inline
+    Product.FixBugs(1);
+"
+```
+
+### External Script Files
+```sipl
+Script_EndOfDay "/Scripts/MyScript.txt"
+```
+
+**File Structure:**
+```
+ModName/
+├── Scripts/
+│   ├── EndOfDay/
+│   │   └── MyEndOfDayScript.txt
+│   ├── Sales/
+│   │   └── MySalesScript.txt
+│   └── Shared/
+│       └── CommonFunctions.txt
+└── SoftwareTypes/
+    └── MySoftware.tyd
+```
+
+## Performance Considerations
+
+### Script Execution Frequency
+- **EndOfDay:** Κάθε μέρα για όλα τα released products
+- **AfterSales:** Κάθε μέρα για όλα τα products με sales
+- **WorkItemChange:** Κάθε φορά που αλλάζει task
+
+### Optimization Tips
+1. Αποφύγετε complex calculations σε EndOfDay scripts
+2. Χρησιμοποιήστε conditional checks για να αποφύγετε άσκοπες operations
+3. Cache expensive calculations σε variables
+4. Περιορίστε τον αριθμό των Level 3 features ανά software
+
+### Best Practices
+- Χρησιμοποιήστε descriptive variable names
+- Προσθέστε comments για complex logic
+- Test scripts με different game scenarios
+- Monitor impact στο game performance
+
+## Limits και Περιορισμοί
+
+### SIPL Limitations
+- Δεν μπορείς να δημιουργήσεις νέα UI elements
+- Δεν μπορείς να αλλάξεις core game mechanics
+- Δεν έχεις πρόσβαση σε save/load operations
+- Scripts εκτελούνται μόνο για Level 3 features
+
+### Security Restrictions
+- Δεν επιτρέπεται file system access
+- Δεν επιτρέπεται network access
+- Περιορισμένο CPU time per script execution
+- Memory usage restrictions
+
+Η SIPL είναι ένα ισχυρό εργαλείο για custom game mechanics, αλλά χρειάζεται προσεκτική χρήση για να μην επηρεάσει την απόδοση του παιχνιδιού.
