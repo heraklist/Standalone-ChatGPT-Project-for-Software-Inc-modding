@@ -24,8 +24,9 @@ def verify(root:Path)->list[str]:
         text=ignore.read_text(encoding='utf-8')
         for required in ('.local-sources/','dist/'):
             if required not in text: errors.append(f'.gitignore missing {required}')
-    if not (root/'production/PROJECT_INSTRUCTIONS.md').is_file():
-        errors.append('missing production/PROJECT_INSTRUCTIONS.md')
+    instructions=root/'production/project-instructions/PROJECT_INSTRUCTIONS.md'
+    if not instructions.is_file():
+        errors.append('missing production/project-instructions/PROJECT_INSTRUCTIONS.md')
     kdir=root/'production/knowledge'
     if kdir.exists():
         actual={p.name for p in kdir.iterdir() if p.is_file()}
