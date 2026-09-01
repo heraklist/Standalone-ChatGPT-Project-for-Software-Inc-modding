@@ -1,6 +1,6 @@
 {
-  "release_status": "STRUCTURAL_PREVIEW",
-  "generation_grade": false,
+  "release_status": "AUTO",
+  "generation_grade": "AUTO",
   "target_game": "Beta 1.8.42",
   "bundle_sha256": "AUTO",
   "files": "AUTO",
