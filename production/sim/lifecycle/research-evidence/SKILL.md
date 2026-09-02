@@ -13,4 +13,4 @@ Classify useful evidence by source role, version/currency, scope, confidence, ve
 
 Return structured findings, evidence used, conflicts, assumptions, unresolved gaps, and proposed evidence or gap updates to the SIM orchestrator.
 
-This workflow does not dispatch peer specialists and does not mutate canonical SIM session state directly. The orchestrator decides whether proposed updates are accepted and whether further research is needed.
+Do not dispatch peer specialists. Do not mutate canonical SIM session state directly. The orchestrator decides whether proposed updates are accepted and whether further research is needed.
