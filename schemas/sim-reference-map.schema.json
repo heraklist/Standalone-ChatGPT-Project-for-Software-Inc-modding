@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SIM Reference Map",
+  "type": "object",
+  "required": ["references"],
+  "properties": {
+    "references": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["reference_id", "source_id", "source_sha256", "output_sha256"],
+        "properties": {
+          "reference_id": {"type": "string", "minLength": 1},
+          "source_id": {"type": "string", "minLength": 1},
+          "source_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+          "output_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

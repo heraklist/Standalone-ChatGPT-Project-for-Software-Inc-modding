@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SIM Specialist Request",
+  "type": "object",
+  "required": ["request_id", "session_id", "task", "intent", "target_game_version", "domain_scope", "relevant_files", "relevant_design_decisions", "relevant_evidence", "constraints", "requested_output", "verification_target"],
+  "properties": {
+    "request_id": {"type": "string", "minLength": 1},
+    "session_id": {"type": "string", "minLength": 1},
+    "task": {"type": "string", "minLength": 1},
+    "intent": {"enum": ["CREATE", "EDIT", "EXTEND", "REPAIR", "DEBUG", "MIGRATE", "MODERNIZE", "AUDIT", "VALIDATE", "PACKAGE", "RESEARCH", "BRAINSTORM", "EXPLAIN", "COMPARE"]},
+    "target_game_version": {"type": "string", "minLength": 1},
+    "domain_scope": {"type": "string", "minLength": 1},
+    "relevant_files": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "relevant_design_decisions": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "relevant_evidence": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "constraints": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "requested_output": {"type": "string", "minLength": 1},
+    "verification_target": {"enum": ["V0 DESIGN_READY", "V1 ARTIFACT_GENERATED", "V2 STATICALLY_REVIEWED", "V3 LOAD_OR_NATIVE_OPEN_VERIFIED", "V4 BEHAVIOR_VERIFIED", "V5 REGRESSION_VERIFIED"]}
+  },
+  "additionalProperties": false
+}

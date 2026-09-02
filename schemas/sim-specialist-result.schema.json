@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SIM Specialist Result",
+  "type": "object",
+  "required": ["request_id", "status", "scope", "findings", "decisions", "proposed_changes", "files_touched", "evidence_used", "assumptions", "unresolved_gaps", "validation", "requested_followup", "risk_flags", "next_action"],
+  "properties": {
+    "request_id": {"type": "string", "minLength": 1},
+    "status": {"enum": ["READY", "PARTIAL", "BLOCKED", "FAILED"]},
+    "scope": {"type": "string", "minLength": 1},
+    "findings": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "decisions": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "proposed_changes": {"type": "array", "items": {"type": "object", "required": ["type", "summary"], "properties": {"type": {"enum": ["CREATE", "EDIT", "EXTEND", "REPAIR", "DEBUG", "MIGRATE", "MODERNIZE", "AUDIT", "VALIDATE", "PACKAGE", "RESEARCH", "BRAINSTORM", "EXPLAIN", "COMPARE"]}, "summary": {"type": "string", "minLength": 1}}, "additionalProperties": false}},
+    "files_touched": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "evidence_used": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "assumptions": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "unresolved_gaps": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "validation": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "requested_followup": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "risk_flags": {"type": "array", "items": {"type": "object", "required": ["class", "summary"], "properties": {"class": {"enum": ["R0", "R1", "R2", "R3"]}, "summary": {"type": "string", "minLength": 1}}, "additionalProperties": false}},
+    "next_action": {"type": "string", "minLength": 1}
+  },
+  "additionalProperties": false
+}
