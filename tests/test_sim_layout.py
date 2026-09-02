@@ -88,15 +88,35 @@ def test_empty_reference_source_map_conforms_to_machine_contract() -> None:
     jsonschema.Draft202012Validator(schema).validate(source_map)
 
 
-def test_compatibility_matrix_makes_no_host_support_claims() -> None:
+def test_compatibility_matrix_matches_complete_phase_a_contract() -> None:
     matrix = json.loads(
         (ROOT / "production/sim/manifests/compatibility-matrix.json").read_text(
             encoding="utf-8"
         )
     )
 
-    for surface in ("ChatGPT", "ChatGPT Project", "Codex"):
-        assert matrix["surfaces"][surface] == COMPATIBILITY_CAPABILITIES
+    assert matrix == {
+        "surfaces": {
+            "ChatGPT": {
+                "explicit_invocation": "TO_BE_VERIFIED",
+                "thread_persistence": "TO_BE_VERIFIED",
+                "script_execution": "CAPABILITY_DEPENDENT",
+                "artifact_creation": "CAPABILITY_DEPENDENT",
+            },
+            "ChatGPT Project": {
+                "explicit_invocation": "TO_BE_VERIFIED",
+                "thread_persistence": "TO_BE_VERIFIED",
+                "script_execution": "CAPABILITY_DEPENDENT",
+                "artifact_creation": "CAPABILITY_DEPENDENT",
+            },
+            "Codex": {
+                "explicit_invocation": "TO_BE_VERIFIED",
+                "thread_persistence": "TO_BE_VERIFIED",
+                "script_execution": "CAPABILITY_DEPENDENT",
+                "artifact_creation": "CAPABILITY_DEPENDENT",
+            },
+        }
+    }
 
 
 def test_verify_sim_layout_accepts_complete_pr_a_contract(tmp_path: Path) -> None:
@@ -122,6 +142,49 @@ def test_verify_sim_layout_rejects_invalid_manifest_identity(tmp_path: Path) -> 
     manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
 
     assert verify_sim_layout(tmp_path) == ["SIM manifest identity mismatch: product"]
+
+
+def test_verify_sim_layout_reports_malformed_manifest_json(tmp_path: Path) -> None:
+    write_sim_contracts(tmp_path)
+    manifest_path = tmp_path / "production/sim/manifests/sim-manifest.json"
+    manifest_path.write_text("{not-json", encoding="utf-8")
+
+    assert verify_sim_layout(tmp_path) == ["SIM manifest is not valid JSON"]
+
+
+def test_verify_sim_layout_reports_non_utf8_manifest(tmp_path: Path) -> None:
+    write_sim_contracts(tmp_path)
+    manifest_path = tmp_path / "production/sim/manifests/sim-manifest.json"
+    manifest_path.write_bytes(b"\xff\xfe\x00")
+
+    assert verify_sim_layout(tmp_path) == ["SIM manifest is not valid UTF-8"]
+
+
+def test_verify_sim_layout_reports_manifest_read_failure(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    write_sim_contracts(tmp_path)
+
+    def fail_to_read(_path: Path, *args: object, **kwargs: object) -> str:
+        raise OSError("controlled read failure")
+
+    monkeypatch.setattr(Path, "read_text", fail_to_read)
+
+    assert verify_sim_layout(tmp_path) == ["SIM manifest could not be read"]
+
+
+def test_verify_sim_layout_does_not_swallow_unrelated_read_errors(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    write_sim_contracts(tmp_path)
+
+    def fail_programming_error(_path: Path, *args: object, **kwargs: object) -> str:
+        raise RuntimeError("programming error")
+
+    monkeypatch.setattr(Path, "read_text", fail_programming_error)
+
+    with pytest.raises(RuntimeError, match="programming error"):
+        verify_sim_layout(tmp_path)
 
 
 @pytest.mark.parametrize("manifest_root", ([], None))

@@ -2,17 +2,90 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "SIM Session",
   "type": "object",
+  "$defs": {
+    "file": {
+      "type": "object",
+      "required": ["path"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "purpose": {"type": "string", "minLength": 1},
+        "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+      },
+      "additionalProperties": false
+    },
+    "evidenceItem": {
+      "type": "object",
+      "required": ["evidence_id", "source_class", "source_role", "currency", "scope", "confidence", "verification", "conflict_state"],
+      "properties": {
+        "evidence_id": {"type": "string", "minLength": 1},
+        "source_class": {"type": "string", "minLength": 1},
+        "source_role": {"type": "string", "minLength": 1},
+        "currency": {"type": "string", "minLength": 1},
+        "scope": {"type": "string", "minLength": 1},
+        "confidence": {"type": "string", "minLength": 1},
+        "verification": {"type": "string", "minLength": 1},
+        "conflict_state": {"enum": ["CONSISTENT", "SOURCE_CONFLICT", "VERSION_CONFLICT", "SCOPE_CONFLICT", "UNRESOLVED"]}
+      },
+      "additionalProperties": false
+    },
+    "validationCheck": {
+      "type": "object",
+      "required": ["id", "result", "evidence_refs"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "result": {"enum": ["PASS", "FAIL", "NOT_EXECUTED"]},
+        "evidence_refs": {"type": "array", "items": {"type": "string", "minLength": 1}}
+      },
+      "additionalProperties": false
+    }
+  },
   "required": ["meta", "goal", "target", "baseline", "architecture", "workspace", "evidence", "decisions", "validation", "artifact", "risks", "history"],
   "properties": {
     "meta": {"type": "object", "required": ["session_id"], "properties": {"session_id": {"type": "string", "minLength": 1}}, "additionalProperties": false},
     "goal": {"type": "object", "required": ["summary"], "properties": {"summary": {"type": "string", "minLength": 1}}, "additionalProperties": false},
     "target": {"type": "object", "required": ["game_version"], "properties": {"game_version": {"type": "string", "minLength": 1}}, "additionalProperties": false},
-    "baseline": {"type": "object", "additionalProperties": false},
-    "architecture": {"type": "object", "additionalProperties": false},
-    "workspace": {"type": "object", "additionalProperties": false},
-    "evidence": {"type": "object", "additionalProperties": false},
+    "baseline": {
+      "type": "object",
+      "properties": {
+        "artifact_identity": {"type": "string", "minLength": 1},
+        "revision": {"type": "string", "minLength": 1},
+        "read_only": {"type": "boolean"},
+        "files": {"type": "array", "items": {"$ref": "#/$defs/file"}}
+      },
+      "additionalProperties": false
+    },
+    "architecture": {
+      "type": "object",
+      "properties": {
+        "owner_families": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "artifact_surface": {"enum": ["MOD_PACKAGE", "EDITOR_CONTENT"]},
+        "delivery_mode": {"enum": ["INSTALLABLE_ZIP", "NATIVE_EDITOR_ARTIFACT", "WORKSHOP_READY_EDITOR_CONTENT"]}
+      },
+      "additionalProperties": false
+    },
+    "workspace": {
+      "type": "object",
+      "properties": {
+        "files": {"type": "array", "items": {"$ref": "#/$defs/file"}}
+      },
+      "additionalProperties": false
+    },
+    "evidence": {
+      "type": "object",
+      "properties": {
+        "items": {"type": "array", "items": {"$ref": "#/$defs/evidenceItem"}}
+      },
+      "additionalProperties": false
+    },
     "decisions": {"type": "array", "items": {"type": "object", "required": ["id", "summary"], "properties": {"id": {"type": "string", "minLength": 1}, "summary": {"type": "string", "minLength": 1}}, "additionalProperties": false}},
-    "validation": {"type": "object", "additionalProperties": false},
+    "validation": {
+      "type": "object",
+      "properties": {
+        "profile": {"enum": ["LIGHT", "STANDARD", "DEEP"]},
+        "checks": {"type": "array", "items": {"$ref": "#/$defs/validationCheck"}}
+      },
+      "additionalProperties": false
+    },
     "artifact": {
       "type": "object",
       "required": ["state", "verification_level"],

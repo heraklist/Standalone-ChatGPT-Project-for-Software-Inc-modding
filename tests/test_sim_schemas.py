@@ -17,6 +17,8 @@ SCHEMA_NAMES = (
     "sim-eval.schema.json",
 )
 
+SCHEMA_DIALECT = "https://json-schema.org/draft/2020-12/schema"
+
 
 def validator(schema_name: str) -> jsonschema.Draft202012Validator:
     schema_path = ROOT / "schemas" / schema_name
@@ -49,6 +51,65 @@ def minimal_session() -> dict[str, object]:
         "risks": [],
         "history": [],
     }
+
+
+@pytest.fixture
+def operational_session(minimal_session: dict[str, object]) -> dict[str, object]:
+    session = copy.deepcopy(minimal_session)
+    session.update(
+        {
+            "baseline": {
+                "artifact_identity": "uploaded-mod-v1",
+                "revision": "revision-1",
+                "read_only": True,
+                "files": [
+                    {
+                        "path": "uploads/MyMod.zip",
+                        "sha256": "a" * 64,
+                    }
+                ],
+            },
+            "architecture": {
+                "owner_families": ["DATA"],
+                "artifact_surface": "MOD_PACKAGE",
+                "delivery_mode": "INSTALLABLE_ZIP",
+            },
+            "workspace": {
+                "files": [
+                    {
+                        "path": "workspace/MyMod/Companies.tyd",
+                        "purpose": "repair working copy",
+                        "sha256": "b" * 64,
+                    }
+                ]
+            },
+            "evidence": {
+                "items": [
+                    {
+                        "evidence_id": "evidence-1",
+                        "source_class": "RUNTIME",
+                        "source_role": "RUNTIME_EVIDENCE",
+                        "currency": "EXACT_TARGET",
+                        "scope": "ARTIFACT",
+                        "confidence": "HIGH",
+                        "verification": "USER_REPORTED",
+                        "conflict_state": "CONSISTENT",
+                    }
+                ]
+            },
+            "validation": {
+                "profile": "STANDARD",
+                "checks": [
+                    {
+                        "id": "data-layout",
+                        "result": "PASS",
+                        "evidence_refs": ["evidence-1"],
+                    }
+                ],
+            },
+        }
+    )
+    return session
 
 
 def specialist_result() -> dict[str, object]:
@@ -108,6 +169,10 @@ def release_manifest() -> dict[str, object]:
 
 def test_sim_schemas_exist_and_are_draft_2020_12_valid() -> None:
     for schema_name in SCHEMA_NAMES:
+        schema_path = ROOT / "schemas" / schema_name
+        schema = json.loads(schema_path.read_text(encoding="utf-8"))
+
+        assert schema["$schema"] == SCHEMA_DIALECT
         validator(schema_name)
 
 
@@ -115,6 +180,44 @@ def test_session_schema_accepts_minimal_operational_session(
     minimal_session: dict[str, object],
 ) -> None:
     validator("sim-session.schema.json").validate(minimal_session)
+
+
+def test_session_schema_accepts_non_empty_operational_session(
+    operational_session: dict[str, object],
+) -> None:
+    validator("sim-session.schema.json").validate(operational_session)
+
+
+@pytest.mark.parametrize(
+    "section_name", ("baseline", "architecture", "workspace", "evidence", "validation")
+)
+def test_session_operational_sections_reject_unknown_properties(
+    operational_session: dict[str, object], section_name: str
+) -> None:
+    invalid_session = copy.deepcopy(operational_session)
+    invalid_session[section_name]["unexpected"] = "not permitted"
+    assert_invalid("sim-session.schema.json", invalid_session)
+
+
+@pytest.mark.parametrize(
+    ("section_name", "field_name", "invalid_value"),
+    (
+        ("baseline", "read_only", "true"),
+        ("architecture", "owner_families", "DATA"),
+        ("workspace", "files", {}),
+        ("evidence", "items", {}),
+        ("validation", "profile", 1),
+    ),
+)
+def test_session_operational_sections_reject_wrong_types(
+    operational_session: dict[str, object],
+    section_name: str,
+    field_name: str,
+    invalid_value: object,
+) -> None:
+    invalid_session = copy.deepcopy(operational_session)
+    invalid_session[section_name][field_name] = invalid_value
+    assert_invalid("sim-session.schema.json", invalid_session)
 
 
 def test_session_schema_rejects_unknown_artifact_state(
@@ -141,6 +244,15 @@ def test_reference_map_accepts_task_two_empty_source_map() -> None:
     validator("sim-reference-map.schema.json").validate(
         {"schema_version": 1, "entries": []}
     )
+
+
+def test_reference_map_rejects_ambiguous_multi_source_digest() -> None:
+    invalid_map = reference_map()
+    invalid_map["entries"][0]["canonical_source_paths"].append(
+        "production/knowledge/05_SIPL.md"
+    )
+
+    assert_invalid("sim-reference-map.schema.json", invalid_map)
 
 
 @pytest.mark.parametrize(

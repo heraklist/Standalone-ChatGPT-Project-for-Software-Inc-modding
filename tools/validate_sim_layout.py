@@ -39,7 +39,14 @@ def verify_sim_layout(root: Path) -> list[str]:
         return errors
 
     try:
-        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        manifest_text = manifest_path.read_text(encoding="utf-8")
+    except UnicodeError:
+        return [*errors, "SIM manifest is not valid UTF-8"]
+    except OSError:
+        return [*errors, "SIM manifest could not be read"]
+
+    try:
+        manifest = json.loads(manifest_text)
     except json.JSONDecodeError:
         return [*errors, "SIM manifest is not valid JSON"]
     if not isinstance(manifest, dict):
