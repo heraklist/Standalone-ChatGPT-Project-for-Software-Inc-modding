@@ -1,4 +1,200 @@
 {
   "schema_version": 1,
-  "entries": []
+  "entries": [
+    {
+      "reference_id": "evidence-truth",
+      "source_id": "production/knowledge/01_EVIDENCE_VERSION_AND_TRUTH.md",
+      "output_path": "production/sim/references/evidence-truth.md",
+      "canonical_source_paths": [
+        "production/knowledge/01_EVIDENCE_VERSION_AND_TRUTH.md"
+      ],
+      "source_sha256": {
+        "production/knowledge/01_EVIDENCE_VERSION_AND_TRUTH.md": "f0a8915b9cd1eb4c8ff807fe97c06c89650f73b82f96260935ddf0d1930d335b"
+      },
+      "transform_type": "COPY",
+      "output_sha256": "f0a8915b9cd1eb4c8ff807fe97c06c89650f73b82f96260935ddf0d1930d335b"
+    },
+    {
+      "reference_id": "ecosystem-router",
+      "source_id": "production/knowledge/02_MOD_ECOSYSTEM_AND_ROUTER.md",
+      "output_path": "production/sim/references/ecosystem-router.md",
+      "canonical_source_paths": [
+        "production/knowledge/02_MOD_ECOSYSTEM_AND_ROUTER.md"
+      ],
+      "source_sha256": {
+        "production/knowledge/02_MOD_ECOSYSTEM_AND_ROUTER.md": "30099be50afd4c00f5c6443108b405dbc0e42302be506d07b8e17348b38ad17c"
+      },
+      "transform_type": "COPY",
+      "output_sha256": "30099be50afd4c00f5c6443108b405dbc0e42302be506d07b8e17348b38ad17c"
+    },
+    {
+      "reference_id": "tyd",
+      "source_id": "production/knowledge/03_TYD_FOUNDATIONS.md",
+      "output_path": "production/sim/references/tyd.md",
+      "canonical_source_paths": [
+        "production/knowledge/03_TYD_FOUNDATIONS.md"
+      ],
+      "source_sha256": {
+        "production/knowledge/03_TYD_FOUNDATIONS.md": "b53bc4ed4f8b6f046965993dc0d9e39280b7ec672ce76cb25fb948d642305555"
+      },
+      "transform_type": "COPY",
+      "output_sha256": "b53bc4ed4f8b6f046965993dc0d9e39280b7ec672ce76cb25fb948d642305555"
+    },
+    {
+      "reference_id": "data",
+      "source_id": "production/knowledge/04_DATA_MODDING.md",
+      "output_path": "production/sim/references/data.md",
+      "canonical_source_paths": [
+        "production/knowledge/04_DATA_MODDING.md"
+      ],
+      "source_sha256": {
+        "production/knowledge/04_DATA_MODDING.md": "8616300eae1af9903973e8138a190a755cd98962b82805297325e14daa4a0e1f"
+      },
+      "transform_type": "COPY",
+      "output_sha256": "8616300eae1af9903973e8138a190a755cd98962b82805297325e14daa4a0e1f"
+    },
+    {
+      "reference_id": "sipl",
+      "source_id": "production/knowledge/05_SIPL.md",
+      "output_path": "production/sim/references/sipl.md",
+      "canonical_source_paths": [
+        "production/knowledge/05_SIPL.md"
+      ],
+      "source_sha256": {
+        "production/knowledge/05_SIPL.md": "3435b8a4a5128f5709a710469b9b8a26b73fd26c45baf83e57cb627ee002d23b"
+      },
+      "transform_type": "COPY",
+      "output_sha256": "3435b8a4a5128f5709a710469b9b8a26b73fd26c45baf83e57cb627ee002d23b"
+    },
+    {
+      "reference_id": "code-core",
+      "source_id": "production/knowledge/06_CODE_MODDING_CORE_AND_DISTRIBUTION.md",
+      "output_path": "production/sim/references/code-core.md",
+      "canonical_source_paths": [
+        "production/knowledge/06_CODE_MODDING_CORE_AND_DISTRIBUTION.md"
+      ],
+      "source_sha256": {
+        "production/knowledge/06_CODE_MODDING_CORE_AND_DISTRIBUTION.md": "1642523721f7b49ffaf24721b420b7497f192a5fcd926e258e5484c4e4b9dfa4"
+      },
+      "transform_type": "COPY",
+      "output_sha256": "1642523721f7b49ffaf24721b420b7497f192a5fcd926e258e5484c4e4b9dfa4"
+    },
+    {
+      "reference_id": "code-runtime",
+      "source_id": "production/knowledge/07_CODE_RUNTIME_UI_PERSISTENCE_SECURITY.md",
+      "output_path": "production/sim/references/code-runtime.md",
+      "canonical_source_paths": [
+        "production/knowledge/07_CODE_RUNTIME_UI_PERSISTENCE_SECURITY.md"
+      ],
+      "source_sha256": {
+        "production/knowledge/07_CODE_RUNTIME_UI_PERSISTENCE_SECURITY.md": "3f67c18628c2f0d67f4610958b68c08ae7d26ddcb935de198e903f0639adff72"
+      },
+      "transform_type": "COPY",
+      "output_sha256": "3f67c18628c2f0d67f4610958b68c08ae7d26ddcb935de198e903f0639adff72"
+    },
+    {
+      "reference_id": "furniture",
+      "source_id": "production/knowledge/08_FURNITURE.md",
+      "output_path": "production/sim/references/furniture.md",
+      "canonical_source_paths": [
+        "production/knowledge/08_FURNITURE.md"
+      ],
+      "source_sha256": {
+        "production/knowledge/08_FURNITURE.md": "157484e092d84e284e8d90d573d1a8cb404ef5012feae47ccb6eeafd37b1517a"
+      },
+      "transform_type": "COPY",
+      "output_sha256": "157484e092d84e284e8d90d573d1a8cb404ef5012feae47ccb6eeafd37b1517a"
+    },
+    {
+      "reference_id": "materials",
+      "source_id": "production/knowledge/09_MATERIALS.md",
+      "output_path": "production/sim/references/materials.md",
+      "canonical_source_paths": [
+        "production/knowledge/09_MATERIALS.md"
+      ],
+      "source_sha256": {
+        "production/knowledge/09_MATERIALS.md": "c5c429b3d010a60f5c9dd1bb9b980285ad3fc27a70cd88d34b7082759b6bda20"
+      },
+      "transform_type": "COPY",
+      "output_sha256": "c5c429b3d010a60f5c9dd1bb9b980285ad3fc27a70cd88d34b7082759b6bda20"
+    },
+    {
+      "reference_id": "localization",
+      "source_id": "production/knowledge/10_LOCALIZATION.md",
+      "output_path": "production/sim/references/localization.md",
+      "canonical_source_paths": [
+        "production/knowledge/10_LOCALIZATION.md"
+      ],
+      "source_sha256": {
+        "production/knowledge/10_LOCALIZATION.md": "318b476141a949949932eea7d3655a8f2d6c776032660f322268634c462e8b76"
+      },
+      "transform_type": "COPY",
+      "output_sha256": "318b476141a949949932eea7d3655a8f2d6c776032660f322268634c462e8b76"
+    },
+    {
+      "reference_id": "editor-content",
+      "source_id": "production/knowledge/11_EDITOR_CONTENT_HARDWARE_BLUEPRINTS_BUILDINGS.md",
+      "output_path": "production/sim/references/editor-content.md",
+      "canonical_source_paths": [
+        "production/knowledge/11_EDITOR_CONTENT_HARDWARE_BLUEPRINTS_BUILDINGS.md"
+      ],
+      "source_sha256": {
+        "production/knowledge/11_EDITOR_CONTENT_HARDWARE_BLUEPRINTS_BUILDINGS.md": "fd63e930ec40950ee4c61fcc4e8f53cbaeb62a26524ff43492fca1259ed8b197"
+      },
+      "transform_type": "COPY",
+      "output_sha256": "fd63e930ec40950ee4c61fcc4e8f53cbaeb62a26524ff43492fca1259ed8b197"
+    },
+    {
+      "reference_id": "debugging",
+      "source_id": "production/knowledge/12_DEBUGGING_CONSOLE_AND_RUNTIME.md",
+      "output_path": "production/sim/references/debugging.md",
+      "canonical_source_paths": [
+        "production/knowledge/12_DEBUGGING_CONSOLE_AND_RUNTIME.md"
+      ],
+      "source_sha256": {
+        "production/knowledge/12_DEBUGGING_CONSOLE_AND_RUNTIME.md": "50f936d00268418d76cb7bdb24445475bb4135d2ee199f733093c00e3cb65ad1"
+      },
+      "transform_type": "COPY",
+      "output_sha256": "50f936d00268418d76cb7bdb24445475bb4135d2ee199f733093c00e3cb65ad1"
+    },
+    {
+      "reference_id": "compatibility",
+      "source_id": "production/knowledge/13_COMPATIBILITY_MIGRATION_AND_COLLISIONS.md",
+      "output_path": "production/sim/references/compatibility.md",
+      "canonical_source_paths": [
+        "production/knowledge/13_COMPATIBILITY_MIGRATION_AND_COLLISIONS.md"
+      ],
+      "source_sha256": {
+        "production/knowledge/13_COMPATIBILITY_MIGRATION_AND_COLLISIONS.md": "95e55569f0c7e1330dc830dad3aad484bd477065b1a4af554c097c0daa27117b"
+      },
+      "transform_type": "COPY",
+      "output_sha256": "95e55569f0c7e1330dc830dad3aad484bd477065b1a4af554c097c0daa27117b"
+    },
+    {
+      "reference_id": "delivery",
+      "source_id": "production/knowledge/15_BUILD_EDIT_REPAIR_AND_DELIVERY.md",
+      "output_path": "production/sim/references/delivery.md",
+      "canonical_source_paths": [
+        "production/knowledge/15_BUILD_EDIT_REPAIR_AND_DELIVERY.md"
+      ],
+      "source_sha256": {
+        "production/knowledge/15_BUILD_EDIT_REPAIR_AND_DELIVERY.md": "4982f8d78700e6b07d35fb60e94152351df5f7108445308c61c3ad296fc00205"
+      },
+      "transform_type": "COPY",
+      "output_sha256": "4982f8d78700e6b07d35fb60e94152351df5f7108445308c61c3ad296fc00205"
+    },
+    {
+      "reference_id": "verification",
+      "source_id": "production/knowledge/16_VERIFICATION_AND_QA.md",
+      "output_path": "production/sim/references/verification.md",
+      "canonical_source_paths": [
+        "production/knowledge/16_VERIFICATION_AND_QA.md"
+      ],
+      "source_sha256": {
+        "production/knowledge/16_VERIFICATION_AND_QA.md": "07e144a09a63c8af9bebbb9261e8cdb4a503110b48e6385190db58eeacd76f53"
+      },
+      "transform_type": "COPY",
+      "output_sha256": "07e144a09a63c8af9bebbb9261e8cdb4a503110b48e6385190db58eeacd76f53"
+    }
+  ]
 }

@@ -49,6 +49,7 @@ def write_sim_contracts(root: Path) -> None:
     sim_root.mkdir(parents=True)
     shutil.copy2(ROOT / "production/sim/SKILL.md", sim_root / "SKILL.md")
     shutil.copytree(ROOT / "production/sim/lifecycle", sim_root / "lifecycle")
+    shutil.copytree(ROOT / "production/sim/domains", sim_root / "domains")
 
     manifests = sim_root / "manifests"
     manifests.mkdir(parents=True)
@@ -79,7 +80,7 @@ def test_manifest_declares_preview_product_identity() -> None:
     assert manifest == SIM_MANIFEST
 
 
-def test_empty_reference_source_map_conforms_to_machine_contract() -> None:
+def test_reference_source_map_conforms_to_machine_contract() -> None:
     source_map = json.loads(
         (ROOT / "production/sim/manifests/reference-source-map.json").read_text(
             encoding="utf-8"
@@ -89,8 +90,9 @@ def test_empty_reference_source_map_conforms_to_machine_contract() -> None:
         (ROOT / "schemas/sim-reference-map.schema.json").read_text(encoding="utf-8")
     )
 
-    assert source_map == {"schema_version": 1, "entries": []}
     jsonschema.Draft202012Validator(schema).validate(source_map)
+    assert source_map["schema_version"] == 1
+    assert len(source_map["entries"]) == 15
 
 
 def test_compatibility_matrix_matches_complete_phase_a_contract() -> None:
@@ -124,7 +126,7 @@ def test_compatibility_matrix_matches_complete_phase_a_contract() -> None:
     }
 
 
-def test_verify_sim_layout_accepts_complete_pr_b_orchestrator_contract(tmp_path: Path) -> None:
+def test_verify_sim_layout_accepts_complete_pr_c_core_domain_contract(tmp_path: Path) -> None:
     write_sim_contracts(tmp_path)
 
     assert verify_sim_layout(tmp_path) == []

@@ -12,6 +12,11 @@ LIFECYCLE_MODULES = {
     "verification-delivery",
 }
 
+REQUIRED_DOMAIN_MODULES = {
+    "data-tyd",
+    "sipl",
+}
+
 REQUIRED_PATHS = (
     "schemas/sim-session.schema.json",
     "schemas/sim-plan.schema.json",
@@ -25,6 +30,7 @@ REQUIRED_PATHS = (
     "production/sim/manifests/reference-source-map.json",
     "production/sim/manifests/compatibility-matrix.json",
     *(f"production/sim/lifecycle/{name}/SKILL.md" for name in sorted(LIFECYCLE_MODULES)),
+    *(f"production/sim/domains/{name}/SKILL.md" for name in sorted(REQUIRED_DOMAIN_MODULES)),
 )
 
 MANIFEST_IDENTITY = {
