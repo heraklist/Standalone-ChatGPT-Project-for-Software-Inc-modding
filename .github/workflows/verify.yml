@@ -29,3 +29,13 @@ jobs:
         run: python tools/validate_exact_target.py
       - name: Build generation-grade release bundle
         run: python tools/build_release.py --generation-grade
+      - name: Validate SIM layout
+        run: python tools/validate_sim_layout.py
+      - name: Validate SIM references
+        run: python tools/validate_sim_references.py
+      - name: Validate SIM evals
+        run: python tools/validate_sim_evals.py production/evals/sim
+      - name: Build SIM Preview release
+        run: python tools/build_sim_release.py --channel preview
+      - name: Verify SIM Preview release
+        run: python tools/verify_sim_release.py dist/sim-0.2.0-preview.zip dist/sim-0.2.0-preview.release-report.json --expected-version 0.2.0-preview
