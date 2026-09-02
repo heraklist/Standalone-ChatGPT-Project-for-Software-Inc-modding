@@ -49,6 +49,7 @@ def write_sim_contracts(root: Path) -> None:
     sim_root.mkdir(parents=True)
     shutil.copy2(ROOT / "production/sim/SKILL.md", sim_root / "SKILL.md")
     shutil.copytree(ROOT / "production/sim/lifecycle", sim_root / "lifecycle")
+    shutil.copytree(ROOT / "production/sim/domains", sim_root / "domains")
 
     manifests = sim_root / "manifests"
     manifests.mkdir(parents=True)
@@ -124,7 +125,7 @@ def test_compatibility_matrix_matches_complete_phase_a_contract() -> None:
     }
 
 
-def test_verify_sim_layout_accepts_complete_pr_b_orchestrator_contract(tmp_path: Path) -> None:
+def test_verify_sim_layout_accepts_complete_pr_c_core_domain_contract(tmp_path: Path) -> None:
     write_sim_contracts(tmp_path)
 
     assert verify_sim_layout(tmp_path) == []
