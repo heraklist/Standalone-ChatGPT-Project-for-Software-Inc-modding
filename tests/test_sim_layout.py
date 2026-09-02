@@ -45,7 +45,11 @@ def write_sim_contracts(root: Path) -> None:
     for name in SCHEMA_NAMES:
         shutil.copy2(ROOT / "schemas" / name, schemas / name)
 
-    manifests = root / "production" / "sim" / "manifests"
+    sim_root = root / "production" / "sim"
+    sim_root.mkdir(parents=True)
+    shutil.copy2(ROOT / "production/sim/SKILL.md", sim_root / "SKILL.md")
+
+    manifests = sim_root / "manifests"
     manifests.mkdir(parents=True)
     (manifests / "sim-manifest.json").write_text(
         json.dumps(SIM_MANIFEST), encoding="utf-8"
@@ -119,10 +123,30 @@ def test_compatibility_matrix_matches_complete_phase_a_contract() -> None:
     }
 
 
-def test_verify_sim_layout_accepts_complete_pr_a_contract(tmp_path: Path) -> None:
+def test_verify_sim_layout_accepts_complete_pr_b_orchestrator_contract(tmp_path: Path) -> None:
     write_sim_contracts(tmp_path)
 
     assert verify_sim_layout(tmp_path) == []
+
+
+def test_verify_sim_layout_requires_public_sim_skill(tmp_path: Path) -> None:
+    write_sim_contracts(tmp_path)
+    (tmp_path / "production/sim/SKILL.md").unlink()
+
+    assert verify_sim_layout(tmp_path) == [
+        "missing SIM required path: production/sim/SKILL.md"
+    ]
+
+
+def test_verify_sim_layout_rejects_non_sim_skill_frontmatter_name(tmp_path: Path) -> None:
+    write_sim_contracts(tmp_path)
+    skill_path = tmp_path / "production/sim/SKILL.md"
+    skill_path.write_text(
+        skill_path.read_text(encoding="utf-8").replace("name: sim", "name: not-sim", 1),
+        encoding="utf-8",
+    )
+
+    assert verify_sim_layout(tmp_path) == ["SIM skill frontmatter name must be sim"]
 
 
 def test_verify_sim_layout_reports_missing_required_paths(tmp_path: Path) -> None:
