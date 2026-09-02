@@ -9,6 +9,7 @@ sys.path.insert(0,str(ROOT))
 from tools.validate_registry import validate_registry
 from tools.validate_evals import validate_dir as validate_evals
 from tools.validate_exact_target import generation_grade_errors
+from tools.validate_sim_layout import verify_sim_layout
 
 REQUIRED_DIRS=("archive","work","production","docs","schemas","tools","tests")
 KNOWLEDGE_FILES={
@@ -118,6 +119,8 @@ def verify(root:Path)->list[str]:
         data=json.loads(claim_map.read_text(encoding='utf-8'))
         if any(c.get('action')=='UNMAPPED' for c in data.get('claims',[])):
             errors.append('legacy critical claim map contains UNMAPPED claim')
+    if (root/'production/sim').exists():
+        errors.extend(f'sim layout: {error}' for error in verify_sim_layout(root))
     return errors
 
 

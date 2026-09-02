@@ -1,0 +1,22 @@
+{
+  "surfaces": {
+    "ChatGPT": {
+      "explicit_invocation": "TO_BE_VERIFIED",
+      "thread_persistence": "TO_BE_VERIFIED",
+      "script_execution": "CAPABILITY_DEPENDENT",
+      "artifact_creation": "CAPABILITY_DEPENDENT"
+    },
+    "ChatGPT Project": {
+      "explicit_invocation": "TO_BE_VERIFIED",
+      "thread_persistence": "TO_BE_VERIFIED",
+      "script_execution": "CAPABILITY_DEPENDENT",
+      "artifact_creation": "CAPABILITY_DEPENDENT"
+    },
+    "Codex": {
+      "explicit_invocation": "TO_BE_VERIFIED",
+      "thread_persistence": "TO_BE_VERIFIED",
+      "script_execution": "CAPABILITY_DEPENDENT",
+      "artifact_creation": "CAPABILITY_DEPENDENT"
+    }
+  }
+}
