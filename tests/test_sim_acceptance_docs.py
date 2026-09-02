@@ -6,6 +6,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 DOC = ROOT / "docs/governance/sim-live-acceptance.md"
 EVIDENCE = ROOT / "work/evidence/sim-acceptance/README.md"
+SNAPSHOT = ROOT / "work/evidence/sim-acceptance/2026-09-02-agent-checkpoint.json"
 MATRIX = ROOT / "production/sim/manifests/compatibility-matrix.json"
 
 
@@ -75,3 +76,14 @@ def test_cross_surface_section_requires_plain_project_codex_and_no_script_behavi
         "lower verification ceiling",
     ):
         assert phrase in text
+
+
+def test_agent_checkpoint_records_no_synthetic_live_passes() -> None:
+    snapshot = json.loads(SNAPSHOT.read_text(encoding="utf-8"))
+    assert snapshot["candidate_version"] == "0.2.0-preview"
+    assert snapshot["execution_boundary"] == "NO_SKILL_INSTALL_ACTION_AVAILABLE"
+    assert set(snapshot["surfaces"]) == {"ChatGPT", "ChatGPT Project", "Codex"}
+    assert all(value == "NOT_TESTED" for value in snapshot["surfaces"].values())
+    assert [case["case_id"] for case in snapshot["cases"]] == [f"A{i:02d}" for i in range(1, 13)]
+    assert all(case["result"] == "NOT_TESTED" for case in snapshot["cases"])
+    assert not any(case["result"] == "PASS" for case in snapshot["cases"])
