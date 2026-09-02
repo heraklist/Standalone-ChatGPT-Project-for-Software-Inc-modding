@@ -12,6 +12,7 @@ REQUIRED_PATHS = (
     "schemas/sim-reference-map.schema.json",
     "schemas/sim-release-manifest.schema.json",
     "schemas/sim-eval.schema.json",
+    "production/sim/SKILL.md",
     "production/sim/manifests/sim-manifest.json",
     "production/sim/manifests/reference-source-map.json",
     "production/sim/manifests/compatibility-matrix.json",
@@ -25,6 +26,19 @@ MANIFEST_IDENTITY = {
     "canonical_game_target": "Beta 1.8.42",
     "evidence_grade": "GENERATION_GRADE",
 }
+
+
+def _skill_frontmatter_name(text: str) -> str | None:
+    lines = text.splitlines()
+    if not lines or lines[0].strip() != "---":
+        return None
+    for line in lines[1:]:
+        stripped = line.strip()
+        if stripped == "---":
+            return None
+        if stripped.startswith("name:"):
+            return stripped.partition(":")[2].strip()
+    return None
 
 
 def verify_sim_layout(root: Path) -> list[str]:
@@ -55,4 +69,17 @@ def verify_sim_layout(root: Path) -> list[str]:
     for key, expected in MANIFEST_IDENTITY.items():
         if manifest.get(key) != expected:
             errors.append(f"SIM manifest identity mismatch: {key}")
+
+    skill_path = root / "production/sim/SKILL.md"
+    if skill_path.is_file():
+        try:
+            skill_text = skill_path.read_text(encoding="utf-8")
+        except UnicodeError:
+            errors.append("SIM skill is not valid UTF-8")
+        except OSError:
+            errors.append("SIM skill could not be read")
+        else:
+            if _skill_frontmatter_name(skill_text) != "sim":
+                errors.append("SIM skill frontmatter name must be sim")
+
     return errors
