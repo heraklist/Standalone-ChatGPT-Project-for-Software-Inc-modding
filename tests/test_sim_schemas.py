@@ -112,14 +112,14 @@ def operational_session(minimal_session: dict[str, object]) -> dict[str, object]
     return session
 
 
-def specialist_result() -> dict[str, object]:
+def specialist_result(change_type: str = "ADD_FILE") -> dict[str, object]:
     return {
         "request_id": "request-1",
         "status": "READY",
         "scope": "data",
         "findings": [],
         "decisions": [],
-        "proposed_changes": [{"type": "CREATE", "summary": "Add the data file"}],
+        "proposed_changes": [{"type": change_type, "summary": "Add the data file"}],
         "files_touched": [],
         "evidence_used": [],
         "assumptions": [],
@@ -132,6 +132,7 @@ def specialist_result() -> dict[str, object]:
 
 
 def reference_map() -> dict[str, object]:
+    source_path = "production/knowledge/04_DATA_MODDING.md"
     return {
         "schema_version": 1,
         "entries": [
@@ -139,8 +140,8 @@ def reference_map() -> dict[str, object]:
                 "reference_id": "reference-1",
                 "source_id": "source-1",
                 "output_path": "production/sim/references/data.md",
-                "canonical_source_paths": ["production/knowledge/04_DATA_MODDING.md"],
-                "source_sha256": "a" * 64,
+                "canonical_source_paths": [source_path],
+                "source_sha256": {source_path: "a" * 64},
                 "transform_type": "COPY",
                 "output_sha256": "b" * 64,
             }
@@ -152,18 +153,21 @@ def release_manifest() -> dict[str, object]:
     return {
         "sim_version": "0.2.0-preview",
         "channel": "PREVIEW",
-        "canonical_target": "Software Inc Beta 1.8.42",
+        "target": "Beta 1.8.42",
         "evidence_grade": "GENERATION_GRADE",
-        "source_revision": "b18ea6f",
-        "skill_package_digest": "c" * 64,
-        "reference_map_digest": "d" * 64,
-        "domain_eval_results": ["E01: PASS"],
-        "sim_eval_results": ["S001: PASS"],
+        "canonical_source_revision": "b18ea6f",
+        "reference_map_sha256": "d" * 64,
+        "eval_results": {
+            "domain": ["E01: PASS"],
+            "sim": ["S001: PASS"],
+        },
         "security_results": ["security: PASS"],
         "artifact_fixture_results": ["fixture: PASS"],
-        "cross_surface_acceptance": "PENDING",
+        "surface_acceptance": "NOT_RUN",
         "known_gaps": [],
-        "release_status": "PREVIEW",
+        "bundle_sha256": "e" * 64,
+        "files": {"SKILL.md": "f" * 64},
+        "release_status": "PREVIEW_CANDIDATE",
     }
 
 
@@ -228,6 +232,14 @@ def test_session_schema_rejects_unknown_artifact_state(
     assert_invalid("sim-session.schema.json", invalid_session)
 
 
+def test_specialist_result_accepts_state_mutation_change_type() -> None:
+    validator("sim-specialist-result.schema.json").validate(specialist_result())
+
+
+def test_specialist_result_rejects_task_intent_as_change_type() -> None:
+    assert_invalid("sim-specialist-result.schema.json", specialist_result("CREATE"))
+
+
 def test_specialist_result_rejects_unknown_status() -> None:
     invalid_result = specialist_result()
     invalid_result["status"] = "UNKNOWN"
@@ -246,13 +258,13 @@ def test_reference_map_accepts_task_two_empty_source_map() -> None:
     )
 
 
-def test_reference_map_rejects_ambiguous_multi_source_digest() -> None:
-    invalid_map = reference_map()
-    invalid_map["entries"][0]["canonical_source_paths"].append(
-        "production/knowledge/05_SIPL.md"
-    )
+def test_reference_map_accepts_multi_source_provenance() -> None:
+    source_map = reference_map()
+    second_path = "production/knowledge/05_SIPL.md"
+    source_map["entries"][0]["canonical_source_paths"].append(second_path)
+    source_map["entries"][0]["source_sha256"][second_path] = "c" * 64
 
-    assert_invalid("sim-reference-map.schema.json", invalid_map)
+    validator("sim-reference-map.schema.json").validate(source_map)
 
 
 @pytest.mark.parametrize(
@@ -265,18 +277,29 @@ def test_reference_map_requires_traceability_fields(field_name: str) -> None:
     assert_invalid("sim-reference-map.schema.json", invalid_map)
 
 
-@pytest.mark.parametrize("hash_field", ("source_sha256", "output_sha256"))
-def test_reference_map_rejects_malformed_hashes(hash_field: str) -> None:
+def test_reference_map_rejects_malformed_source_hash() -> None:
     invalid_map = reference_map()
-    invalid_map["entries"][0][hash_field] = "not-a-sha256"
+    source_path = invalid_map["entries"][0]["canonical_source_paths"][0]
+    invalid_map["entries"][0]["source_sha256"][source_path] = "not-a-sha256"
     assert_invalid("sim-reference-map.schema.json", invalid_map)
+
+
+def test_reference_map_rejects_malformed_output_hash() -> None:
+    invalid_map = reference_map()
+    invalid_map["entries"][0]["output_sha256"] = "not-a-sha256"
+    assert_invalid("sim-reference-map.schema.json", invalid_map)
+
+
+def test_release_manifest_accepts_task_17_report_contract() -> None:
+    validator("sim-release-manifest.schema.json").validate(release_manifest())
 
 
 @pytest.mark.parametrize(
     ("field_name", "invalid_value"),
     (
-        ("canonical_target", "Software Inc Beta 9.9.9"),
+        ("target", "Beta 9.9.9"),
         ("evidence_grade", "DOCUMENT_ONLY"),
+        ("release_status", "PREVIEW"),
     ),
 )
 def test_release_manifest_rejects_noncanonical_claims(
@@ -285,3 +308,10 @@ def test_release_manifest_rejects_noncanonical_claims(
     invalid_manifest = release_manifest()
     invalid_manifest[field_name] = invalid_value
     assert_invalid("sim-release-manifest.schema.json", invalid_manifest)
+
+
+def test_release_manifest_requires_bundle_and_file_hashes() -> None:
+    for field_name in ("bundle_sha256", "files"):
+        invalid_manifest = release_manifest()
+        del invalid_manifest[field_name]
+        assert_invalid("sim-release-manifest.schema.json", invalid_manifest)
