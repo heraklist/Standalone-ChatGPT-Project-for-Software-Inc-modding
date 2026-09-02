@@ -1,0 +1,19 @@
+{
+  "date": "2026-09-02",
+  "case_id": "A01",
+  "surface": "ChatGPT",
+  "candidate_version": "0.2.0-preview",
+  "result": "FAIL",
+  "failure_code": "STALE_GLOBAL_EXACT_TARGET_GAP_CLAIM",
+  "required_outcomes_observed": {
+    "explicit_sim_activation": true,
+    "data_tyd_routing": true,
+    "beta_1_8_42_target_selected": true,
+    "artifact_runtime_boundary_stated": true
+  },
+  "forbidden_outcomes_observed": [],
+  "failure_observation": "The live response stated that SIM documentation still had an exact Beta 1.8.42 verification gap. That global target-status claim conflicts with the governed exact-target capture, which is GENERATION_GRADE_EXACT_TARGET / EXACT_TARGET.",
+  "verification_ceiling": "V0",
+  "repair_required": "Refresh canonical K01 exact-target status, synchronized SIM truth reference/hash mapping, and root orchestrator guidance so remaining gaps are claim-specific rather than globalized to Beta 1.8.42.",
+  "privacy": "Normalized behavioral observation only; raw private conversation text and account identifiers are not committed."
+}
