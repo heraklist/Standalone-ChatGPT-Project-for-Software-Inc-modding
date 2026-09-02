@@ -48,6 +48,7 @@ def write_sim_contracts(root: Path) -> None:
     sim_root = root / "production" / "sim"
     sim_root.mkdir(parents=True)
     shutil.copy2(ROOT / "production/sim/SKILL.md", sim_root / "SKILL.md")
+    shutil.copytree(ROOT / "production/sim/lifecycle", sim_root / "lifecycle")
 
     manifests = sim_root / "manifests"
     manifests.mkdir(parents=True)
