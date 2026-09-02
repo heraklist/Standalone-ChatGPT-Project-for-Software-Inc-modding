@@ -1,0 +1,6 @@
+# Synthetic redistributable SIM test fixture
+SIM_TEST_MATERIAL {
+    Base "sim-base.png"
+    Bump "sim-bump.png"
+    Extra "sim-extra.png"
+}

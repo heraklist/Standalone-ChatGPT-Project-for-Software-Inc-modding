@@ -1,0 +1,6 @@
+# Synthetic redistributable SIM test fixture
+Name "SIM_TEST_CHAIR"
+Transforms [
+    { Name "Seat"; }
+    { Name "Back"; TransformParent "Seat"; }
+]
