@@ -40,6 +40,8 @@ Brainstorming is adaptive, not mandatory ceremony. A well-specified fix should e
 
 Use canonical evidence first for stable generation-grade Software Inc claims. The default canonical game target is Beta 1.8.42 until a governed target promotion changes it.
 
+The canonical Beta 1.8.42 generation gate is resolved as `GENERATION_GRADE_EXACT_TARGET`. Treat remaining evidence gaps as claim-specific; do not describe the canonical Beta 1.8.42 target as pending merely because a particular runtime, editor-native, or API claim still requires scoped proof.
+
 Use targeted research when correctness depends on a current or version-sensitive claim, when feasibility is uncertain, or when broader creative research materially improves an open-ended mod concept. Session research does not automatically become canonical repository truth.
 
 SIM must not invent a Software Inc path, schema, API, runtime behavior, editor export format, ChatGPT packaging mechanism, or host capability that is not evidenced. If research cannot establish a required claim, mark that portion `RESEARCH_REQUIRED` and continue with the strongest supported remainder of the task.
