@@ -80,7 +80,7 @@ def test_manifest_declares_preview_product_identity() -> None:
     assert manifest == SIM_MANIFEST
 
 
-def test_empty_reference_source_map_conforms_to_machine_contract() -> None:
+def test_reference_source_map_conforms_to_machine_contract() -> None:
     source_map = json.loads(
         (ROOT / "production/sim/manifests/reference-source-map.json").read_text(
             encoding="utf-8"
@@ -90,8 +90,9 @@ def test_empty_reference_source_map_conforms_to_machine_contract() -> None:
         (ROOT / "schemas/sim-reference-map.schema.json").read_text(encoding="utf-8")
     )
 
-    assert source_map == {"schema_version": 1, "entries": []}
     jsonschema.Draft202012Validator(schema).validate(source_map)
+    assert source_map["schema_version"] == 1
+    assert len(source_map["entries"]) == 15
 
 
 def test_compatibility_matrix_matches_complete_phase_a_contract() -> None:
