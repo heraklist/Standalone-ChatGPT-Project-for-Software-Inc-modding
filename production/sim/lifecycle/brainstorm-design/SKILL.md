@@ -13,4 +13,4 @@ Ask for user input only when a material fork would lead to genuinely different g
 
 Return structured design findings, recommended decisions, assumptions, unresolved gaps, and proposed design-decision updates to the SIM orchestrator.
 
-This workflow does not dispatch peer specialists and does not mutate canonical SIM session state directly. The orchestrator owns routing, final design selection, and committed state changes.
+Do not dispatch peer specialists. Do not mutate canonical SIM session state directly. The orchestrator owns routing, final design selection, and committed state changes.
