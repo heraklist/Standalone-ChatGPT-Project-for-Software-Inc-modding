@@ -13,4 +13,4 @@ Avoid shotgun editing. Preserve unrelated behavior and the read-only original ba
 
 Return structured findings, the working hypothesis, proposed minimal changes, validation evidence, unresolved gaps, and the next debugging action to the SIM orchestrator.
 
-This workflow does not dispatch peer specialists and does not mutate canonical SIM session state directly. The orchestrator owns accepted repairs, cross-domain coordination, and final state transitions.
+Do not dispatch peer specialists. Do not mutate canonical SIM session state directly. The orchestrator owns accepted repairs, cross-domain coordination, and final state transitions.
