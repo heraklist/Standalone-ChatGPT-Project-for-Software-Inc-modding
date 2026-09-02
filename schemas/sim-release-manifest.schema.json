@@ -6,8 +6,8 @@
   "properties": {
     "sim_version": {"type": "string", "minLength": 1},
     "channel": {"enum": ["PREVIEW", "STABLE"]},
-    "canonical_target": {"type": "string", "minLength": 1},
-    "evidence_grade": {"type": "string", "minLength": 1},
+    "canonical_target": {"enum": ["Software Inc Beta 1.8.42"]},
+    "evidence_grade": {"enum": ["GENERATION_GRADE"]},
     "source_revision": {"type": "string", "minLength": 1},
     "skill_package_digest": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
     "reference_map_digest": {"type": "string", "pattern": "^[a-f0-9]{64}$"},

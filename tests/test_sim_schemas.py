@@ -76,10 +76,32 @@ def reference_map() -> dict[str, object]:
             {
                 "reference_id": "reference-1",
                 "source_id": "source-1",
+                "output_path": "production/sim/references/data.md",
+                "canonical_source_paths": ["production/knowledge/04_DATA_MODDING.md"],
                 "source_sha256": "a" * 64,
+                "transform_type": "COPY",
                 "output_sha256": "b" * 64,
             }
         ]
+    }
+
+
+def release_manifest() -> dict[str, object]:
+    return {
+        "sim_version": "0.2.0-preview",
+        "channel": "PREVIEW",
+        "canonical_target": "Software Inc Beta 1.8.42",
+        "evidence_grade": "GENERATION_GRADE",
+        "source_revision": "b18ea6f",
+        "skill_package_digest": "c" * 64,
+        "reference_map_digest": "d" * 64,
+        "domain_eval_results": ["E01: PASS"],
+        "sim_eval_results": ["S001: PASS"],
+        "security_results": ["security: PASS"],
+        "artifact_fixture_results": ["fixture: PASS"],
+        "cross_surface_acceptance": "PENDING",
+        "known_gaps": [],
+        "release_status": "PREVIEW",
     }
 
 
@@ -114,8 +136,33 @@ def test_specialist_result_rejects_unknown_risk_class() -> None:
     assert_invalid("sim-specialist-result.schema.json", invalid_result)
 
 
+@pytest.mark.parametrize(
+    "field_name", ("output_path", "canonical_source_paths", "transform_type")
+)
+def test_reference_map_requires_traceability_fields(field_name: str) -> None:
+    invalid_map = reference_map()
+    validator("sim-reference-map.schema.json").validate(invalid_map)
+    del invalid_map["references"][0][field_name]
+    assert_invalid("sim-reference-map.schema.json", invalid_map)
+
+
 @pytest.mark.parametrize("hash_field", ("source_sha256", "output_sha256"))
 def test_reference_map_rejects_malformed_hashes(hash_field: str) -> None:
     invalid_map = reference_map()
     invalid_map["references"][0][hash_field] = "not-a-sha256"
     assert_invalid("sim-reference-map.schema.json", invalid_map)
+
+
+@pytest.mark.parametrize(
+    ("field_name", "invalid_value"),
+    (
+        ("canonical_target", "Software Inc Beta 9.9.9"),
+        ("evidence_grade", "DOCUMENT_ONLY"),
+    ),
+)
+def test_release_manifest_rejects_noncanonical_claims(
+    field_name: str, invalid_value: str
+) -> None:
+    invalid_manifest = release_manifest()
+    invalid_manifest[field_name] = invalid_value
+    assert_invalid("sim-release-manifest.schema.json", invalid_manifest)
