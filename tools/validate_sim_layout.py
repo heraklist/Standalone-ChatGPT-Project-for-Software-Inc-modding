@@ -42,6 +42,8 @@ def verify_sim_layout(root: Path) -> list[str]:
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     except json.JSONDecodeError:
         return [*errors, "SIM manifest is not valid JSON"]
+    if not isinstance(manifest, dict):
+        return [*errors, "SIM manifest must be a JSON object"]
 
     for key, expected in MANIFEST_IDENTITY.items():
         if manifest.get(key) != expected:

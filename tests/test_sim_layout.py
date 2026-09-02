@@ -3,6 +3,7 @@ import shutil
 from pathlib import Path
 
 import jsonschema
+import pytest
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -121,6 +122,17 @@ def test_verify_sim_layout_rejects_invalid_manifest_identity(tmp_path: Path) -> 
     manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
 
     assert verify_sim_layout(tmp_path) == ["SIM manifest identity mismatch: product"]
+
+
+@pytest.mark.parametrize("manifest_root", ([], None))
+def test_verify_sim_layout_reports_non_object_manifest_json(
+    tmp_path: Path, manifest_root: object
+) -> None:
+    write_sim_contracts(tmp_path)
+    manifest_path = tmp_path / "production/sim/manifests/sim-manifest.json"
+    manifest_path.write_text(json.dumps(manifest_root), encoding="utf-8")
+
+    assert verify_sim_layout(tmp_path) == ["SIM manifest must be a JSON object"]
 
 
 def test_verify_repo_requires_sim_contract_only_when_sim_exists(tmp_path: Path) -> None:
