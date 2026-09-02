@@ -72,7 +72,8 @@ def specialist_result() -> dict[str, object]:
 
 def reference_map() -> dict[str, object]:
     return {
-        "references": [
+        "schema_version": 1,
+        "entries": [
             {
                 "reference_id": "reference-1",
                 "source_id": "source-1",
@@ -136,20 +137,26 @@ def test_specialist_result_rejects_unknown_risk_class() -> None:
     assert_invalid("sim-specialist-result.schema.json", invalid_result)
 
 
+def test_reference_map_accepts_task_two_empty_source_map() -> None:
+    validator("sim-reference-map.schema.json").validate(
+        {"schema_version": 1, "entries": []}
+    )
+
+
 @pytest.mark.parametrize(
     "field_name", ("output_path", "canonical_source_paths", "transform_type")
 )
 def test_reference_map_requires_traceability_fields(field_name: str) -> None:
     invalid_map = reference_map()
     validator("sim-reference-map.schema.json").validate(invalid_map)
-    del invalid_map["references"][0][field_name]
+    del invalid_map["entries"][0][field_name]
     assert_invalid("sim-reference-map.schema.json", invalid_map)
 
 
 @pytest.mark.parametrize("hash_field", ("source_sha256", "output_sha256"))
 def test_reference_map_rejects_malformed_hashes(hash_field: str) -> None:
     invalid_map = reference_map()
-    invalid_map["references"][0][hash_field] = "not-a-sha256"
+    invalid_map["entries"][0][hash_field] = "not-a-sha256"
     assert_invalid("sim-reference-map.schema.json", invalid_map)
 
 
