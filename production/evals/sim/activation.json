@@ -1,0 +1,3 @@
+[
+  {"id":"S001","title":"Explicit SIM activation","category":"ACTIVATION","prompt":"The user explicitly invokes @Sim to create a Software Inc mod.","required_outcomes":["Activate SIM as the primary orchestrated workflow."],"forbidden_outcomes":["Treat @Sim as ordinary prose or ignore the requested workflow."],"pass_rule":"SIM is explicitly activated and owns the turn."}
+]

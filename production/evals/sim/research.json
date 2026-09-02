@@ -1,0 +1,4 @@
+[
+  {"id":"S008","title":"Version-sensitive research","category":"RESEARCH","prompt":"Verify a version-sensitive Software Inc modding claim for Beta 1.8.42.","required_outcomes":["Prefer governed exact-target evidence and distinguish unresolved gaps."],"forbidden_outcomes":["Substitute stale historical guidance as current truth."],"pass_rule":"Version-sensitive claims are exact-target and evidence-backed."},
+  {"id":"S009","title":"Canonical-first stable claim","category":"RESEARCH","prompt":"Answer a stable Software Inc modding question already covered by canonical production knowledge.","required_outcomes":["Use canonical production knowledge before outside or legacy sources."],"forbidden_outcomes":["Override canonical truth with superseded legacy folklore."],"pass_rule":"Canonical governed truth wins for stable claims."}
+]
