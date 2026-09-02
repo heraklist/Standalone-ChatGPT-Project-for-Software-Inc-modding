@@ -140,10 +140,10 @@ def test_verify_sim_layout_rejects_non_sim_skill_frontmatter_name(tmp_path: Path
 
 def test_verify_sim_layout_reports_missing_required_paths(tmp_path: Path) -> None:
     write_sim_contracts(tmp_path)
-    missing = tmp_path / "production/sim/domains/data-tyd/SKILL.md"
-    missing.unlink()
+    (tmp_path / "production/sim/manifests/reference-source-map.json").unlink()
+
     assert verify_sim_layout(tmp_path) == [
-        "missing SIM required path: production/sim/domains/data-tyd/SKILL.md"
+        "missing SIM required path: production/sim/manifests/reference-source-map.json"
     ]
 
 
@@ -151,86 +151,76 @@ def test_verify_sim_layout_rejects_invalid_manifest_identity(tmp_path: Path) -> 
     write_sim_contracts(tmp_path)
     manifest_path = tmp_path / "production/sim/manifests/sim-manifest.json"
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-    manifest["canonical_game_target"] = "Beta 9.9.9"
+    manifest["product"] = "NOT_SIM"
     manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
 
-    assert verify_sim_layout(tmp_path) == ["SIM manifest target must be Beta 1.8.42"]
+    assert verify_sim_layout(tmp_path) == ["SIM manifest identity mismatch: product"]
 
 
 def test_verify_sim_layout_reports_malformed_manifest_json(tmp_path: Path) -> None:
     write_sim_contracts(tmp_path)
     manifest_path = tmp_path / "production/sim/manifests/sim-manifest.json"
-    manifest_path.write_text("{", encoding="utf-8")
+    manifest_path.write_text("{not-json", encoding="utf-8")
 
-    errors = verify_sim_layout(tmp_path)
-    assert len(errors) == 1
-    assert errors[0].startswith("invalid SIM manifest JSON:")
+    assert verify_sim_layout(tmp_path) == ["SIM manifest is not valid JSON"]
 
 
 def test_verify_sim_layout_reports_non_utf8_manifest(tmp_path: Path) -> None:
     write_sim_contracts(tmp_path)
     manifest_path = tmp_path / "production/sim/manifests/sim-manifest.json"
-    manifest_path.write_bytes(b"\xff")
+    manifest_path.write_bytes(b"\xff\xfe\x00")
 
-    errors = verify_sim_layout(tmp_path)
-    assert len(errors) == 1
-    assert errors[0].startswith("unable to read SIM manifest as UTF-8:")
+    assert verify_sim_layout(tmp_path) == ["SIM manifest is not valid UTF-8"]
 
 
-def test_verify_sim_layout_reports_manifest_read_failure(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_verify_sim_layout_reports_manifest_read_failure(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
     write_sim_contracts(tmp_path)
-    manifest_path = tmp_path / "production/sim/manifests/sim-manifest.json"
-    original = Path.read_text
 
-    def broken_read_text(self: Path, *args, **kwargs):
-        if self == manifest_path:
-            raise OSError("synthetic read failure")
-        return original(self, *args, **kwargs)
+    def fail_to_read(_path: Path, *args: object, **kwargs: object) -> str:
+        raise OSError("controlled read failure")
 
-    monkeypatch.setattr(Path, "read_text", broken_read_text)
-    errors = verify_sim_layout(tmp_path)
-    assert errors == ["unable to read SIM manifest: synthetic read failure"]
+    monkeypatch.setattr(Path, "read_text", fail_to_read)
+
+    assert verify_sim_layout(tmp_path) == ["SIM manifest could not be read"]
 
 
-def test_verify_sim_layout_does_not_swallow_unrelated_read_errors(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_verify_sim_layout_does_not_swallow_unrelated_read_errors(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
     write_sim_contracts(tmp_path)
-    skill_path = tmp_path / "production/sim/SKILL.md"
-    original = Path.read_text
 
-    def broken_read_text(self: Path, *args, **kwargs):
-        if self == skill_path:
-            raise OSError("synthetic skill read failure")
-        return original(self, *args, **kwargs)
+    def fail_programming_error(_path: Path, *args: object, **kwargs: object) -> str:
+        raise RuntimeError("programming error")
 
-    monkeypatch.setattr(Path, "read_text", broken_read_text)
-    with pytest.raises(OSError, match="synthetic skill read failure"):
+    monkeypatch.setattr(Path, "read_text", fail_programming_error)
+
+    with pytest.raises(RuntimeError, match="programming error"):
         verify_sim_layout(tmp_path)
 
 
-@pytest.mark.parametrize("manifest_root", [[], None])
-def test_verify_sim_layout_reports_non_object_manifest_json(tmp_path: Path, manifest_root) -> None:
+@pytest.mark.parametrize("manifest_root", ([], None))
+def test_verify_sim_layout_reports_non_object_manifest_json(
+    tmp_path: Path, manifest_root: object
+) -> None:
     write_sim_contracts(tmp_path)
     manifest_path = tmp_path / "production/sim/manifests/sim-manifest.json"
     manifest_path.write_text(json.dumps(manifest_root), encoding="utf-8")
 
-    assert verify_sim_layout(tmp_path) == ["SIM manifest root must be an object"]
+    assert verify_sim_layout(tmp_path) == ["SIM manifest must be a JSON object"]
 
 
 def test_verify_repo_requires_sim_contract_only_when_sim_exists(tmp_path: Path) -> None:
-    shutil.copytree(ROOT / "schemas", tmp_path / "schemas")
-    shutil.copytree(ROOT / "production", tmp_path / "production")
-    shutil.copytree(ROOT / "docs", tmp_path / "docs")
-    shutil.copytree(ROOT / "work", tmp_path / "work")
-    shutil.copytree(ROOT / "archive", tmp_path / "archive")
-    shutil.copytree(ROOT / "tools", tmp_path / "tools")
-    shutil.copytree(ROOT / "tests", tmp_path / "tests")
-    shutil.copytree(ROOT / ".github", tmp_path / ".github")
-    shutil.copy2(ROOT / "README.md", tmp_path / "README.md")
-    shutil.copy2(ROOT / "pyproject.toml", tmp_path / "pyproject.toml")
-    shutil.copy2(ROOT / ".gitignore", tmp_path / ".gitignore")
+    repo = tmp_path / "repository"
+    shutil.copytree(ROOT, repo, ignore=shutil.ignore_patterns(".git", "__pycache__"))
+    manifest_path = repo / "production/sim/manifests/sim-manifest.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    manifest["product"] = "NOT_SIM"
+    manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
 
-    assert verify(tmp_path) == []
+    assert "sim layout: SIM manifest identity mismatch: product" in verify(repo)
 
-    shutil.rmtree(tmp_path / "production/sim")
-    errors = verify(tmp_path)
-    assert not any("SIM" in error for error in errors)
+    shutil.rmtree(repo / "production/sim")
+
+    assert verify(repo) == []
