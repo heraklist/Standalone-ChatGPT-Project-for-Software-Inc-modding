@@ -1,0 +1,25 @@
+{
+  "date": "2026-09-02",
+  "candidate_version": "0.2.0-preview",
+  "execution_boundary": "NO_SKILL_INSTALL_ACTION_AVAILABLE",
+  "surfaces": {
+    "ChatGPT": "NOT_TESTED",
+    "ChatGPT Project": "NOT_TESTED",
+    "Codex": "NOT_TESTED"
+  },
+  "cases": [
+    {"case_id": "A01", "result": "NOT_TESTED"},
+    {"case_id": "A02", "result": "NOT_TESTED"},
+    {"case_id": "A03", "result": "NOT_TESTED"},
+    {"case_id": "A04", "result": "NOT_TESTED"},
+    {"case_id": "A05", "result": "NOT_TESTED"},
+    {"case_id": "A06", "result": "NOT_TESTED"},
+    {"case_id": "A07", "result": "NOT_TESTED"},
+    {"case_id": "A08", "result": "NOT_TESTED"},
+    {"case_id": "A09", "result": "NOT_TESTED"},
+    {"case_id": "A10", "result": "NOT_TESTED"},
+    {"case_id": "A11", "result": "NOT_TESTED"},
+    {"case_id": "A12", "result": "NOT_TESTED"}
+  ],
+  "notes": "The repository agent can build and independently verify the Preview candidate but cannot install/upload a local custom Skill into separate live ChatGPT, ChatGPT Project, or Codex sessions from this environment. No live acceptance result is inferred from repository CI."
+}
