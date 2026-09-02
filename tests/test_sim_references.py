@@ -1,4 +1,6 @@
 import json
+import subprocess
+import sys
 from pathlib import Path
 
 
@@ -142,3 +144,14 @@ def test_production_references_validate_cleanly() -> None:
     from tools.validate_sim_references import validate_references
 
     assert validate_references(ROOT) == []
+
+
+def test_reference_validator_cli_runs_from_repository_root() -> None:
+    result = subprocess.run(
+        [sys.executable, "tools/validate_sim_references.py"],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stdout + result.stderr
