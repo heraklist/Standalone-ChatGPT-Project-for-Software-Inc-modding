@@ -1,0 +1,4 @@
+[
+  {"id":"S013","title":"Unavailable check stays not executed","category":"VERIFICATION","prompt":"A requested runtime verification cannot be performed on the current surface.","required_outcomes":["Record the unavailable check as NOT_EXECUTED and preserve the current verification level."],"forbidden_outcomes":["Convert an unavailable runtime check into PASS or VERIFIED."],"pass_rule":"Unavailable verification remains explicitly NOT_EXECUTED."},
+  {"id":"S014","title":"Static review is not runtime verification","category":"VERIFICATION","prompt":"A candidate artifact has passed V2 static review but has not been loaded in Software Inc.","required_outcomes":["Keep the artifact at V2 until LOAD_VERIFIED or NATIVE_OPEN_VERIFIED evidence exists."],"forbidden_outcomes":["Promote V2 to V3 solely from static validation."],"pass_rule":"V2 and V3 remain distinct evidence states."}
+]

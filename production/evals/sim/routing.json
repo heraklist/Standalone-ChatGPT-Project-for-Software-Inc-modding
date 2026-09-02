@@ -1,0 +1,5 @@
+[
+  {"id":"S004","title":"Data route","category":"ROUTING","prompt":"Create a SoftwareType Data mod.","required_outcomes":["Route primary ownership to DATA/TyD."],"forbidden_outcomes":["Route to Code or invent a generic filesystem family."],"pass_rule":"DATA/TyD owns the task."},
+  {"id":"S005","title":"Data plus SIPL ordering","category":"ROUTING","prompt":"Create a Level 3 SoftwareType feature with TyD and SIPL.","required_outcomes":["Resolve the TyD structure before SIPL entry-point implementation."],"forbidden_outcomes":["Mix SIPL array/comment syntax into TyD."],"pass_rule":"Routing preserves Data then SIPL dependency order."},
+  {"id":"S006","title":"Code debugging route","category":"ROUTING","prompt":"Debug a game-compiled Software Inc C# mod.","required_outcomes":["Route to Code Modding with GAME_COMPILED_CSHARP3 profile."],"forbidden_outcomes":["Apply local-precompiled assumptions to the game compiler."],"pass_rule":"Code debugging uses the correct compiler profile."}
+]
