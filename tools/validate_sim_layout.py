@@ -15,6 +15,9 @@ LIFECYCLE_MODULES = {
 REQUIRED_DOMAIN_MODULES = {
     "code-modding",
     "data-tyd",
+    "furniture",
+    "localization",
+    "materials",
     "sipl",
 }
 
