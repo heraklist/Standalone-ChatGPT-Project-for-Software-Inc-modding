@@ -23,6 +23,6 @@ Assign artifact and verification state only from real evidence:
 
 If required evidence cannot be obtained, validation keeps failing without new evidence, or completion would cross a protected boundary, return `BLOCKED` with the reason and next required action instead of overstating completion.
 
-Return structured validation findings, proposed verification updates, known gaps, package/delivery readiness, and exact completion state to the SIM orchestrator.
+Return structured validation findings, proposed verification updates, known gaps, package or delivery readiness, and exact completion state to the SIM orchestrator.
 
-This workflow does not dispatch peer specialists and does not mutate canonical SIM session state directly. The orchestrator accepts or rejects proposed state transitions and produces the final user-facing delivery.
+Do not dispatch peer specialists. Do not mutate canonical SIM session state directly. The orchestrator accepts or rejects proposed state transitions and produces the final user-facing delivery.
