@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SIM Release Manifest",
+  "type": "object",
+  "required": ["sim_version", "channel", "target", "evidence_grade", "canonical_source_revision", "reference_map_sha256", "eval_results", "security_results", "artifact_fixture_results", "surface_acceptance", "known_gaps", "bundle_sha256", "files", "release_status"],
+  "properties": {
+    "sim_version": {"type": "string", "minLength": 1},
+    "channel": {"enum": ["PREVIEW", "STABLE"]},
+    "target": {"const": "Beta 1.8.42"},
+    "evidence_grade": {"const": "GENERATION_GRADE"},
+    "canonical_source_revision": {"type": "string", "minLength": 1},
+    "reference_map_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "eval_results": {
+      "type": "object",
+      "required": ["domain", "sim"],
+      "properties": {
+        "domain": {"type": "array", "items": {"type": "string", "minLength": 1}},
+        "sim": {"type": "array", "items": {"type": "string", "minLength": 1}}
+      },
+      "additionalProperties": false
+    },
+    "security_results": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "artifact_fixture_results": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "surface_acceptance": {"type": "string", "minLength": 1},
+    "known_gaps": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "bundle_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "files": {
+      "type": "object",
+      "additionalProperties": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+    },
+    "release_status": {"enum": ["PREVIEW_CANDIDATE", "PREVIEW_ACCEPTED", "STABLE"]}
+  },
+  "additionalProperties": false
+}

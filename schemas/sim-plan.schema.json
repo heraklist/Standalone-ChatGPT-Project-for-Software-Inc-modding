@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SIM Plan",
+  "type": "object",
+  "required": ["session_id", "intent", "steps"],
+  "properties": {
+    "session_id": {"type": "string", "minLength": 1},
+    "intent": {"enum": ["CREATE", "EDIT", "EXTEND", "REPAIR", "DEBUG", "MIGRATE", "MODERNIZE", "AUDIT", "VALIDATE", "PACKAGE", "RESEARCH", "BRAINSTORM", "EXPLAIN", "COMPARE"]},
+    "steps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "description", "risk_class", "verification_target"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "description": {"type": "string", "minLength": 1},
+          "risk_class": {"enum": ["R0", "R1", "R2", "R3"]},
+          "verification_target": {"enum": ["V0 DESIGN_READY", "V1 ARTIFACT_GENERATED", "V2 STATICALLY_REVIEWED", "V3 LOAD_OR_NATIVE_OPEN_VERIFIED", "V4 BEHAVIOR_VERIFIED", "V5 REGRESSION_VERIFIED"]}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
