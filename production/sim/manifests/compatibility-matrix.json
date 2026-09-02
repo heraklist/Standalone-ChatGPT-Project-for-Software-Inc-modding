@@ -1,7 +1,7 @@
 {
   "surfaces": {
     "ChatGPT": {
-      "explicit_invocation": "NOT_TESTED",
+      "explicit_invocation": "SUPPORTED",
       "thread_persistence": "NOT_TESTED",
       "script_execution": "CAPABILITY_DEPENDENT",
       "artifact_creation": "CAPABILITY_DEPENDENT"
