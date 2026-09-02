@@ -4,6 +4,14 @@ import json
 from pathlib import Path
 
 
+LIFECYCLE_MODULES = {
+    "research-evidence",
+    "brainstorm-design",
+    "implementation",
+    "systematic-debugging",
+    "verification-delivery",
+}
+
 REQUIRED_PATHS = (
     "schemas/sim-session.schema.json",
     "schemas/sim-plan.schema.json",
@@ -16,6 +24,7 @@ REQUIRED_PATHS = (
     "production/sim/manifests/sim-manifest.json",
     "production/sim/manifests/reference-source-map.json",
     "production/sim/manifests/compatibility-matrix.json",
+    *(f"production/sim/lifecycle/{name}/SKILL.md" for name in sorted(LIFECYCLE_MODULES)),
 )
 
 MANIFEST_IDENTITY = {
@@ -47,6 +56,12 @@ def verify_sim_layout(root: Path) -> list[str]:
         for path in REQUIRED_PATHS
         if not (root / path).is_file()
     ]
+
+    lifecycle_root = root / "production/sim/lifecycle"
+    if lifecycle_root.is_dir():
+        actual_modules = {path.name for path in lifecycle_root.iterdir() if path.is_dir()}
+        for name in sorted(actual_modules - LIFECYCLE_MODULES):
+            errors.append(f"unexpected SIM lifecycle module: {name}")
 
     manifest_path = root / "production/sim/manifests/sim-manifest.json"
     if not manifest_path.is_file():
