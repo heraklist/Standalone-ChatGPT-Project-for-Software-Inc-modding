@@ -14,7 +14,12 @@ LIFECYCLE_MODULES = {
 
 REQUIRED_DOMAIN_MODULES = {
     "code-modding",
+    "compatibility-packaging",
     "data-tyd",
+    "editor-native",
+    "furniture",
+    "localization",
+    "materials",
     "sipl",
 }
 
@@ -69,6 +74,12 @@ def verify_sim_layout(root: Path) -> list[str]:
         actual_modules = {path.name for path in lifecycle_root.iterdir() if path.is_dir()}
         for name in sorted(actual_modules - LIFECYCLE_MODULES):
             errors.append(f"unexpected SIM lifecycle module: {name}")
+
+    domain_root = root / "production/sim/domains"
+    if domain_root.is_dir():
+        actual_domains = {path.name for path in domain_root.iterdir() if path.is_dir()}
+        for name in sorted(actual_domains - REQUIRED_DOMAIN_MODULES):
+            errors.append(f"unexpected SIM domain module: {name}")
 
     manifest_path = root / "production/sim/manifests/sim-manifest.json"
     if not manifest_path.is_file():
