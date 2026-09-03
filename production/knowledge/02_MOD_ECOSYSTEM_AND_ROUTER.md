@@ -9,8 +9,8 @@ aliases: [routing, families, feasibility]
 use_for: [authoring, repair, validation]
 do_not_use_for: [inventing undocumented engine surfaces]
 source_classes: [OFFICIAL, VANILLA, RUNTIME]
-currency_summary: TARGET_BRANCH_WITH_EXACT_TARGET_GATE
-known_version_gaps: [Beta 1.8.42 exact environment corpus pending]
+currency_summary: TARGET_BRANCH
+known_version_gaps: []
 ---
 
 # Mod Ecosystem and Router
