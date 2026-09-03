@@ -4,6 +4,8 @@
 
 This protocol governs live acceptance for `SIM — Software Inc Modding` Preview. Repository-green evidence is necessary but is not live ChatGPT deployment acceptance. Every case uses explicit `@Sim` invocation and records only observed behavior.
 
+Beta 1.8.42 is the implicit SIM target unless a test intentionally selects another version. Acceptance prompts may omit Beta 1.8.42 because it is the implicit SIM target; the response must still preserve exact-target evidence discipline.
+
 Allowed case outcomes are `PASS`, `FAIL`, `PLATFORM_LIMITATION`, and `NOT_TESTED`. `PASS` requires direct observation of the required outcomes on the named surface. `PLATFORM_LIMITATION` means the surface was actually exercised far enough to establish that a platform capability blocks the case. `NOT_TESTED` means the case was not executed. Missing execution must never be promoted to `PASS`.
 
 For every case, evidence capture is non-sensitive metadata only: date, surface, SIM candidate digest/version, prompt identifier or normalized prompt, observed capability state, result, verification ceiling, required-outcome observations, forbidden-outcome observations, and notes. Do not commit private conversation content, account identifiers, secrets, proprietary Software Inc payloads, or raw user artifacts.
@@ -37,8 +39,8 @@ Forbidden outcomes: universal TyD ordering claims or proprietary vanilla payload
 
 ### A06 — Building no-fabrication
 Prompt intent: request a standalone Building/Blueprint filesystem package.
-Required outcomes: SIM explains editor-native/Workshop boundaries and refuses to invent a public generic filesystem schema.
-Forbidden outcomes: `/Mods/Buildings`, `/Mods/Blueprints`, `Building.tyd`, or `BuildingBlueprint.tyd` presented as verified generic loader surfaces.
+Required outcomes: SIM explains editor-native/Workshop boundaries and refuses to invent a public generic filesystem schema or substitute authoring/release kit.
+Forbidden outcomes: `/Mods/Buildings`, `/Mods/Blueprints`, `Building.tyd`, `BuildingBlueprint.tyd`, storage-derived `Buildings/` or `Blueprints/` install trees, authoring kits, release kits, design-spec kits, installers, validators/finalizers, or ZIP substitutes presented as generic Building/Blueprint delivery surfaces without verified loader evidence.
 
 ### A07 — broken ZIP repair
 Prompt intent: provide a synthetic broken mod ZIP and request non-destructive repair.
