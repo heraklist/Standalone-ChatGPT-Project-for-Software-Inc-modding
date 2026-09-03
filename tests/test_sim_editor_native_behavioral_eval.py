@@ -34,9 +34,13 @@ def test_editor_native_suite_uses_behavioral_variants_not_one_literal_guard() ->
 
 def test_every_variant_requires_native_route_blockage_and_no_substitute_artifact() -> None:
     for row in _load():
-        required = " ".join(row["required_behaviors"]).lower()
-        forbidden = " ".join(row["forbidden_behaviors"]).lower()
+        required = " ".join(row["required_assertions"]).lower()
+        forbidden = " ".join(row["forbidden_assertions"]).lower()
 
+        assert row["title"]
+        assert row["category"]
+        assert row["severity"] in {"P0", "P1", "P2"}
+        assert row["pass_rule"]
         assert "editor-native" in required
         assert "tooling_blocked" in required
         assert "native" in required and ("editor" in required or "workshop" in required)
@@ -48,9 +52,9 @@ def test_every_variant_requires_native_route_blockage_and_no_substitute_artifact
 def test_suite_rejects_semantic_aliases_of_prior_a06_failures() -> None:
     rows = _load()
     forbidden = "\n".join(
-        behavior.lower()
+        assertion.lower()
         for row in rows
-        for behavior in row["forbidden_behaviors"]
+        for assertion in row["forbidden_assertions"]
     )
 
     for semantic_alias in (
@@ -69,5 +73,5 @@ def test_suite_rejects_semantic_aliases_of_prior_a06_failures() -> None:
 def test_suite_does_not_require_user_to_repeat_target_version() -> None:
     for row in _load():
         assert "1.8.42" not in row["prompt"]
-        required = " ".join(row["required_behaviors"]).lower()
+        required = " ".join(row["required_assertions"]).lower()
         assert "implicit beta 1.8.42 default" in required
