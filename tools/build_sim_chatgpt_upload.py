@@ -28,6 +28,9 @@ def _internal_reference_path(relative: Path) -> str:
 def build_chatgpt_upload(root: Path, out_dir: Path | None = None) -> tuple[Path, dict]:
     sim_root = root / "production/sim"
     manifest = json.loads((sim_root / "manifests/sim-manifest.json").read_text(encoding="utf-8"))
+    capabilities = json.loads(
+        (sim_root / "manifests/tool-capabilities.json").read_text(encoding="utf-8")
+    )
     version = manifest["version"]
     if version != "0.2.0-preview":
         raise RuntimeError("unexpected SIM Preview version")
@@ -46,6 +49,25 @@ def build_chatgpt_upload(root: Path, out_dir: Path | None = None) -> tuple[Path,
             payload[target] = source.read_bytes()
             continue
         payload[relative.as_posix()] = source.read_bytes()
+
+    chatgpt_tools: dict[str, dict] = {}
+    for tool_name, tool in sorted(capabilities.get("tools", {}).items()):
+        surface = tool.get("surfaces", {}).get("ChatGPT", {})
+        if not surface.get("bundled", False):
+            continue
+        repository_source = root / tool["repository_source"]
+        if not repository_source.is_file():
+            raise RuntimeError(f"missing bundled SIM tool source: {tool['repository_source']}")
+        package_path = tool["package_path"]
+        if package_path.startswith("/") or ".." in Path(package_path).parts:
+            raise RuntimeError(f"unsafe bundled SIM tool package path: {package_path}")
+        payload[package_path] = repository_source.read_bytes()
+        chatgpt_tools[tool_name] = {
+            "bundled": True,
+            "execution": surface["execution"],
+            "package_path": package_path,
+            "sha256": _sha256_file(repository_source),
+        }
 
     appendix = [
         "",
@@ -77,6 +99,7 @@ def build_chatgpt_upload(root: Path, out_dir: Path | None = None) -> tuple[Path,
         "source_layout": "production/sim",
         "public_skill_entries": ["SKILL.md"],
         "internal_reference_entries": sorted(internal_refs),
+        "tool_capabilities": chatgpt_tools,
         "bundle_sha256": _sha256_file(zip_path),
         "files": {name: _sha256_bytes(data) for name, data in sorted(payload.items())},
     }
