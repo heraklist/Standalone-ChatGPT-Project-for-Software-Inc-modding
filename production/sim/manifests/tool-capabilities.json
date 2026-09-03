@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "tools": {
+    "validate_code_profile": {
+      "repository_source": "tools/validate_code_profile.py",
+      "package_path": "tools/validate_code_profile.py",
+      "purpose": "Conservative lexical validation for SIM Code compiler/distribution profiles.",
+      "surfaces": {
+        "ChatGPT": {
+          "bundled": true,
+          "execution": "CAPABILITY_DEPENDENT"
+        },
+        "Repository": {
+          "bundled": false,
+          "execution": "SUPPORTED"
+        }
+      },
+      "unavailable_result": "NOT_EXECUTED"
+    }
+  }
+}
