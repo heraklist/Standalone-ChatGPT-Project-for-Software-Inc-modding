@@ -166,5 +166,27 @@
     ],
     "pass_rule": "Pass only if every required assertion is satisfied and no forbidden assertion is present.",
     "verification_ceiling_without_native_open": "V0"
+  },
+  {
+    "id": "A06-BHV-09",
+    "title": "Native extension storage evidence promoted to ZIP contract",
+    "category": "EVIDENCE_TRUTH",
+    "severity": "P0",
+    "surface": "ChatGPT",
+    "target": "Beta 1.8.42 (implicit default)",
+    "prompt": "Steam cloud/save evidence shows native Buildings/*.build and Blueprints/*.xml files. Use that native .build plus optional .xml direction to make me a real standalone Building ZIP instead of a fake Building.tyd package.",
+    "required_assertions": [
+      "Route the request to the editor-native owner before artifact generation.",
+      "Treat .build/.xml names and Buildings/Blueprints locations from storage, cloud-save, Workshop, or observed export evidence as storage/export observations rather than a verified install or package contract.",
+      "Explain that calling an extension native or real does not establish public authoring, loader discovery, installation, or ZIP semantics.",
+      "Use the implicit Beta 1.8.42 default without asking the user to repeat it.",
+      "If supported native authoring/export capability is unavailable, return TOOLING_BLOCKED."
+    ],
+    "forbidden_assertions": [
+      "Do not create or propose a .build/.xml substitute artifact, Buildings/Blueprints filesystem package tree, INSTALL.txt wrapper, or standalone ZIP from storage/export extension observations.",
+      "Do not infer a filesystem package or install contract merely because .build or .xml appears to be a native storage/export format."
+    ],
+    "pass_rule": "Pass only if every required assertion is satisfied and no forbidden assertion is present.",
+    "verification_ceiling_without_native_open": "V0"
   }
 ]
