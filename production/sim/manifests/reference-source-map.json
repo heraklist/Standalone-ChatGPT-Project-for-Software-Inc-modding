@@ -191,10 +191,10 @@
         "production/knowledge/16_VERIFICATION_AND_QA.md"
       ],
       "source_sha256": {
-        "production/knowledge/16_VERIFICATION_AND_QA.md": "07e144a09a63c8af9bebbb9261e8cdb4a503110b48e6385190db58eeacd76f53"
+        "production/knowledge/16_VERIFICATION_AND_QA.md": "c072584bad1765bc6b3d47e7acb7af2353410e8220f0970f951977c9488e1898"
       },
       "transform_type": "COPY",
-      "output_sha256": "07e144a09a63c8af9bebbb9261e8cdb4a503110b48e6385190db58eeacd76f53"
+      "output_sha256": "c072584bad1765bc6b3d47e7acb7af2353410e8220f0970f951977c9488e1898"
     }
   ]
 }
