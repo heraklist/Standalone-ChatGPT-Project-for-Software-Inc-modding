@@ -86,6 +86,8 @@ Untrusted supplied executable content remains static-first and is not treated as
 
 ## Capability-adaptive execution
 
+Consult `manifests/tool-capabilities.json` for bundled deterministic helpers. Bundled tool presence is not execution evidence: a tool may be present in an artifact while execution remains `CAPABILITY_DEPENDENT` on the active host.
+
 When trusted bundled SIM validators, generators, filesystem access, or packaging tools are executable on the host, run the real tool and use its actual output.
 
 When a deterministic check cannot run on the active surface, use the strongest available static or manual review and record that check as `NOT_EXECUTED`. Never fabricate tool execution or successful validation.
