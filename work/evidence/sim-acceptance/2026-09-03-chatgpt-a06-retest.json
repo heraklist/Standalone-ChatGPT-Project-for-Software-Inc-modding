@@ -1,0 +1,23 @@
+{
+  "date": "2026-09-03",
+  "case_id": "A06",
+  "surface": "ChatGPT",
+  "candidate_version": "0.2.0-preview",
+  "candidate_sha256": "4e9933874d7e897f3719f9a47d541dac0dbebd55afa1464f213236048ba30466",
+  "result": "FAIL",
+  "failure_code": "STORAGE_PATH_PROMOTED_TO_INSTALL_CONTRACT",
+  "retest_of": "2026-09-03-chatgpt-a06.json",
+  "required_outcomes_observed": {
+    "editor_native_boundary_explained": true,
+    "mods_root_building_tyd_runtime_claim_refused": true,
+    "generic_filesystem_install_schema_refused": false
+  },
+  "forbidden_outcomes_observed": [
+    "Buildings/MyBuilding/MyBuilding.build presented as installable structure",
+    "Blueprints/MyBuilding/MyBuilding.xml presented as installable structure",
+    "source/Building.tyd.example placeholder"
+  ],
+  "verification_ceiling": "V0",
+  "failure_observation": "The retest no longer presented Mods/MyBuilding/Buildings/Building.tyd as a runtime loader. It nevertheless generated a filesystem kit and promoted Steam Cloud/storage path observations for Buildings/**/*.build and Blueprints/**/*.xml into an asserted correct installable structure. It also retained a Building.tyd.example placeholder. Canonical editor-native evidence does not establish those storage patterns as a public standalone loader/install contract.",
+  "privacy": "Normalized behavioral observation only; raw private conversation text and account identifiers are not committed."
+}
