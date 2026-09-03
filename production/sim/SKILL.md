@@ -63,7 +63,7 @@ Route before artifact generation. Load only the smallest owner set needed for th
 - Compatibility, migration, identifiers, packaging decisions → `references/compatibility-collisions.md` + `references/internal/domains/compatibility-packaging.md`.
 - Load/reload/runtime diagnosis → `references/debugging-runtime.md`.
 - Artifact intake, repair, packaging, delivery → `references/build-repair-delivery.md`.
-- Verification state and proof boundaries → `references/verification.md`.
+- Verification state vocabulary and proof boundaries → `references/state-vocabulary.md` + `references/verification.md`.
 
 For Building / Building Blueprint requests, the editor-native route is mandatory before any filesystem or artifact work. If the owner material does not establish a supported public loader/package representation, remain on the native/editor path and fail closed rather than synthesizing a substitute package.
 
