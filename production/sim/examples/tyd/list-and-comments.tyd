@@ -1,0 +1,6 @@
+# Synthetic TyD syntax example
+SIM_EXAMPLE {
+    Name "Example"
+    Tags ["alpha"; "beta"]
+    Enabled True
+}

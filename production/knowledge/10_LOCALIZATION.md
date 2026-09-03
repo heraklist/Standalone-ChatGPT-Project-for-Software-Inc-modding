@@ -9,8 +9,8 @@ aliases: [Localization, translations, names]
 use_for: [authoring, repair, validation]
 do_not_use_for: [inventing undocumented engine surfaces]
 source_classes: [OFFICIAL, VANILLA, RUNTIME]
-currency_summary: TARGET_BRANCH_WITH_EXACT_TARGET_GATE
-known_version_gaps: [Exact target localization corpus pending]
+currency_summary: TARGET_BRANCH
+known_version_gaps: [Claim-specific localization coverage may require exact-target corpus or runtime UI evidence]
 ---
 
 # Localization
@@ -28,4 +28,4 @@ Canonical optional English name-list filenames are exactly lowercase: `femalefir
 Check key coverage, intended language/fallback behavior, UI display after reopening affected surfaces, name-list ordering and UTF-8/text integrity. Static presence of a translation file does not prove that every UI string is exercised.
 
 ## Known gaps / evidence limits
-Exact Beta 1.8.42 shipped localization corpus remains part of the production evidence gate.
+The canonical Beta 1.8.42 exact-target generation gate is resolved. Language/key coverage questions remain claim-specific and may require shipped localization corpus inspection or runtime UI evidence.

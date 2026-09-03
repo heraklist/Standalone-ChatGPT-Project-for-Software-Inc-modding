@@ -9,7 +9,7 @@ aliases: [discover, brainstorm, concept, design]
 use_for: [authoring, repair, validation]
 do_not_use_for: [inventing undocumented engine surfaces]
 source_classes: [OFFICIAL, VANILLA, RUNTIME]
-currency_summary: TARGET_BRANCH_WITH_EXACT_TARGET_GATE
+currency_summary: NOT_VERSION_SENSITIVE
 known_version_gaps: []
 ---
 

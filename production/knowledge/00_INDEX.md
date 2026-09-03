@@ -9,8 +9,8 @@ aliases: [router, aliases, retrieval]
 use_for: [authoring, repair, validation]
 do_not_use_for: [inventing undocumented engine surfaces]
 source_classes: [OFFICIAL, VANILLA, RUNTIME]
-currency_summary: TARGET_BRANCH_WITH_EXACT_TARGET_GATE
-known_version_gaps: [Beta 1.8.42 exact environment corpus pending]
+currency_summary: TARGET_BRANCH
+known_version_gaps: []
 ---
 
 # Knowledge Index
@@ -31,4 +31,4 @@ This is the retrieval router for the standalone Software Inc Mod Studio. Retriev
 Retrieve `01` for version/evidence conflicts, `02` for routing ambiguity, then only the owner family documents needed. Do not use archive/work material as production truth.
 
 ## Known gaps / evidence limits
-Exact Beta 1.8.42 local corpus and assembly surface remain a production-release gate.
+The canonical Beta 1.8.42 exact-target generation gate is resolved. Route unresolved family, API, editor, or runtime questions to the owning knowledge document and treat them as claim-specific gaps.

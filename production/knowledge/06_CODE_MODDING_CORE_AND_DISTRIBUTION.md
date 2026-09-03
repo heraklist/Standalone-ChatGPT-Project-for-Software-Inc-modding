@@ -9,8 +9,8 @@ aliases: [Code, CSharp, Workshop, DLLMods]
 use_for: [authoring, repair, validation]
 do_not_use_for: [inventing undocumented engine surfaces]
 source_classes: [OFFICIAL, VANILLA, RUNTIME]
-currency_summary: TARGET_BRANCH_WITH_EXACT_TARGET_GATE
-known_version_gaps: [Exact target assemblies pending]
+currency_summary: EXACT_TARGET
+known_version_gaps: [Claim-specific Code API/runtime behavior may still require artifact-scoped proof]
 ---
 
 # Code Modding Core and Distribution
@@ -40,4 +40,4 @@ External DLLs in `Software Inc_Data/Managed` are a documented but installation-g
 `GiveMeFreedom` is a full-access local/DLL path and is incompatible with normal Workshop upload. Do not present a precompiled/full-access architecture as an interchangeable Workshop deliverable.
 
 ## Known gaps / evidence limits
-Exact Beta 1.8.42 managed assembly/API evidence remains mandatory for generation-grade exact-target Code claims.
+The Beta 1.8.42 exact-target managed assembly surface is captured and generation-grade. Remaining Code API/runtime gaps are claim-specific: exact member signatures, lifecycle semantics, UI behavior, and artifact load/behavior still require matching assembly or runtime evidence.

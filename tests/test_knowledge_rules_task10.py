@@ -17,7 +17,7 @@ def test_compatibility_and_no_invented_dependencies():
 def test_artifact_surface_delivery_contract():
  d=read("15_BUILD_EDIT_REPAIR_AND_DELIVERY.md"); q=read("16_VERIFICATION_AND_QA.md")
  for p in ["artifact_surface","delivery_mode","MOD_PACKAGE","EDITOR_CONTENT","INSTALLABLE_ZIP","CANDIDATE_NATIVE_ARTIFACT","FINAL_VERIFIED_NATIVE_ARTIFACT","TOOLING_BLOCKED","PARTIAL_BUILD","READY_FOR_GAME_TESTING"]: assert p in d
- for p in ["V0 DESIGN_READY","V1 FILES_GENERATED","V2 STATICALLY_REVIEWED","V3 LOAD_VERIFIED","V4 BEHAVIOR_VERIFIED","V5 REGRESSION_VERIFIED","LIGHT","STANDARD","DEEP","Hardware Design: STANDARD","Building Blueprint: STANDARD","Building: STANDARD"]: assert p in q
+ for p in ["V0 DESIGN_READY","V1 ARTIFACT_GENERATED","V2 STATICALLY_REVIEWED","V3 LOAD_OR_NATIVE_OPEN_VERIFIED","V4 BEHAVIOR_VERIFIED","V5 REGRESSION_VERIFIED","LIGHT","STANDARD","DEEP","Hardware Design: STANDARD","Building Blueprint: STANDARD","Building: STANDARD"]: assert p in q
 
 def test_safe_repair_and_runtime_evidence():
  d=read("15_BUILD_EDIT_REPAIR_AND_DELIVERY.md"); q=read("16_VERIFICATION_AND_QA.md")

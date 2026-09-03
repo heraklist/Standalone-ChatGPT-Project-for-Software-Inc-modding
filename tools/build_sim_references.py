@@ -38,6 +38,13 @@ def _relative(root: Path, path: Path) -> str:
         raise ValueError(f"path must be inside repository root: {path}") from exc
 
 
+def _package_path(output_relative: str) -> str:
+    prefix = "production/sim/"
+    if not output_relative.startswith(prefix):
+        raise ValueError(f"SIM reference output must be under {prefix}: {output_relative}")
+    return output_relative[len(prefix):]
+
+
 def build_reference(
     *,
     root: Path,
@@ -65,6 +72,7 @@ def build_reference(
         "reference_id": reference_id,
         "source_id": source_id,
         "output_path": output_relative,
+        "package_path": _package_path(output_relative),
         "canonical_source_paths": [source_relative],
         "source_sha256": {source_relative: sha256_file(source)},
         "transform_type": "COPY",

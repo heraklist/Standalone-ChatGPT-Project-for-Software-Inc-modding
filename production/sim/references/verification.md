@@ -9,14 +9,14 @@ aliases: [verification, QA, DoD, runtime]
 use_for: [authoring, repair, validation]
 do_not_use_for: [inventing undocumented engine surfaces]
 source_classes: [OFFICIAL, VANILLA, RUNTIME]
-currency_summary: TARGET_BRANCH_WITH_EXACT_TARGET_GATE
-known_version_gaps: [Exact target runtime verification corpus pending]
+currency_summary: NOT_VERSION_SENSITIVE
+known_version_gaps: []
 ---
 
 # Verification and QA
 
 ## Verification states
-`V0 DESIGN_READY`, `V1 FILES_GENERATED`, `V2 STATICALLY_REVIEWED`, `V3 LOAD_VERIFIED`, `V4 BEHAVIOR_VERIFIED`, `V5 REGRESSION_VERIFIED`. These states describe evidence, not optimism. Package/native artifact state is a separate axis.
+`V0 DESIGN_READY`, `V1 ARTIFACT_GENERATED`, `V2 STATICALLY_REVIEWED`, `V3 LOAD_OR_NATIVE_OPEN_VERIFIED`, `V4 BEHAVIOR_VERIFIED`, `V5 REGRESSION_VERIFIED`. These states describe evidence, not optimism. Package/native artifact state is a separate axis.
 
 ## Profiles
 `LIGHT` is narrow static/smoke verification for low-risk changes; `STANDARD` includes family-specific load/behavior/persistence checks; `DEEP` includes clean-launch, negative/dependency, persistence, interaction and regression coverage as applicable. Code defaults to `DEEP`; Hardware Design, Building Blueprint and Building require at least `STANDARD`. Workshop Code must test the actual game compiler profile.
