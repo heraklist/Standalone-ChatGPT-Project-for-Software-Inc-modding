@@ -11,7 +11,7 @@ Own editor-native analysis and proposed changes. Do not dispatch to peer special
 
 Hardware Design is a capability domain owned by `DATA` integration, not a separate generic loader-family claim. Building Blueprint and Building are native editor/Workshop content surfaces with no verified generic public standalone filesystem schema in the canonical evidence set.
 
-Do not invent `/Mods/Buildings`, `/Mods/Blueprints`, `Building.tyd`, `BuildingBlueprint.tyd`, or equivalent package representations to make native content look like a normal Data mod, even as a scaffold, descriptor, placeholder, development-only package, authoring aid, release aid, or design specification.
+Do not invent `/Mods/Buildings`, `/Mods/Blueprints`, `Building.tyd`, `BuildingBlueprint.tyd`, or equivalent package representations to make native content look like a normal Data mod, even as a scaffold, descriptor, placeholder, or development-only package; this also covers authoring aids, release aids, and design specifications.
 
 Do not generate an authoring kit, release kit, design-spec kit, or source tree that contains a synthetic Building/Blueprint filesystem contract. Do not generate `Buildings/` or `Blueprints/` filesystem kits, placeholder payload trees, installer scripts, or packaging helpers merely because those names appear in save data, cloud-sync configuration, Workshop metadata, or observed exports. Cloud-save, save-game, cache, or observed storage paths are not install contracts. Treat them only as storage observations until independent evidence proves loader discovery and supported installation semantics for the target version.
 
