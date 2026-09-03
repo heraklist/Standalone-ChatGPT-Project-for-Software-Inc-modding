@@ -140,6 +140,7 @@ def reference_map() -> dict[str, object]:
                 "reference_id": "reference-1",
                 "source_id": "source-1",
                 "output_path": "production/sim/references/data.md",
+                "package_path": "references/data.md",
                 "canonical_source_paths": [source_path],
                 "source_sha256": {source_path: "a" * 64},
                 "transform_type": "COPY",
@@ -268,7 +269,7 @@ def test_reference_map_accepts_multi_source_provenance() -> None:
 
 
 @pytest.mark.parametrize(
-    "field_name", ("output_path", "canonical_source_paths", "transform_type")
+    "field_name", ("output_path", "package_path", "canonical_source_paths", "transform_type")
 )
 def test_reference_map_requires_traceability_fields(field_name: str) -> None:
     invalid_map = reference_map()
