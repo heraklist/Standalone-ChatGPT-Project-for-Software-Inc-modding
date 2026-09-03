@@ -1,0 +1,20 @@
+{
+  "date": "2026-09-02",
+  "surface": "ChatGPT Skills",
+  "candidate_version": "0.2.0-preview",
+  "observation_type": "INSTALLATION_PACKAGING",
+  "result": "PACKAGING_MISMATCH",
+  "observed": [
+    "The uploaded candidate was accepted by the ChatGPT Skills surface.",
+    "The root sim skill appeared as an installed/created skill.",
+    "Nested domains/*/SKILL.md and lifecycle/*/SKILL.md entries were also exposed as separate installed skills."
+  ],
+  "expected": [
+    "Only the root sim skill is public/user-facing.",
+    "Domain and lifecycle specialists remain internal to the SIM orchestrator."
+  ],
+  "acceptance_cases_executed": [],
+  "a01_status": "NOT_TESTED",
+  "repair": "Introduce a ChatGPT-specific upload adapter with one root SKILL.md and internal domain/lifecycle modules converted to reference .md files.",
+  "privacy": "Observation derived from user-provided UI screenshots; no account identifiers or private conversation text committed."
+}

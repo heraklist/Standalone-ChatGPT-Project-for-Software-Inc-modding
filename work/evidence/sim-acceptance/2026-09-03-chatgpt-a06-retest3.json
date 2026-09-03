@@ -1,0 +1,23 @@
+{
+  "date": "2026-09-03",
+  "case_id": "A06",
+  "surface": "ChatGPT",
+  "candidate_version": "0.2.0-preview",
+  "candidate_sha256": "aa1f50a0c1605c203f233d6b8870e7ba219ca8a637ef6e57888445c56335d234",
+  "result": "FAIL",
+  "failure_code": "EDITOR_NATIVE_AUTHORING_KIT_FABRICATION",
+  "retest_of": "2026-09-03-chatgpt-a06-retest2.json",
+  "required_outcomes_observed": {
+    "implicit_beta_1_8_42_default": true,
+    "editor_native_boundary_explained": true,
+    "refused_generic_filesystem_schema": false,
+    "tooling_blocked_without_substitute_artifact": false
+  },
+  "forbidden_outcomes_observed": [
+    "Mods/MyBuilding/Buildings/Building.tyd",
+    "native payload directory scaffold derived from unverified Building/Blueprint install assumptions",
+    "installer/verifier/release-builder around unverified Building package contract"
+  ],
+  "verification_ceiling": "V0",
+  "notes": "The live response correctly inherited Beta 1.8.42 without the user restating the target and explained that Building.tyd is not a documented runtime loader schema. It nevertheless generated and delivered a candidate filesystem package containing Mods/MyBuilding/Buildings/Building.tyd plus native-payload directories and installer/verifier/release-builder tooling, then treated a future game export as sufficient to finalize an installable package. This violates the editor-native no-fabrication contract even when the TyD file is labeled an authoring/reference descriptor. Raw private conversation text and uploaded artifacts are not committed."
+}

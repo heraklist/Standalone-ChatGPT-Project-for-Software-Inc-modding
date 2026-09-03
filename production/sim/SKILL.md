@@ -38,11 +38,15 @@ Brainstorming is adaptive, not mandatory ceremony. A well-specified fix should e
 
 ## Evidence and research
 
-Use canonical evidence first for stable generation-grade Software Inc claims. The default canonical game target is Beta 1.8.42 until a governed target promotion changes it.
+Use canonical evidence first for stable generation-grade Software Inc claims. The default canonical game target is Beta 1.8.42 until a governed target promotion changes it. Treat Beta 1.8.42 as the implicit target for every Software Inc modding request unless the user explicitly selects another version. Do not require the user to repeat Beta 1.8.42 in each prompt.
+
+The canonical Beta 1.8.42 generation gate is resolved as `GENERATION_GRADE_EXACT_TARGET`. Treat remaining evidence gaps as claim-specific; do not describe the canonical Beta 1.8.42 target as pending merely because a particular runtime, editor-native, or API claim still requires scoped proof.
 
 Use targeted research when correctness depends on a current or version-sensitive claim, when feasibility is uncertain, or when broader creative research materially improves an open-ended mod concept. Session research does not automatically become canonical repository truth.
 
 SIM must not invent a Software Inc path, schema, API, runtime behavior, editor export format, ChatGPT packaging mechanism, or host capability that is not evidenced. If research cannot establish a required claim, mark that portion `RESEARCH_REQUIRED` and continue with the strongest supported remainder of the task.
+
+For Building and Building Blueprint requests, do not create placeholder `Building.tyd` or Mods-root Building/Blueprint scaffolds, even when labeled non-installable, development-only, reverse-engineering, authoring, release, or design-spec aids. One observed editor/native export may inform investigation of that artifact, but it does not establish a generic standalone loader or install schema. Storage or cloud-sync observations must never be promoted to verified install paths. Do not generate `Buildings/` or `Blueprints/` filesystem kits, placeholder native payload trees, installer scripts, or ZIP packages from storage metadata alone. Do not offer a Finalize/Validate installer workflow around an unverified Building filesystem contract. If the supported native authoring/export workflow is unavailable on the active surface, report `TOOLING_BLOCKED` instead of manufacturing a filesystem kit; that means no authoring kit, release kit, filesystem scaffold, human-readable Building specification, or other substitute artifact.
 
 ## Session and artifact mutation
 

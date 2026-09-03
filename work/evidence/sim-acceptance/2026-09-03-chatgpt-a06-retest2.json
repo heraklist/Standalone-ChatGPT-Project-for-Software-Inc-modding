@@ -1,0 +1,23 @@
+{
+  "date": "2026-09-03",
+  "case_id": "A06",
+  "surface": "ChatGPT",
+  "candidate_version": "0.2.0-preview",
+  "candidate_sha256": "fcc0264cd15a8d45f43b1f00839e3fc1f7b29b722ab29cef927244af3862b5e9",
+  "result": "FAIL",
+  "failure_code": "EDITOR_NATIVE_AUTHORING_KIT_FABRICATION",
+  "retest_of": "2026-09-03-chatgpt-a06-retest.json",
+  "required_outcomes_observed": {
+    "editor_native_boundary_explained": true,
+    "refused_runtime_building_tyd_loader_claim": true,
+    "refused_generic_filesystem_package": false,
+    "tooling_blocked_used_instead_of_substitute_artifact": false
+  },
+  "forbidden_outcomes_observed": [
+    "Source/Mods/MyBuilding/Buildings/Building.tyd authoring substitute",
+    "ReleaseTemplate/Buildings filesystem release scaffold",
+    "Finalize/Validate packaging workflow around unverified install contract"
+  ],
+  "verification_ceiling": "V0",
+  "notes": "The second repaired candidate correctly stated that Building.tyd is not a runtime Building loader, but still generated an authoring/release kit containing a human-readable Building.tyd substitute, a Buildings release scaffold, and packaging scripts around an unverified standalone Building install contract. This remains forbidden editor-native substitution. The user also requested that Beta 1.8.42 become the implicit SIM target so it need not be repeated in every prompt. Raw private conversation content and uploaded artifacts are not committed."
+}

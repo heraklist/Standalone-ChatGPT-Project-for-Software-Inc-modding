@@ -1,0 +1,16 @@
+{
+  "date": "2026-09-02",
+  "surface": "ChatGPT Skills",
+  "candidate_version": "0.2.0-preview",
+  "candidate_sha256": "2173242d1f9ff7e6dc95567d8d7d9ef9d45a05af9198a547a394f562b303d449",
+  "observation_type": "LIVE_USER_OBSERVED_INSTALLATION",
+  "installation_result": "PASS",
+  "public_skill_entry": "sim",
+  "public_skill_count_observed": 1,
+  "internal_specialists_exposed_as_public_skills": false,
+  "internal_module_representation_observed": "references/internal/*.md",
+  "file_viewer_observation": "FILE_PREVIEW_SEND_ERROR_OBSERVED",
+  "file_viewer_inference": "NONE",
+  "a01_result": "NOT_TESTED",
+  "notes": "The corrected ChatGPT upload artifact installed as one public sim skill. Domain and lifecycle modules were observed as ordinary reference markdown files rather than separate public skills. The skill file viewer displayed a send/retry error while browsing file contents; this is recorded as a UI observation only and is not treated as activation or runtime failure."
+}

@@ -1,0 +1,18 @@
+{
+  "date": "2026-09-02",
+  "case_id": "A02",
+  "surface": "ChatGPT",
+  "candidate_version": "0.2.0-preview",
+  "candidate_sha256": "b6d345101d736146a2f35db5a3cfe0377191489af4ef2a8f947df5e56e0f4559",
+  "result": "PASS",
+  "required_outcomes_observed": {
+    "bounded_brainstorm_for_open_ended_task": true,
+    "gameplay_feasibility_scope_compared": true,
+    "evidence_aware_technical_boundaries": true,
+    "implementation_deferred_until_selection": true
+  },
+  "forbidden_outcomes_observed": [],
+  "verification_ceiling": "V0",
+  "notes": "The live response produced multiple materially different concepts, compared gameplay/technical feasibility/scope, labeled uncertain Code and editor-native mechanisms conservatively, did not invent public Building/Blueprint filesystem schema, and explicitly deferred implementation until the user selects a direction.",
+  "privacy": "Normalized behavioral observation only; raw private conversation text and account identifiers are not committed."
+}

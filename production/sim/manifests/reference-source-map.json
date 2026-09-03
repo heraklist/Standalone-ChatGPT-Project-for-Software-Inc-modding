@@ -9,10 +9,10 @@
         "production/knowledge/01_EVIDENCE_VERSION_AND_TRUTH.md"
       ],
       "source_sha256": {
-        "production/knowledge/01_EVIDENCE_VERSION_AND_TRUTH.md": "f0a8915b9cd1eb4c8ff807fe97c06c89650f73b82f96260935ddf0d1930d335b"
+        "production/knowledge/01_EVIDENCE_VERSION_AND_TRUTH.md": "79b36a572f9cb680e961f2e3ac15241effbea530bc113e0313c9587eeb39a93e"
       },
       "transform_type": "COPY",
-      "output_sha256": "f0a8915b9cd1eb4c8ff807fe97c06c89650f73b82f96260935ddf0d1930d335b"
+      "output_sha256": "79b36a572f9cb680e961f2e3ac15241effbea530bc113e0313c9587eeb39a93e"
     },
     {
       "reference_id": "ecosystem-router",

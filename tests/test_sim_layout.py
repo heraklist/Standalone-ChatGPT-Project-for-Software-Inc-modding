@@ -32,8 +32,8 @@ SIM_MANIFEST = {
 }
 
 COMPATIBILITY_CAPABILITIES = {
-    "explicit_invocation": "TO_BE_VERIFIED",
-    "thread_persistence": "TO_BE_VERIFIED",
+    "explicit_invocation": "NOT_TESTED",
+    "thread_persistence": "NOT_TESTED",
     "script_execution": "CAPABILITY_DEPENDENT",
     "artifact_creation": "CAPABILITY_DEPENDENT",
 }
@@ -95,35 +95,21 @@ def test_reference_source_map_conforms_to_machine_contract() -> None:
     assert len(source_map["entries"]) == 15
 
 
-def test_compatibility_matrix_matches_complete_phase_a_contract() -> None:
+def test_compatibility_matrix_matches_current_acceptance_contract() -> None:
     matrix = json.loads(
         (ROOT / "production/sim/manifests/compatibility-matrix.json").read_text(
             encoding="utf-8"
         )
     )
 
-    assert matrix == {
+    expected = {
         "surfaces": {
-            "ChatGPT": {
-                "explicit_invocation": "TO_BE_VERIFIED",
-                "thread_persistence": "TO_BE_VERIFIED",
-                "script_execution": "CAPABILITY_DEPENDENT",
-                "artifact_creation": "CAPABILITY_DEPENDENT",
-            },
-            "ChatGPT Project": {
-                "explicit_invocation": "TO_BE_VERIFIED",
-                "thread_persistence": "TO_BE_VERIFIED",
-                "script_execution": "CAPABILITY_DEPENDENT",
-                "artifact_creation": "CAPABILITY_DEPENDENT",
-            },
-            "Codex": {
-                "explicit_invocation": "TO_BE_VERIFIED",
-                "thread_persistence": "TO_BE_VERIFIED",
-                "script_execution": "CAPABILITY_DEPENDENT",
-                "artifact_creation": "CAPABILITY_DEPENDENT",
-            },
+            surface: dict(COMPATIBILITY_CAPABILITIES)
+            for surface in ("ChatGPT", "ChatGPT Project", "Codex")
         }
     }
+    expected["surfaces"]["ChatGPT"]["explicit_invocation"] = "SUPPORTED"
+    assert matrix == expected
 
 
 def test_verify_sim_layout_accepts_complete_pr_c_core_domain_contract(tmp_path: Path) -> None:
