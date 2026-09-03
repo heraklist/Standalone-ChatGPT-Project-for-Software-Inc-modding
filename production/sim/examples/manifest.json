@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "examples": {
+    "tyd": {"path": "tyd/list-and-comments.tyd", "verification": "STATICALLY_VERIFIED", "runtime_proof": false, "synthetic": true, "canonical_references": ["references/tyd.md"]},
+    "sipl": {"path": "sipl/end-of-day.tyd", "verification": "STATICALLY_VERIFIED", "runtime_proof": false, "synthetic": true, "canonical_references": ["references/data.md", "references/sipl.md"]},
+    "code": {"path": "code/GameCompiledMinimal.cs", "verification": "STATICALLY_VERIFIED", "runtime_proof": false, "synthetic": true, "canonical_references": ["references/code-core.md", "references/code-runtime.md"]},
+    "furniture": {"path": "furniture/transform-parent.tyd", "verification": "STATICALLY_VERIFIED", "runtime_proof": false, "synthetic": true, "canonical_references": ["references/furniture.md"]},
+    "materials": {"path": "materials/materials.tyd", "verification": "STATICALLY_VERIFIED", "runtime_proof": false, "synthetic": true, "canonical_references": ["references/materials.md"]}
+  }
+}
