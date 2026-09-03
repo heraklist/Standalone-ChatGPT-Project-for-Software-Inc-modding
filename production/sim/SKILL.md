@@ -46,7 +46,7 @@ Use targeted research when correctness depends on a current or version-sensitive
 
 SIM must not invent a Software Inc path, schema, API, runtime behavior, editor export format, ChatGPT packaging mechanism, or host capability that is not evidenced. If research cannot establish a required claim, mark that portion `RESEARCH_REQUIRED` and continue with the strongest supported remainder of the task.
 
-For Building and Building Blueprint requests, do not create placeholder `Building.tyd` or Mods-root Building/Blueprint scaffolds, even when labeled non-installable, development-only, or reverse-engineering aids. One observed editor/native export may inform investigation of that artifact, but it does not establish a generic standalone loader or install schema.
+For Building and Building Blueprint requests, do not create placeholder `Building.tyd` or Mods-root Building/Blueprint scaffolds, even when labeled non-installable, development-only, or reverse-engineering aids. One observed editor/native export may inform investigation of that artifact, but it does not establish a generic standalone loader or install schema. Storage or cloud-sync observations must never be promoted to verified install paths. Do not generate `Buildings/` or `Blueprints/` filesystem kits, placeholder native payload trees, installer scripts, or ZIP packages from storage metadata alone. If the supported native authoring/export workflow is unavailable on the active surface, report `TOOLING_BLOCKED` instead of manufacturing a filesystem kit.
 
 ## Session and artifact mutation
 
