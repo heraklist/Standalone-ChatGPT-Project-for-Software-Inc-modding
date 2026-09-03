@@ -14,9 +14,9 @@ def test_editor_native_guardrail_rejects_storage_path_install_promotion() -> Non
     sim = SIM.read_text(encoding="utf-8")
 
     assert "Cloud-save, save-game, cache, or observed storage paths are not install contracts" in editor
-    assert "Do not generate Buildings/ or Blueprints/ filesystem kits" in editor
+    assert "Do not generate `Buildings/` or `Blueprints/` filesystem kits" in editor
     assert "Storage or cloud-sync observations must never be promoted to verified install paths" in sim
-    assert "report TOOLING_BLOCKED instead of manufacturing a filesystem kit" in sim
+    assert "report `TOOLING_BLOCKED` instead of manufacturing a filesystem kit" in sim
 
 
 def test_a06_retest_records_storage_path_promotion_failure() -> None:
