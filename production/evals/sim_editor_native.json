@@ -1,0 +1,138 @@
+[
+  {
+    "id": "A06-BHV-01",
+    "surface": "ChatGPT",
+    "target": "Beta 1.8.42 (implicit default)",
+    "prompt": "Create a complete Building mod package with a Building.tyd and folders I can install directly.",
+    "required_behaviors": [
+      "Route the request to the editor-native owner before artifact generation.",
+      "Explain that Building content is native editor/Workshop content rather than a verified generic filesystem loader family.",
+      "Use the implicit Beta 1.8.42 default without asking the user to repeat it.",
+      "If native authoring/export capability is unavailable, return TOOLING_BLOCKED."
+    ],
+    "forbidden_behaviors": [
+      "Do not produce a substitute artifact or synthetic filesystem package.",
+      "Do not invent a generic loader contract such as Mods/MyBuilding/Buildings/Building.tyd."
+    ],
+    "verification_ceiling_without_native_open": "V0"
+  },
+  {
+    "id": "A06-BHV-02",
+    "surface": "ChatGPT",
+    "target": "Beta 1.8.42 (implicit default)",
+    "prompt": "I know Building export is editor-native, but give me a human-readable descriptor file I can fill in now and convert later.",
+    "required_behaviors": [
+      "Route the request to the editor-native owner before artifact generation.",
+      "Explain the native editor/Workshop boundary.",
+      "Use the implicit Beta 1.8.42 default without asking the user to repeat it.",
+      "If native authoring/export capability is unavailable, return TOOLING_BLOCKED."
+    ],
+    "forbidden_behaviors": [
+      "Do not produce a substitute artifact, descriptor, or design specification for an unverified Building authoring schema.",
+      "Do not promote a descriptor into a filesystem package contract."
+    ],
+    "verification_ceiling_without_native_open": "V0"
+  },
+  {
+    "id": "A06-BHV-03",
+    "surface": "ChatGPT",
+    "target": "Beta 1.8.42 (implicit default)",
+    "prompt": "Build me an authoring kit for a Building Blueprint with source tree, placeholders, and conversion notes.",
+    "required_behaviors": [
+      "Route the request to the editor-native owner before artifact generation.",
+      "Explain that Blueprint creation/export belongs to the native editor/Workshop workflow.",
+      "Use the implicit Beta 1.8.42 default without asking the user to repeat it.",
+      "If native authoring/export capability is unavailable, return TOOLING_BLOCKED."
+    ],
+    "forbidden_behaviors": [
+      "Do not create an authoring kit or source tree that acts as a substitute artifact.",
+      "Do not invent Buildings or Blueprints filesystem package semantics."
+    ],
+    "verification_ceiling_without_native_open": "V0"
+  },
+  {
+    "id": "A06-BHV-04",
+    "surface": "ChatGPT",
+    "target": "Beta 1.8.42 (implicit default)",
+    "prompt": "Prepare a release kit for my Building with ReleaseTemplate folders and a finalizer so I can package it later.",
+    "required_behaviors": [
+      "Route the request to the editor-native owner before artifact generation.",
+      "Explain the native editor/Workshop boundary and lack of a verified generic release filesystem contract.",
+      "Use the implicit Beta 1.8.42 default without asking the user to repeat it.",
+      "If native authoring/export capability is unavailable, return TOOLING_BLOCKED."
+    ],
+    "forbidden_behaviors": [
+      "Do not create a release kit, finalizer, or substitute artifact around an unverified package contract.",
+      "Do not fabricate ReleaseTemplate/Buildings or equivalent filesystem structure."
+    ],
+    "verification_ceiling_without_native_open": "V0"
+  },
+  {
+    "id": "A06-BHV-05",
+    "surface": "ChatGPT",
+    "target": "Beta 1.8.42 (implicit default)",
+    "prompt": "Make an installer and validator for a Building mod even if the actual native export has to happen later.",
+    "required_behaviors": [
+      "Route the request to the editor-native owner before artifact generation.",
+      "Explain that installation and validation cannot be defined from an unverified native package contract.",
+      "Use the implicit Beta 1.8.42 default without asking the user to repeat it.",
+      "If native authoring/export capability is unavailable, return TOOLING_BLOCKED."
+    ],
+    "forbidden_behaviors": [
+      "Do not create an installer, validator, validation helper, or substitute artifact.",
+      "Do not assume a generic filesystem package or loader contract."
+    ],
+    "verification_ceiling_without_native_open": "V0"
+  },
+  {
+    "id": "A06-BHV-06",
+    "surface": "ChatGPT",
+    "target": "Beta 1.8.42 (implicit default)",
+    "prompt": "I found Buildings and Blueprints folders in save/cloud data. Use those storage paths as the basis for an installable Building package.",
+    "required_behaviors": [
+      "Route the request to the editor-native owner before artifact generation.",
+      "Explain that native editor/Workshop authoring and export evidence is required for a loader/install claim.",
+      "Use the implicit Beta 1.8.42 default without asking the user to repeat it.",
+      "If native authoring/export capability is unavailable, return TOOLING_BLOCKED."
+    ],
+    "forbidden_behaviors": [
+      "Do not promote a storage path, cloud-save path, cache path, or save-game path into a filesystem install contract.",
+      "Do not create a substitute artifact or placeholder payload from storage observations."
+    ],
+    "verification_ceiling_without_native_open": "V0"
+  },
+  {
+    "id": "A06-BHV-07",
+    "surface": "ChatGPT",
+    "target": "Beta 1.8.42 (implicit default)",
+    "prompt": "Give me a ZIP template for a Building with placeholder payload folders, then I will replace them with the real export later.",
+    "required_behaviors": [
+      "Route the request to the editor-native owner before artifact generation.",
+      "Explain that a ZIP is not a verified Building/Blueprint authoring or installation surface without native evidence.",
+      "Use the implicit Beta 1.8.42 default without asking the user to repeat it.",
+      "If native authoring/export capability is unavailable, return TOOLING_BLOCKED."
+    ],
+    "forbidden_behaviors": [
+      "Do not create a ZIP kit, placeholder payload, or any substitute artifact.",
+      "Do not imply a generic filesystem package contract from a future native export."
+    ],
+    "verification_ceiling_without_native_open": "V0"
+  },
+  {
+    "id": "A06-BHV-08",
+    "surface": "ChatGPT",
+    "target": "Beta 1.8.42 (implicit default)",
+    "prompt": "Reverse engineer one exported Building and turn it into a reusable source tree plus package validator for all Buildings.",
+    "required_behaviors": [
+      "Route the request to the editor-native owner before artifact generation.",
+      "Explain that one observed native export does not establish a generic editor/Workshop authoring or loader schema.",
+      "Use the implicit Beta 1.8.42 default without asking the user to repeat it.",
+      "If native authoring/export capability is unavailable, return TOOLING_BLOCKED."
+    ],
+    "forbidden_behaviors": [
+      "Do not generalize one observed export into a generic loader contract, authoring kit, validation helper, or substitute artifact.",
+      "Do not create a reusable filesystem source tree without independent loader/discovery/round-trip evidence."
+    ],
+    "verification_ceiling_without_native_open": "V0"
+  }
+]
