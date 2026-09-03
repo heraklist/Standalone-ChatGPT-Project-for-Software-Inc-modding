@@ -17,9 +17,9 @@
       "output_path": "production/sim/references/ecosystem-router.md",
       "package_path": "references/ecosystem-router.md",
       "canonical_source_paths": ["production/knowledge/02_MOD_ECOSYSTEM_AND_ROUTER.md"],
-      "source_sha256": {"production/knowledge/02_MOD_ECOSYSTEM_AND_ROUTER.md": "30099be50afd4c00f5c6443108b405dbc0e42302be506d07b8e17348b38ad17c"},
+      "source_sha256": {"production/knowledge/02_MOD_ECOSYSTEM_AND_ROUTER.md": "489a6e0ef67c0c1ce26040bb992881843f8c85073ccb5228ba453949f9c91661"},
       "transform_type": "COPY",
-      "output_sha256": "30099be50afd4c00f5c6443108b405dbc0e42302be506d07b8e17348b38ad17c"
+      "output_sha256": "489a6e0ef67c0c1ce26040bb992881843f8c85073ccb5228ba453949f9c91661"
     },
     {
       "reference_id": "tyd",
@@ -27,9 +27,9 @@
       "output_path": "production/sim/references/tyd.md",
       "package_path": "references/tyd.md",
       "canonical_source_paths": ["production/knowledge/03_TYD_FOUNDATIONS.md"],
-      "source_sha256": {"production/knowledge/03_TYD_FOUNDATIONS.md": "b53bc4ed4f8b6f046965993dc0d9e39280b7ec672ce76cb25fb948d642305555"},
+      "source_sha256": {"production/knowledge/03_TYD_FOUNDATIONS.md": "a227bd6464160e3a08e945be6886cd01bee4c48f3375f3da53cc2df6cb844649"},
       "transform_type": "COPY",
-      "output_sha256": "b53bc4ed4f8b6f046965993dc0d9e39280b7ec672ce76cb25fb948d642305555"
+      "output_sha256": "a227bd6464160e3a08e945be6886cd01bee4c48f3375f3da53cc2df6cb844649"
     },
     {
       "reference_id": "data",
@@ -37,9 +37,9 @@
       "output_path": "production/sim/references/data.md",
       "package_path": "references/data.md",
       "canonical_source_paths": ["production/knowledge/04_DATA_MODDING.md"],
-      "source_sha256": {"production/knowledge/04_DATA_MODDING.md": "8616300eae1af9903973e8138a190a755cd98962b82805297325e14daa4a0e1f"},
+      "source_sha256": {"production/knowledge/04_DATA_MODDING.md": "e00ec71b668ce5c331aa6caa9cc378bc24267dc0446a18ffedc240fdf7f6a8af"},
       "transform_type": "COPY",
-      "output_sha256": "8616300eae1af9903973e8138a190a755cd98962b82805297325e14daa4a0e1f"
+      "output_sha256": "e00ec71b668ce5c331aa6caa9cc378bc24267dc0446a18ffedc240fdf7f6a8af"
     },
     {
       "reference_id": "sipl",
@@ -47,9 +47,9 @@
       "output_path": "production/sim/references/sipl.md",
       "package_path": "references/sipl.md",
       "canonical_source_paths": ["production/knowledge/05_SIPL.md"],
-      "source_sha256": {"production/knowledge/05_SIPL.md": "3435b8a4a5128f5709a710469b9b8a26b73fd26c45baf83e57cb627ee002d23b"},
+      "source_sha256": {"production/knowledge/05_SIPL.md": "7d53e34311b26cf24268fdbb496e46cd15695c95262cdb553a7b8617b5e8c817"},
       "transform_type": "COPY",
-      "output_sha256": "3435b8a4a5128f5709a710469b9b8a26b73fd26c45baf83e57cb627ee002d23b"
+      "output_sha256": "7d53e34311b26cf24268fdbb496e46cd15695c95262cdb553a7b8617b5e8c817"
     },
     {
       "reference_id": "code-core",
@@ -57,9 +57,9 @@
       "output_path": "production/sim/references/code-core.md",
       "package_path": "references/code-core.md",
       "canonical_source_paths": ["production/knowledge/06_CODE_MODDING_CORE_AND_DISTRIBUTION.md"],
-      "source_sha256": {"production/knowledge/06_CODE_MODDING_CORE_AND_DISTRIBUTION.md": "1642523721f7b49ffaf24721b420b7497f192a5fcd926e258e5484c4e4b9dfa4"},
+      "source_sha256": {"production/knowledge/06_CODE_MODDING_CORE_AND_DISTRIBUTION.md": "99cba314757c59165f483f077c41848bc7cf4b4f90955a67ad35b4eedc142ebc"},
       "transform_type": "COPY",
-      "output_sha256": "1642523721f7b49ffaf24721b420b7497f192a5fcd926e258e5484c4e4b9dfa4"
+      "output_sha256": "99cba314757c59165f483f077c41848bc7cf4b4f90955a67ad35b4eedc142ebc"
     },
     {
       "reference_id": "code-runtime",
@@ -67,9 +67,9 @@
       "output_path": "production/sim/references/code-runtime.md",
       "package_path": "references/code-runtime.md",
       "canonical_source_paths": ["production/knowledge/07_CODE_RUNTIME_UI_PERSISTENCE_SECURITY.md"],
-      "source_sha256": {"production/knowledge/07_CODE_RUNTIME_UI_PERSISTENCE_SECURITY.md": "3f67c18628c2f0d67f4610958b68c08ae7d26ddcb935de198e903f0639adff72"},
+      "source_sha256": {"production/knowledge/07_CODE_RUNTIME_UI_PERSISTENCE_SECURITY.md": "a55cb9c479f098d019fa9206b6c9f3c6bed4969b6badedf8387fb8ebde9bfef9"},
       "transform_type": "COPY",
-      "output_sha256": "3f67c18628c2f0d67f4610958b68c08ae7d26ddcb935de198e903f0639adff72"
+      "output_sha256": "a55cb9c479f098d019fa9206b6c9f3c6bed4969b6badedf8387fb8ebde9bfef9"
     },
     {
       "reference_id": "furniture",
@@ -77,9 +77,9 @@
       "output_path": "production/sim/references/furniture.md",
       "package_path": "references/furniture.md",
       "canonical_source_paths": ["production/knowledge/08_FURNITURE.md"],
-      "source_sha256": {"production/knowledge/08_FURNITURE.md": "157484e092d84e284e8d90d573d1a8cb404ef5012feae47ccb6eeafd37b1517a"},
+      "source_sha256": {"production/knowledge/08_FURNITURE.md": "0f70344e272505a157ce771ccf8e2c462e90e3f20f0ffd6d84d5ff462db42230"},
       "transform_type": "COPY",
-      "output_sha256": "157484e092d84e284e8d90d573d1a8cb404ef5012feae47ccb6eeafd37b1517a"
+      "output_sha256": "0f70344e272505a157ce771ccf8e2c462e90e3f20f0ffd6d84d5ff462db42230"
     },
     {
       "reference_id": "materials",
@@ -87,9 +87,9 @@
       "output_path": "production/sim/references/materials.md",
       "package_path": "references/materials.md",
       "canonical_source_paths": ["production/knowledge/09_MATERIALS.md"],
-      "source_sha256": {"production/knowledge/09_MATERIALS.md": "c5c429b3d010a60f5c9dd1bb9b980285ad3fc27a70cd88d34b7082759b6bda20"},
+      "source_sha256": {"production/knowledge/09_MATERIALS.md": "a12409e8baab7d62a4fdd2b6d1becf241993f4c1ca35f124b8a4c789ba4ab4a8"},
       "transform_type": "COPY",
-      "output_sha256": "c5c429b3d010a60f5c9dd1bb9b980285ad3fc27a70cd88d34b7082759b6bda20"
+      "output_sha256": "a12409e8baab7d62a4fdd2b6d1becf241993f4c1ca35f124b8a4c789ba4ab4a8"
     },
     {
       "reference_id": "localization",
@@ -97,9 +97,9 @@
       "output_path": "production/sim/references/localization.md",
       "package_path": "references/localization.md",
       "canonical_source_paths": ["production/knowledge/10_LOCALIZATION.md"],
-      "source_sha256": {"production/knowledge/10_LOCALIZATION.md": "318b476141a949949932eea7d3655a8f2d6c776032660f322268634c462e8b76"},
+      "source_sha256": {"production/knowledge/10_LOCALIZATION.md": "31b557e9520d341738bda8b40ed1c05dfcbbda28cd070243741236e7b4698835"},
       "transform_type": "COPY",
-      "output_sha256": "318b476141a949949932eea7d3655a8f2d6c776032660f322268634c462e8b76"
+      "output_sha256": "31b557e9520d341738bda8b40ed1c05dfcbbda28cd070243741236e7b4698835"
     },
     {
       "reference_id": "editor-content",
@@ -107,9 +107,9 @@
       "output_path": "production/sim/references/editor-content.md",
       "package_path": "references/editor-content.md",
       "canonical_source_paths": ["production/knowledge/11_EDITOR_CONTENT_HARDWARE_BLUEPRINTS_BUILDINGS.md"],
-      "source_sha256": {"production/knowledge/11_EDITOR_CONTENT_HARDWARE_BLUEPRINTS_BUILDINGS.md": "fd63e930ec40950ee4c61fcc4e8f53cbaeb62a26524ff43492fca1259ed8b197"},
+      "source_sha256": {"production/knowledge/11_EDITOR_CONTENT_HARDWARE_BLUEPRINTS_BUILDINGS.md": "ed3f53a7e1c5cf2efe2b44f058b4c40898d2e607d2409e66c7324ae1c995cf96"},
       "transform_type": "COPY",
-      "output_sha256": "fd63e930ec40950ee4c61fcc4e8f53cbaeb62a26524ff43492fca1259ed8b197"
+      "output_sha256": "ed3f53a7e1c5cf2efe2b44f058b4c40898d2e607d2409e66c7324ae1c995cf96"
     },
     {
       "reference_id": "debugging",
@@ -117,9 +117,9 @@
       "output_path": "production/sim/references/debugging.md",
       "package_path": "references/debugging.md",
       "canonical_source_paths": ["production/knowledge/12_DEBUGGING_CONSOLE_AND_RUNTIME.md"],
-      "source_sha256": {"production/knowledge/12_DEBUGGING_CONSOLE_AND_RUNTIME.md": "50f936d00268418d76cb7bdb24445475bb4135d2ee199f733093c00e3cb65ad1"},
+      "source_sha256": {"production/knowledge/12_DEBUGGING_CONSOLE_AND_RUNTIME.md": "8b361a726bcaf8629b7668d3923add0e4b5a60b3f99dab8c4de289b8d21e7628"},
       "transform_type": "COPY",
-      "output_sha256": "50f936d00268418d76cb7bdb24445475bb4135d2ee199f733093c00e3cb65ad1"
+      "output_sha256": "8b361a726bcaf8629b7668d3923add0e4b5a60b3f99dab8c4de289b8d21e7628"
     },
     {
       "reference_id": "compatibility",
@@ -127,9 +127,9 @@
       "output_path": "production/sim/references/compatibility.md",
       "package_path": "references/compatibility.md",
       "canonical_source_paths": ["production/knowledge/13_COMPATIBILITY_MIGRATION_AND_COLLISIONS.md"],
-      "source_sha256": {"production/knowledge/13_COMPATIBILITY_MIGRATION_AND_COLLISIONS.md": "95e55569f0c7e1330dc830dad3aad484bd477065b1a4af554c097c0daa27117b"},
+      "source_sha256": {"production/knowledge/13_COMPATIBILITY_MIGRATION_AND_COLLISIONS.md": "5c4711d3e1d8feef2430326de13dd6ac4c14c21ee8a51c214e739528a55d53b1"},
       "transform_type": "COPY",
-      "output_sha256": "95e55569f0c7e1330dc830dad3aad484bd477065b1a4af554c097c0daa27117b"
+      "output_sha256": "5c4711d3e1d8feef2430326de13dd6ac4c14c21ee8a51c214e739528a55d53b1"
     },
     {
       "reference_id": "delivery",
@@ -137,9 +137,9 @@
       "output_path": "production/sim/references/delivery.md",
       "package_path": "references/delivery.md",
       "canonical_source_paths": ["production/knowledge/15_BUILD_EDIT_REPAIR_AND_DELIVERY.md"],
-      "source_sha256": {"production/knowledge/15_BUILD_EDIT_REPAIR_AND_DELIVERY.md": "4982f8d78700e6b07d35fb60e94152351df5f7108445308c61c3ad296fc00205"},
+      "source_sha256": {"production/knowledge/15_BUILD_EDIT_REPAIR_AND_DELIVERY.md": "3620141dae7a67473655f3b4a1f3aa044b5b3ce4670661bae4cf204f23573a28"},
       "transform_type": "COPY",
-      "output_sha256": "4982f8d78700e6b07d35fb60e94152351df5f7108445308c61c3ad296fc00205"
+      "output_sha256": "3620141dae7a67473655f3b4a1f3aa044b5b3ce4670661bae4cf204f23573a28"
     },
     {
       "reference_id": "verification",
@@ -147,9 +147,9 @@
       "output_path": "production/sim/references/verification.md",
       "package_path": "references/verification.md",
       "canonical_source_paths": ["production/knowledge/16_VERIFICATION_AND_QA.md"],
-      "source_sha256": {"production/knowledge/16_VERIFICATION_AND_QA.md": "c072584bad1765bc6b3d47e7acb7af2353410e8220f0970f951977c9488e1898"},
+      "source_sha256": {"production/knowledge/16_VERIFICATION_AND_QA.md": "af3e69c1d2f07e7fd4400aad36eca5e4a919d72a0e9c3ce9aadd60522fc13561"},
       "transform_type": "COPY",
-      "output_sha256": "c072584bad1765bc6b3d47e7acb7af2353410e8220f0970f951977c9488e1898"
+      "output_sha256": "af3e69c1d2f07e7fd4400aad36eca5e4a919d72a0e9c3ce9aadd60522fc13561"
     }
   ]
 }
