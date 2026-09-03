@@ -1,0 +1,6 @@
+# Synthetic Furniture hierarchy example
+Name "SIM_EXAMPLE_FURNITURE"
+Transforms [
+    { Name "Seat"; }
+    { Name "Back"; TransformParent "Seat"; }
+]
