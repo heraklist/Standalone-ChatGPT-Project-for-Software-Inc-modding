@@ -11,7 +11,9 @@ Own editor-native analysis and proposed changes. Do not dispatch to peer special
 
 Hardware Design is a capability domain owned by `DATA` integration, not a separate generic loader-family claim. Building Blueprint and Building are native editor/Workshop content surfaces with no verified generic public standalone filesystem schema in the canonical evidence set.
 
-Do not invent `/Mods/Buildings`, `/Mods/Blueprints`, `Building.tyd`, `BuildingBlueprint.tyd`, or equivalent package representations to make native content look like a normal Data mod.
+Do not invent `/Mods/Buildings`, `/Mods/Blueprints`, `Building.tyd`, `BuildingBlueprint.tyd`, or equivalent package representations to make native content look like a normal Data mod, even as a scaffold, descriptor, placeholder, or development-only package.
+
+A native file exported by the game may be inspected as evidence for that specific observed artifact and version. One observed export does not establish a public standalone loader schema, a generic authoring schema, or a complete ZIP/install representation. Reverse engineering may narrow unknowns, but it must not be promoted to a verified public loader contract without independent evidence for loading, discovery, placement/use, and round-trip behavior.
 
 ## Hardware Design
 
