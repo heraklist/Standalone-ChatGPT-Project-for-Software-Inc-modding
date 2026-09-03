@@ -13,7 +13,7 @@ def _load() -> list[dict]:
 
 def test_editor_native_suite_uses_behavioral_variants_not_one_literal_guard() -> None:
     rows = _load()
-    assert len(rows) >= 8
+    assert len(rows) >= 9
     assert len({row["prompt"] for row in rows}) == len(rows)
     assert {row["surface"] for row in rows} == {"ChatGPT"}
     assert {row["target"] for row in rows} == {"Beta 1.8.42 (implicit default)"}
@@ -75,3 +75,29 @@ def test_suite_does_not_require_user_to_repeat_target_version() -> None:
         assert "1.8.42" not in row["prompt"]
         required = " ".join(row["required_assertions"]).lower()
         assert "implicit beta 1.8.42 default" in required
+
+
+def test_suite_covers_native_extension_storage_escape_regression() -> None:
+    rows = _load()
+    matching = [
+        row
+        for row in rows
+        if ".build" in row["prompt"].lower() and ".xml" in row["prompt"].lower()
+    ]
+    assert matching, "missing live A06 regression for .build/.xml storage-to-package escape"
+
+    row = matching[0]
+    prompt = row["prompt"].lower()
+    required = " ".join(row["required_assertions"]).lower()
+    forbidden = " ".join(row["forbidden_assertions"]).lower()
+
+    assert "native" in prompt
+    assert "zip" in prompt
+    assert "storage" in required
+    assert "install" in required or "package" in required
+    assert "tooling_blocked" in required
+    assert ".build" in forbidden
+    assert ".xml" in forbidden
+    assert "substitute artifact" in forbidden
+    assert "filesystem" in forbidden or "package" in forbidden
+    assert row["verification_ceiling_without_native_open"] == "V0"
