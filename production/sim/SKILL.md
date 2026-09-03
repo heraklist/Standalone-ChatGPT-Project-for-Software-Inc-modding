@@ -53,16 +53,16 @@ For Building and Building Blueprint requests, do not create placeholder `Buildin
 Route before artifact generation. Load only the smallest owner set needed for the request; add evidence, compatibility, debugging, build/repair, or verification references only when the task requires them. Canonical references define factual constraints; internal domain modules define the bounded workflow for applying them.
 
 - Evidence/version conflicts → `references/evidence-truth.md`.
-- Data / TyD → `references/data-modding.md` + `references/internal/domains/data-tyd.md`.
-- SIPL / Level 3 → `references/data-modding.md` + `references/sipl.md` + `references/internal/domains/sipl.md`.
+- Data / TyD → `references/data.md` + `references/internal/domains/data-tyd.md`.
+- SIPL / Level 3 → `references/data.md` + `references/sipl.md` + `references/internal/domains/sipl.md`.
 - Code / Workshop / DLL → `references/code-core.md` + `references/code-runtime.md` + `references/internal/domains/code-modding.md`.
 - Furniture → `references/furniture.md` + `references/internal/domains/furniture.md`.
 - Materials → `references/materials.md` + `references/internal/domains/materials.md`.
 - Localization → `references/localization.md` + `references/internal/domains/localization.md`.
 - Building / Building Blueprint / Hardware Design → `references/editor-content.md` + `references/internal/domains/editor-native.md`.
-- Compatibility, migration, identifiers, packaging decisions → `references/compatibility-collisions.md` + `references/internal/domains/compatibility-packaging.md`.
-- Load/reload/runtime diagnosis → `references/debugging-runtime.md`.
-- Artifact intake, repair, packaging, delivery → `references/build-repair-delivery.md`.
+- Compatibility, migration, identifiers, packaging decisions → `references/compatibility.md` + `references/internal/domains/compatibility-packaging.md`.
+- Load/reload/runtime diagnosis → `references/debugging.md`.
+- Artifact intake, repair, packaging, delivery → `references/delivery.md`.
 - Verification state vocabulary and proof boundaries → `references/state-vocabulary.md` + `references/verification.md`.
 
 For Building / Building Blueprint requests, the editor-native route is mandatory before any filesystem or artifact work. If the owner material does not establish a supported public loader/package representation, remain on the native/editor path and fail closed rather than synthesizing a substitute package.
