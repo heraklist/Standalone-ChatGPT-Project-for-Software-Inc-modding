@@ -10,12 +10,13 @@ A06 = ROOT / "work/evidence/sim-acceptance/2026-09-03-chatgpt-a06.json"
 
 
 def test_editor_native_guardrail_rejects_placeholder_filesystem_scaffolds() -> None:
-    editor = EDITOR.read_text(encoding="utf-8")
-    sim = SIM.read_text(encoding="utf-8")
+    editor = EDITOR.read_text(encoding="utf-8").lower()
+    sim = SIM.read_text(encoding="utf-8").lower()
 
     assert "even as a scaffold, descriptor, placeholder, or development-only package" in editor
     assert "one observed export does not establish a public standalone loader schema" in editor
-    assert "Do not create placeholder Building.tyd or Mods-root Building/Blueprint scaffolds" in sim
+    assert "do not create placeholder `building.tyd` or mods-root building/blueprint scaffolds" in sim
+    assert "does not establish a generic standalone loader or install schema" in sim
 
 
 def test_a06_records_live_no_fabrication_failure() -> None:
