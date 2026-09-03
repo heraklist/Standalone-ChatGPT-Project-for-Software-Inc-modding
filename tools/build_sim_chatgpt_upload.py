@@ -8,6 +8,7 @@ from zipfile import ZIP_DEFLATED, ZipFile, ZipInfo
 
 ROOT = Path(__file__).resolve().parents[1]
 FIXED_ZIP_TIME = (1980, 1, 1, 0, 0, 0)
+RUNTIME_PROVENANCE_PATH = "manifests/runtime-provenance.json"
 
 
 def _sha256_bytes(data: bytes) -> str:
@@ -25,6 +26,27 @@ def _internal_reference_path(relative: Path) -> str:
     return f"references/internal/{parts[0]}/{parts[1]}.md"
 
 
+def _source_path(root: Path, source: Path) -> str:
+    return source.resolve().relative_to(root.resolve()).as_posix()
+
+
+def _provenance_entry(
+    *,
+    root: Path,
+    source: Path,
+    package_path: str,
+    packaged_data: bytes,
+    transform_type: str,
+) -> dict:
+    return {
+        "source_path": _source_path(root, source),
+        "package_path": package_path,
+        "transform_type": transform_type,
+        "source_sha256": _sha256_file(source),
+        "package_sha256": _sha256_bytes(packaged_data),
+    }
+
+
 def build_chatgpt_upload(root: Path, out_dir: Path | None = None) -> tuple[Path, dict]:
     sim_root = root / "production/sim"
     manifest = json.loads((sim_root / "manifests/sim-manifest.json").read_text(encoding="utf-8"))
@@ -35,20 +57,41 @@ def build_chatgpt_upload(root: Path, out_dir: Path | None = None) -> tuple[Path,
     if version != "0.2.0-preview":
         raise RuntimeError("unexpected SIM Preview version")
 
-    root_skill = (sim_root / "SKILL.md").read_text(encoding="utf-8")
+    root_skill_path = sim_root / "SKILL.md"
+    root_skill = root_skill_path.read_text(encoding="utf-8")
     payload: dict[str, bytes] = {}
+    provenance: dict[str, dict] = {}
     internal_refs: list[str] = []
 
     for source in sorted(path for path in sim_root.rglob("*") if path.is_file()):
         relative = source.relative_to(sim_root)
-        if relative.as_posix() == "SKILL.md":
+        relative_path = relative.as_posix()
+        if relative_path == "SKILL.md":
             continue
+        if relative_path == RUNTIME_PROVENANCE_PATH:
+            raise RuntimeError("runtime provenance must be generated, not committed into production/sim")
         if relative.name == "SKILL.md" and relative.parts[0] in {"domains", "lifecycle"}:
             target = _internal_reference_path(relative)
+            data = source.read_bytes()
             internal_refs.append(target)
-            payload[target] = source.read_bytes()
+            payload[target] = data
+            provenance[target] = _provenance_entry(
+                root=root,
+                source=source,
+                package_path=target,
+                packaged_data=data,
+                transform_type="REMAP",
+            )
             continue
-        payload[relative.as_posix()] = source.read_bytes()
+        data = source.read_bytes()
+        payload[relative_path] = data
+        provenance[relative_path] = _provenance_entry(
+            root=root,
+            source=source,
+            package_path=relative_path,
+            packaged_data=data,
+            transform_type="COPY",
+        )
 
     chatgpt_tools: dict[str, dict] = {}
     for tool_name, tool in sorted(capabilities.get("tools", {}).items()):
@@ -61,7 +104,15 @@ def build_chatgpt_upload(root: Path, out_dir: Path | None = None) -> tuple[Path,
         package_path = tool["package_path"]
         if package_path.startswith("/") or ".." in Path(package_path).parts:
             raise RuntimeError(f"unsafe bundled SIM tool package path: {package_path}")
-        payload[package_path] = repository_source.read_bytes()
+        data = repository_source.read_bytes()
+        payload[package_path] = data
+        provenance[package_path] = _provenance_entry(
+            root=root,
+            source=repository_source,
+            package_path=package_path,
+            packaged_data=data,
+            transform_type="COPY",
+        )
         chatgpt_tools[tool_name] = {
             "bundled": True,
             "execution": surface["execution"],
@@ -77,7 +128,26 @@ def build_chatgpt_upload(root: Path, out_dir: Path | None = None) -> tuple[Path,
         "",
     ]
     appendix.extend(f"- `{path}`" for path in sorted(internal_refs))
-    payload["SKILL.md"] = (root_skill.rstrip() + "\n" + "\n".join(appendix) + "\n").encode("utf-8")
+    root_data = (root_skill.rstrip() + "\n" + "\n".join(appendix) + "\n").encode("utf-8")
+    payload["SKILL.md"] = root_data
+    provenance["SKILL.md"] = _provenance_entry(
+        root=root,
+        source=root_skill_path,
+        package_path="SKILL.md",
+        packaged_data=root_data,
+        transform_type="AUGMENT",
+    )
+
+    runtime_provenance = {
+        "schema_version": 1,
+        "surface": "ChatGPT",
+        "self_entry_excluded": True,
+        "entries": [provenance[name] for name in sorted(provenance)],
+    }
+    runtime_provenance_bytes = (
+        json.dumps(runtime_provenance, ensure_ascii=False, indent=2) + "\n"
+    ).encode("utf-8")
+    payload[RUNTIME_PROVENANCE_PATH] = runtime_provenance_bytes
 
     nested_public = [name for name in payload if name.endswith("SKILL.md") and name != "SKILL.md"]
     if nested_public:
@@ -100,6 +170,7 @@ def build_chatgpt_upload(root: Path, out_dir: Path | None = None) -> tuple[Path,
         "public_skill_entries": ["SKILL.md"],
         "internal_reference_entries": sorted(internal_refs),
         "tool_capabilities": chatgpt_tools,
+        "runtime_provenance_sha256": _sha256_bytes(runtime_provenance_bytes),
         "bundle_sha256": _sha256_file(zip_path),
         "files": {name: _sha256_bytes(data) for name, data in sorted(payload.items())},
     }
