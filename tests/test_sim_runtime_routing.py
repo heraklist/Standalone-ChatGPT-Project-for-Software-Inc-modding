@@ -11,7 +11,7 @@ def test_root_skill_declares_packaged_progressive_disclosure_paths() -> None:
 
     required_paths = {
         "references/evidence-truth.md",
-        "references/data-modding.md",
+        "references/data.md",
         "references/sipl.md",
         "references/code-core.md",
         "references/code-runtime.md",
@@ -19,9 +19,10 @@ def test_root_skill_declares_packaged_progressive_disclosure_paths() -> None:
         "references/materials.md",
         "references/localization.md",
         "references/editor-content.md",
-        "references/debugging-runtime.md",
-        "references/compatibility-collisions.md",
-        "references/build-repair-delivery.md",
+        "references/debugging.md",
+        "references/compatibility.md",
+        "references/delivery.md",
+        "references/state-vocabulary.md",
         "references/verification.md",
         "references/internal/domains/data-tyd.md",
         "references/internal/domains/sipl.md",
