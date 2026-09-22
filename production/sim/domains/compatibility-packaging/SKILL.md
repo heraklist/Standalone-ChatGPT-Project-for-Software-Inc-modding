@@ -30,6 +30,15 @@ The canonical evidence set does not establish a documented public mod-level depe
 
 ## Packaging and verification
 
-Use manifests and cryptographic hashes to make generated/repaired package contents inspectable and reproducible where a package schema is actually documented. Verify expected files, identities, collisions, referenced assets, hashes, and distribution profile before delivery.
+Use manifests and cryptographic hashes to make generated/repaired package contents inspectable and reproducible where a package schema is actually documented. Run `validate_package_tree_report` when a package-tree claim depends on the repository validator and preserve its explicit coverage ceiling.
+
+Coverage states are evidence claims, not cosmetic labels:
+
+- `FULL_STATIC`: the repository has a family-level static package check for the claimed surface.
+- `PARTIAL_STATIC`: only named static checks are covered; untested package semantics remain outside the claim.
+- `UNSUPPORTED`: no family-completeness package validator is implemented.
+- `EDITOR_NATIVE_REQUIRED`: the artifact belongs on an editor/native surface and generic package validation is tooling-blocked.
+
+A family reported as `PARTIAL_STATIC`, `UNSUPPORTED`, or `EDITOR_NATIVE_REQUIRED` **must not be presented as fully validated**. The legacy `validate_package_tree` error-list API is compatibility output, not evidence of broader validation coverage.
 
 Editor-native content must remain on its native artifact surface; do not manufacture a generic ZIP/TyD representation for Building or Blueprint content when no public package schema is verified. Unavailable runtime/native checks remain `NOT_EXECUTED`.
