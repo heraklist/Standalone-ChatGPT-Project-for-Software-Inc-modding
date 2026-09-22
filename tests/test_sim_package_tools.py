@@ -135,3 +135,20 @@ def test_validation_coverage_is_explicit_for_known_package_families() -> None:
         assert validation_coverage(family) == "EDITOR_NATIVE_REQUIRED"
     for family in ("FURNITURE", "MATERIALS", "LOCALIZATION", "CODE"):
         assert validation_coverage(family) != "FULL_STATIC"
+
+
+
+def test_packaging_skill_exposes_validation_coverage_ceiling() -> None:
+    root = Path(__file__).resolve().parents[1]
+    text = (
+        root
+        / "production/sim/domains/compatibility-packaging/SKILL.md"
+    ).read_text(encoding="utf-8")
+    for phrase in (
+        "FULL_STATIC",
+        "UNSUPPORTED",
+        "EDITOR_NATIVE_REQUIRED",
+        "validate_package_tree_report",
+        "must not be presented as fully validated",
+    ):
+        assert phrase in text
