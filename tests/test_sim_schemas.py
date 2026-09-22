@@ -333,3 +333,16 @@ def test_v022_certification_profile_freezes_required_surface_cases() -> None:
         "A01", "A03", "A09", "A10", "A12"
     ]
     assert profile["surfaces"]["ChatGPT Project"]["release_blocking"] is False
+
+
+def test_session_schema_accepts_finalization_metadata(
+    minimal_session: dict[str, object],
+) -> None:
+    session = copy.deepcopy(minimal_session)
+    session["architecture"] = {
+        "artifact_surface": "MOD_PACKAGE",
+        "delivery_mode": "INSTALLABLE_ZIP",
+    }
+    session["artifact"]["family"] = "DATA_TYD"
+    session["artifact"]["claim_class"] = "STATIC_DELIVERY"
+    validator("sim-session.schema.json").validate(session)
