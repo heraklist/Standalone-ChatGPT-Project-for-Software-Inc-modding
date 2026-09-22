@@ -71,3 +71,21 @@ def test_verifier_rejects_reported_file_hash_mismatch(tmp_path: Path) -> None:
     _rewrite_zip(zip_path, altered, add={"production/sim/SKILL.md": b"tampered"}, drop={"production/sim/SKILL.md"})
     errors = verify_sim_release(altered, _report_path(tmp_path), "0.2.0-preview")
     assert any("file SHA-256 mismatch" in error or "bundle SHA-256 mismatch" in error for error in errors)
+
+
+def test_verifier_rejects_report_only_preview_certification(tmp_path: Path) -> None:
+    from tools.verify_sim_release import verify_sim_release
+
+    zip_path, report = build_sim_release(ROOT, out_dir=tmp_path)
+    report_path = _report_path(tmp_path)
+    report["surface_acceptance"] = "PASS"
+    report["known_gaps"] = []
+    report["release_status"] = "PREVIEW_CERTIFIED"
+    report_path.write_text(json.dumps(report), encoding="utf-8")
+
+    errors = verify_sim_release(
+        zip_path,
+        report_path,
+        expected_version=report["sim_version"],
+    )
+    assert any("PREVIEW_CERTIFIED" in error for error in errors)
