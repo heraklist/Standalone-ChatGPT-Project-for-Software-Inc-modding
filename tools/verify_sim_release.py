@@ -6,6 +6,8 @@ import json
 from pathlib import Path
 from zipfile import BadZipFile, ZipFile
 
+from tools.sim_acceptance import summarize_acceptance
+
 REQUIRED_ENTRIES = {
     "production/sim/SKILL.md",
     "production/sim/manifests/reference-source-map.json",
@@ -60,12 +62,63 @@ def verify_sim_release(
     }:
         errors.append("SIM release status is not a Preview state")
 
-    if report.get("release_status") == "PREVIEW_CERTIFIED" and (
-        certification_context is None or evidence_dir is None
-    ):
-        errors.append(
-            "PREVIEW_CERTIFIED requires certification context and acceptance evidence"
-        )
+    release_status = report.get("release_status")
+    live_states = {
+        "PREVIEW_LIVE_INCOMPLETE",
+        "PREVIEW_LIVE_FAILED",
+        "PREVIEW_CERTIFIED",
+    }
+    if release_status in {"PREVIEW_BUILD", "PREVIEW_VALIDATED"}:
+        if report.get("surface_acceptance") != "NOT_EVALUATED":
+            errors.append(
+                f"{release_status} requires surface_acceptance NOT_EVALUATED"
+            )
+        if report.get("known_gaps") != []:
+            errors.append(f"{release_status} requires empty known_gaps")
+    elif release_status in live_states:
+        if certification_context is None or evidence_dir is None:
+            errors.append(
+                f"{release_status} requires certification context and acceptance evidence"
+            )
+        else:
+            expected_source_revision = (
+                "exact-target-manifest-sha256:"
+                + certification_context.exact_target_manifest_sha256
+            )
+            if report.get("canonical_source_revision") != expected_source_revision:
+                errors.append(
+                    "exact-target certification context does not match release report"
+                )
+            cases = required_cases or tuple(
+                f"A{index:02d}" for index in range(1, 13)
+            )
+            try:
+                summary = summarize_acceptance(
+                    evidence_dir, certification_context, cases
+                )
+            except ValueError as exc:
+                errors.append(f"invalid acceptance evidence: {exc}")
+            else:
+                expected_state = {
+                    "PASS": "PREVIEW_CERTIFIED",
+                    "FAIL": "PREVIEW_LIVE_FAILED",
+                    "INCOMPLETE": "PREVIEW_LIVE_INCOMPLETE",
+                }[summary.status]
+                if release_status != expected_state:
+                    errors.append(
+                        f"{release_status} does not match acceptance state "
+                        f"{summary.status}; expected {expected_state}"
+                    )
+                if report.get("surface_acceptance") != summary.status:
+                    errors.append(
+                        "surface_acceptance does not match independently "
+                        "recomputed acceptance state"
+                    )
+                if report.get("known_gaps") != list(summary.known_gaps):
+                    errors.append(
+                        "known_gaps do not match independently recomputed "
+                        "acceptance gaps"
+                    )
 
     if report.get("bundle_sha256") != _sha256_file(zip_path):
         errors.append("bundle SHA-256 mismatch")
