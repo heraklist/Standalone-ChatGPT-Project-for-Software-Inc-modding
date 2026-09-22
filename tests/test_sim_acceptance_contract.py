@@ -150,3 +150,23 @@ def test_installation_evidence_id_does_not_split_behavioral_candidate(
     )
     assert summary.status == "PASS"
     assert summary.known_gaps == ()
+
+
+def test_acceptance_summary_rejects_schema_invalid_matched_record(
+    tmp_path: Path,
+) -> None:
+    from tools.sim_acceptance import summarize_acceptance
+
+    record = _valid_record()
+    del record["installation_evidence_id"]
+    (tmp_path / "a06-invalid.json").write_text(
+        json.dumps(record),
+        encoding="utf-8",
+    )
+
+    with pytest.raises(ValueError, match="schema"):
+        summarize_acceptance(
+            tmp_path,
+            _context(),
+            required_cases=("A06",),
+        )
