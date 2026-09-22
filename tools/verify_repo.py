@@ -73,6 +73,30 @@ def verify(root:Path)->list[str]:
         if data.get('raw_archive_committed') is not False:
             errors.append('sanitized exact-target capture must not commit raw proprietary archive')
 
+        managed_names={
+            entry.get('name')
+            for entry in data.get('managed_assemblies',[])
+            if isinstance(entry,dict) and isinstance(entry.get('name'),str)
+        }
+        private_capture_names={
+            entry.get('name')
+            for entry in data.get('capture_bundles',[])
+            if isinstance(entry,dict)
+            and entry.get('raw_committed') is False
+            and isinstance(entry.get('name'),str)
+        }
+        for path in sorted(p for p in corpus.rglob('*') if p.is_file()):
+            if path.name in managed_names:
+                errors.append(
+                    'forbidden raw game binary in public corpus: '
+                    + path.relative_to(root).as_posix()
+                )
+            if path.name in private_capture_names:
+                errors.append(
+                    'forbidden raw capture bundle in public corpus: '
+                    + path.relative_to(root).as_posix()
+                )
+
         vanilla_path=corpus/'resolved-vanilla-data-manifest.json'
         collision_path=corpus/'identifiers-collision-index.json'
         if not vanilla_path.is_file():
