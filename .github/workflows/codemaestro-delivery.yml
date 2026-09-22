@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - 'codemaestro/delivery-dl001-20260922'
+  pull_request:
+    branches:
+      - 'sim/v0.2.1-remediation'
 
 permissions:
   contents: read
