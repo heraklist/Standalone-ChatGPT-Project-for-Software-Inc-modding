@@ -43,7 +43,13 @@ def verify_sim_release(zip_path: Path, report_path: Path, expected_version: str)
         errors.append("SIM release target is not Beta 1.8.42")
     if report.get("evidence_grade") != "GENERATION_GRADE":
         errors.append("SIM release evidence grade is not GENERATION_GRADE")
-    if report.get("release_status") not in {"PREVIEW_CANDIDATE", "PREVIEW_ACCEPTED"}:
+    if report.get("release_status") not in {
+        "PREVIEW_BUILD",
+        "PREVIEW_VALIDATED",
+        "PREVIEW_LIVE_INCOMPLETE",
+        "PREVIEW_LIVE_FAILED",
+        "PREVIEW_CERTIFIED",
+    }:
         errors.append("SIM release status is not a Preview state")
 
     if report.get("bundle_sha256") != _sha256_file(zip_path):
