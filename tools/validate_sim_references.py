@@ -58,14 +58,21 @@ def validate_references(root: Path) -> list[str]:
                 errors.append(f"missing canonical source: {source_relative}")
                 continue
             expected = source_hashes.get(source_relative)
-            if expected != sha256_file(source_path):
-                errors.append(f"source hash mismatch: {source_relative}")
+            actual = sha256_file(source_path)
+            if expected != actual:
+                errors.append(
+                    f"source hash mismatch: {source_relative} expected={expected} actual={actual}"
+                )
 
         output_path = root / output_relative
         if not output_path.is_file():
             errors.append(f"missing reference output: {output_relative}")
-        elif output_hash != sha256_file(output_path):
-            errors.append(f"output hash mismatch: {output_relative}")
+        else:
+            actual_output = sha256_file(output_path)
+            if output_hash != actual_output:
+                errors.append(
+                    f"output hash mismatch: {output_relative} expected={output_hash} actual={actual_output}"
+                )
 
     return errors
 

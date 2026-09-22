@@ -32,4 +32,6 @@ Placing external dependencies in `Software Inc_Data/Managed` is an installation-
 
 ## Validation boundary
 
-`tools/validate_code_profile.py` is a conservative lexical checker, not a C# compiler. Use it to catch evidence-backed profile hazards such as enum syntax and expression-bodied members for `GAME_COMPILED_CSHARP3`. Compiler success does not establish runtime/API correctness; unavailable runtime checks remain `NOT_EXECUTED`.
+Consult `manifests/tool-capabilities.json` before claiming deterministic tool execution. `tools/validate_code_profile.py` is a conservative lexical checker, not a C# compiler. On surfaces where the manifest says the tool is bundled, bundled does not mean executable: execute it only when the active host actually exposes a trusted Python/script execution capability. If that capability is unavailable, perform the strongest manual/static review and record the check as `NOT_EXECUTED`.
+
+When executable, use the checker to catch evidence-backed profile hazards such as enum syntax and expression-bodied members for `GAME_COMPILED_CSHARP3`. Record actual tool output rather than inferring a PASS from the presence of the file. Compiler success does not establish runtime/API correctness; unavailable runtime checks remain `NOT_EXECUTED`.

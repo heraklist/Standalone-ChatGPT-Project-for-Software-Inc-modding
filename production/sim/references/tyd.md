@@ -9,8 +9,8 @@ aliases: [TyD, syntax, parser]
 use_for: [authoring, repair, validation]
 do_not_use_for: [inventing undocumented engine surfaces]
 source_classes: [OFFICIAL, VANILLA, RUNTIME]
-currency_summary: TARGET_BRANCH_WITH_EXACT_TARGET_GATE
-known_version_gaps: [Beta 1.8.42 exact environment corpus pending]
+currency_summary: TARGET_BRANCH
+known_version_gaps: [Claim-specific parser behavior beyond documented/shipped patterns]
 ---
 
 # TyD Foundations
@@ -31,4 +31,4 @@ Generate the form demonstrated by Software Inc documentation/vanilla (`True`/`Fa
 A TyD list is `[ a; b ]`; SIPL array construction is `~[a, b]`. TyD `#` comments and SIPL `//` comments belong to different parsers. Lowercase `true`/`false` observed inside SIPL script strings do not contradict canonical TyD data booleans.
 
 ## Known gaps / evidence limits
-Exact Beta 1.8.42 parser behavior beyond documented/shipped patterns remains exact-target evidence work.
+Parser behavior beyond documented/shipped patterns remains claim-specific exact-target evidence work.

@@ -9,8 +9,8 @@ aliases: [Code runtime, UI, persistence, networking]
 use_for: [authoring, repair, validation]
 do_not_use_for: [inventing undocumented engine surfaces]
 source_classes: [OFFICIAL, VANILLA, RUNTIME]
-currency_summary: TARGET_BRANCH_WITH_EXACT_TARGET_GATE
-known_version_gaps: [Exact target assemblies pending]
+currency_summary: EXACT_TARGET
+known_version_gaps: [Claim-specific UI/network/persistence behavior may still require runtime proof]
 ---
 
 # Code Runtime, UI, Persistence and Security
@@ -38,4 +38,4 @@ Studio QA recommendations for UI include dynamic add/remove, localization expans
 `GiveMeFreedom` materially changes the security/distribution model. Treat it as local DLL/full-access architecture and surface the user-impact/security consequences.
 
 ## Known gaps / evidence limits
-Linked Unity docs do not replace exact-target assembly evidence for Software Inc-specific APIs.
+The Beta 1.8.42 managed assembly surface is captured. Linked Unity docs do not upgrade delegated engine APIs into Software Inc-specific guarantees; remaining UI/network/persistence behavior claims are claim-specific and require matching signature or runtime evidence.

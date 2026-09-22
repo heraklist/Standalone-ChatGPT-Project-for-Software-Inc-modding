@@ -34,6 +34,18 @@ def test_preview_builder_emits_canonical_identity_and_schema_valid_report(tmp_pa
     assert json.loads(report_path.read_text(encoding="utf-8")) == report
 
 
+def test_preview_report_reflects_recorded_live_acceptance_and_unexecuted_builder_checks(tmp_path: Path) -> None:
+    from tools.build_sim_release import build_sim_release
+
+    _, report = build_sim_release(ROOT, channel="preview", out_dir=tmp_path)
+
+    assert report["surface_acceptance"] == "FAIL"
+    assert any("A06" in gap and "FAIL" in gap for gap in report["known_gaps"])
+    assert any("A07" in gap and "NOT_TESTED" in gap for gap in report["known_gaps"])
+    assert report["security_results"] == ["NOT_EXECUTED_BY_RELEASE_BUILDER"]
+    assert report["artifact_fixture_results"] == ["NOT_EXECUTED_BY_RELEASE_BUILDER"]
+
+
 def test_preview_bundle_contains_only_runtime_sim_payload(tmp_path: Path) -> None:
     from tools.build_sim_release import build_sim_release
 
