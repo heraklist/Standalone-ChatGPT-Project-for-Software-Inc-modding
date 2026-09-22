@@ -164,11 +164,11 @@ def release_manifest() -> dict[str, object]:
         },
         "security_results": ["security: PASS"],
         "artifact_fixture_results": ["fixture: PASS"],
-        "surface_acceptance": "NOT_RUN",
+        "surface_acceptance": "NOT_EVALUATED",
         "known_gaps": [],
         "bundle_sha256": "e" * 64,
         "files": {"SKILL.md": "f" * 64},
-        "release_status": "PREVIEW_CANDIDATE",
+        "release_status": "PREVIEW_VALIDATED",
     }
 
 
