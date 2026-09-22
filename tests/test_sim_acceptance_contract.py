@@ -170,3 +170,32 @@ def test_acceptance_summary_rejects_schema_invalid_matched_record(
             _context(),
             required_cases=("A06",),
         )
+
+
+def test_acceptance_summary_rejects_disconnected_cyclic_retest_records(
+    tmp_path: Path,
+) -> None:
+    from tools.sim_acceptance import summarize_acceptance
+
+    _write_record(
+        tmp_path / "a06-terminal.json",
+        result="PASS",
+        retest_of=None,
+    )
+    _write_record(
+        tmp_path / "a06-cycle-a.json",
+        result="FAIL",
+        retest_of="a06-cycle-b",
+    )
+    _write_record(
+        tmp_path / "a06-cycle-b.json",
+        result="PASS",
+        retest_of="a06-cycle-a",
+    )
+
+    with pytest.raises(ValueError, match="retest chain"):
+        summarize_acceptance(
+            tmp_path,
+            _context(),
+            required_cases=("A06",),
+        )
