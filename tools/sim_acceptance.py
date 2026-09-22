@@ -127,12 +127,21 @@ def _terminal_result(records: list[dict], case_id: str) -> str:
     seen: set[str] = set()
     current = terminal
     by_id = {record["_record_id"]: record for record in records}
-    while current.get("retest_of") is not None:
+    while True:
         current_id = current["_record_id"]
         if current_id in seen:
             raise ValueError(f"cyclic retest chain for {case_id}")
         seen.add(current_id)
-        current = by_id[current["retest_of"]]
+        parent = current.get("retest_of")
+        if parent is None:
+            break
+        current = by_id[parent]
+
+    if seen != record_ids:
+        leftover = ", ".join(sorted(record_ids - seen))
+        raise ValueError(
+            f"disconnected or cyclic retest chain for {case_id}: {leftover}"
+        )
 
     return terminal["result"]
 
