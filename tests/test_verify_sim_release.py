@@ -89,3 +89,168 @@ def test_verifier_rejects_report_only_preview_certification(tmp_path: Path) -> N
         expected_version=report["sim_version"],
     )
     assert any("PREVIEW_CERTIFIED" in error for error in errors)
+
+
+def _certification_context(*, candidate: str = "a" * 64, target: str, protocol: str = "sim-live-v2"):
+    from tools.sim_acceptance import CertificationContext
+
+    return CertificationContext(
+        candidate_tree_sha256=candidate,
+        semantic_aggregate_sha256="b" * 64,
+        source_commit="c" * 40,
+        plugin_version="0.2.0-preview",
+        exact_target_manifest_sha256=target,
+        protocol_version=protocol,
+        surface="ChatGPT",
+    )
+
+
+def _write_acceptance_records(
+    evidence_dir: Path,
+    *,
+    candidate: str = "a" * 64,
+    target: str,
+    protocol: str = "sim-live-v2",
+    fail_case: str | None = None,
+) -> None:
+    evidence_dir.mkdir(parents=True, exist_ok=True)
+    for index in range(1, 13):
+        case_id = f"A{index:02d}"
+        record = {
+            "schema_version": 2,
+            "case_id": case_id,
+            "surface": "ChatGPT",
+            "result": "FAIL" if case_id == fail_case else "PASS",
+            "candidate_tree_sha256": candidate,
+            "semantic_aggregate_sha256": "b" * 64,
+            "candidate_source_commit": "c" * 40,
+            "plugin_version": "0.2.0-preview",
+            "exact_target_manifest_sha256": target,
+            "certification_protocol_version": protocol,
+            "installation_evidence_id": "install-a",
+            "host_observation": {},
+            "evidence_refs": [f"obs-{case_id}"],
+            "retest_of": None,
+            "recorded_at": "2026-09-22T20:00:00+03:00",
+        }
+        (evidence_dir / f"{case_id}.json").write_text(
+            json.dumps(record), encoding="utf-8"
+        )
+
+
+def _target_digest(report: dict) -> str:
+    prefix = "exact-target-manifest-sha256:"
+    assert report["canonical_source_revision"].startswith(prefix)
+    return report["canonical_source_revision"][len(prefix):]
+
+
+def test_certified_release_rejects_missing_evidence_directory(tmp_path: Path) -> None:
+    from tools.verify_sim_release import verify_sim_release
+
+    zip_path, report = build_sim_release(ROOT, out_dir=tmp_path)
+    target = _target_digest(report)
+    report["release_status"] = "PREVIEW_CERTIFIED"
+    report["surface_acceptance"] = "PASS"
+    report_path = _report_path(tmp_path)
+    report_path.write_text(json.dumps(report), encoding="utf-8")
+
+    errors = verify_sim_release(
+        zip_path,
+        report_path,
+        report["sim_version"],
+        certification_context=_certification_context(target=target),
+        evidence_dir=tmp_path / "missing-evidence",
+    )
+    assert any("acceptance" in error.lower() or "certified" in error.lower() for error in errors)
+
+
+def test_certified_release_rejects_wrong_exact_target_digest(tmp_path: Path) -> None:
+    from tools.verify_sim_release import verify_sim_release
+
+    zip_path, report = build_sim_release(ROOT, out_dir=tmp_path)
+    target = _target_digest(report)
+    evidence_dir = tmp_path / "evidence"
+    _write_acceptance_records(evidence_dir, target="d" * 64)
+    report["release_status"] = "PREVIEW_CERTIFIED"
+    report["surface_acceptance"] = "PASS"
+    report_path = _report_path(tmp_path)
+    report_path.write_text(json.dumps(report), encoding="utf-8")
+
+    errors = verify_sim_release(
+        zip_path,
+        report_path,
+        report["sim_version"],
+        certification_context=_certification_context(target="d" * 64),
+        evidence_dir=evidence_dir,
+    )
+    assert any("exact-target" in error.lower() for error in errors)
+    assert target != "d" * 64
+
+
+def test_certified_release_rejects_wrong_protocol_context(tmp_path: Path) -> None:
+    from tools.verify_sim_release import verify_sim_release
+
+    zip_path, report = build_sim_release(ROOT, out_dir=tmp_path)
+    target = _target_digest(report)
+    evidence_dir = tmp_path / "evidence"
+    _write_acceptance_records(evidence_dir, target=target, protocol="sim-live-v2")
+    report["release_status"] = "PREVIEW_CERTIFIED"
+    report["surface_acceptance"] = "PASS"
+    report_path = _report_path(tmp_path)
+    report_path.write_text(json.dumps(report), encoding="utf-8")
+
+    errors = verify_sim_release(
+        zip_path,
+        report_path,
+        report["sim_version"],
+        certification_context=_certification_context(
+            target=target, protocol="sim-live-v9"
+        ),
+        evidence_dir=evidence_dir,
+    )
+    assert any("PREVIEW_CERTIFIED" in error or "acceptance" in error.lower() for error in errors)
+
+
+def test_certified_release_rejects_foreign_candidate_pass_evidence(tmp_path: Path) -> None:
+    from tools.verify_sim_release import verify_sim_release
+
+    zip_path, report = build_sim_release(ROOT, out_dir=tmp_path)
+    target = _target_digest(report)
+    evidence_dir = tmp_path / "evidence"
+    _write_acceptance_records(evidence_dir, candidate="e" * 64, target=target)
+    report["release_status"] = "PREVIEW_CERTIFIED"
+    report["surface_acceptance"] = "PASS"
+    report_path = _report_path(tmp_path)
+    report_path.write_text(json.dumps(report), encoding="utf-8")
+
+    errors = verify_sim_release(
+        zip_path,
+        report_path,
+        report["sim_version"],
+        certification_context=_certification_context(target=target),
+        evidence_dir=evidence_dir,
+    )
+    assert any("PREVIEW_CERTIFIED" in error or "acceptance" in error.lower() for error in errors)
+
+
+def test_live_failed_release_rejects_manually_cleared_known_gaps(tmp_path: Path) -> None:
+    from tools.verify_sim_release import verify_sim_release
+
+    zip_path, report = build_sim_release(ROOT, out_dir=tmp_path)
+    target = _target_digest(report)
+    evidence_dir = tmp_path / "evidence"
+    _write_acceptance_records(evidence_dir, target=target, fail_case="A06")
+    report["release_status"] = "PREVIEW_LIVE_FAILED"
+    report["surface_acceptance"] = "FAIL"
+    report["known_gaps"] = []
+    report_path = _report_path(tmp_path)
+    report_path.write_text(json.dumps(report), encoding="utf-8")
+
+    errors = verify_sim_release(
+        zip_path,
+        report_path,
+        report["sim_version"],
+        certification_context=_certification_context(target=target),
+        evidence_dir=evidence_dir,
+    )
+    assert any("known_gaps" in error for error in errors)
