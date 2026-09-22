@@ -54,3 +54,38 @@ def test_validate_package_tree_is_family_aware(tmp_path: Path) -> None:
 
     errors = validate_package_tree(tmp_path, ["EDITOR_NATIVE"])
     assert any("no verified generic ZIP schema" in error for error in errors)
+
+
+def test_build_mod_zip_rejects_symlink_to_outside(tmp_path: Path) -> None:
+    from tools.build_mod_zip import build_mod_zip
+    import os
+
+    source = tmp_path / "mod"
+    source.mkdir()
+    outside = tmp_path / "outside-secret.txt"
+    outside.write_text("EXTERNAL_SECRET", encoding="utf-8")
+    try:
+        os.symlink(outside, source / "inside-link.txt")
+    except OSError as exc:
+        pytest.skip(f"symlink creation unavailable: {exc}")
+
+    with pytest.raises(ValueError):
+        build_mod_zip(source, tmp_path / "mod.zip")
+
+
+def test_build_mod_zip_is_reproducible_across_source_mtimes(tmp_path: Path) -> None:
+    from tools.build_mod_zip import build_mod_zip
+    import os
+
+    source = tmp_path / "mod"
+    source.mkdir()
+    payload = source / "payload.txt"
+    payload.write_text("same bytes", encoding="utf-8")
+
+    os.utime(payload, (1_000_000_000, 1_000_000_000))
+    first = build_mod_zip(source, tmp_path / "first.zip")
+
+    os.utime(payload, (1_700_000_000, 1_700_000_000))
+    second = build_mod_zip(source, tmp_path / "second.zip")
+
+    assert first["sha256"] == second["sha256"]
