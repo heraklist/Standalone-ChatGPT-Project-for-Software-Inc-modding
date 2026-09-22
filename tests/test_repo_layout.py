@@ -2,6 +2,7 @@ from pathlib import Path
 import csv
 import hashlib
 import sys
+import shutil
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
@@ -59,3 +60,65 @@ def test_production_registry_validates():
 
 def test_repo_verifier_accepts_current_tree():
     assert verify(ROOT) == []
+
+
+
+def _copy_repo_for_verifier(tmp_path: Path) -> Path:
+    target = tmp_path / "repo"
+    shutil.copytree(
+        ROOT,
+        target,
+        ignore=shutil.ignore_patterns(
+            ".git",
+            "dist",
+            "__pycache__",
+            ".pytest_cache",
+            ".superpowers",
+        ),
+    )
+    return target
+
+
+def test_repo_verifier_rejects_governed_game_assembly_in_public_corpus(
+    tmp_path: Path,
+) -> None:
+    root = _copy_repo_for_verifier(tmp_path)
+    forbidden = root / "work/corpus/beta-1.8.42/Assembly-CSharp.dll"
+    forbidden.write_bytes(b"synthetic forbidden game assembly")
+
+    errors = verify(root)
+
+    assert any(
+        "forbidden raw game binary" in error
+        and "Assembly-CSharp.dll" in error
+        for error in errors
+    )
+
+
+def test_repo_verifier_rejects_raw_capture_bundle_marked_private(
+    tmp_path: Path,
+) -> None:
+    root = _copy_repo_for_verifier(tmp_path)
+    forbidden = root / "work/corpus/beta-1.8.42/Beta1842-capture.zip"
+    forbidden.write_bytes(b"synthetic private capture")
+
+    errors = verify(root)
+
+    assert any(
+        "forbidden raw capture bundle" in error
+        and "Beta1842-capture.zip" in error
+        for error in errors
+    )
+
+
+def test_repo_verifier_does_not_blanket_ban_dll_outside_canonical_corpus(
+    tmp_path: Path,
+) -> None:
+    root = _copy_repo_for_verifier(tmp_path)
+    controlled = root / "tests/fixtures/synthetic-tool.dll"
+    controlled.parent.mkdir(parents=True, exist_ok=True)
+    controlled.write_bytes(b"synthetic fixture")
+
+    errors = verify(root)
+
+    assert not any("synthetic-tool.dll" in error for error in errors)
