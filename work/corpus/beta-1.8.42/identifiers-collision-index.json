@@ -1,89 +1,522 @@
 {
+  "schema_version": 1,
   "game_version": "Beta 1.8.42",
   "currency": "EXACT_TARGET",
   "complete": true,
   "source_probe_zip_sha256": "0057763b41f7433229b137cf73138fef8f8cd3a5a82512b6b757108e72a50746",
   "source_sanitized_bundle_sha256": "dc35c7d07bce42d1ee9168bd3797fae7e4615cc980ca0f386b6faa75f4e63571",
+  "normalization": {
+    "representation": "OBJECT_IDENTIFIERS",
+    "derived_from": "resolved-vanilla-data-manifest.json",
+    "identifier_set_preserved": true
+  },
   "namespaces": {
     "software_type": {
       "identifier_count": 12,
       "identifiers": [
-        "2D Editor",
-        "3D Editor",
-        "Antivirus",
-        "Audio Tool",
-        "Distribution platform",
-        "Embedded System",
-        "Game",
-        "Game Assets",
-        "Logistics Application",
-        "Office Software",
-        "Operating System",
-        "Website"
+        {
+          "identifier": "2D Editor",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/software_type"
+            }
+          ]
+        },
+        {
+          "identifier": "3D Editor",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/software_type"
+            }
+          ]
+        },
+        {
+          "identifier": "Antivirus",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/software_type"
+            }
+          ]
+        },
+        {
+          "identifier": "Audio Tool",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/software_type"
+            }
+          ]
+        },
+        {
+          "identifier": "Distribution platform",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/software_type"
+            }
+          ]
+        },
+        {
+          "identifier": "Embedded System",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/software_type"
+            }
+          ]
+        },
+        {
+          "identifier": "Game",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/software_type"
+            }
+          ]
+        },
+        {
+          "identifier": "Game Assets",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/software_type"
+            }
+          ]
+        },
+        {
+          "identifier": "Logistics Application",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/software_type"
+            }
+          ]
+        },
+        {
+          "identifier": "Office Software",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/software_type"
+            }
+          ]
+        },
+        {
+          "identifier": "Operating System",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/software_type"
+            }
+          ]
+        },
+        {
+          "identifier": "Website",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/software_type"
+            }
+          ]
+        }
       ]
     },
     "company_type": {
       "identifier_count": 7,
       "identifiers": [
-        "Antivirus",
-        "ComputerOS",
-        "ConsoleOS",
-        "CreativeTools",
-        "Games",
-        "Office",
-        "PhoneOS"
+        {
+          "identifier": "Antivirus",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/company_type"
+            }
+          ]
+        },
+        {
+          "identifier": "ComputerOS",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/company_type"
+            }
+          ]
+        },
+        {
+          "identifier": "ConsoleOS",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/company_type"
+            }
+          ]
+        },
+        {
+          "identifier": "CreativeTools",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/company_type"
+            }
+          ]
+        },
+        {
+          "identifier": "Games",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/company_type"
+            }
+          ]
+        },
+        {
+          "identifier": "Office",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/company_type"
+            }
+          ]
+        },
+        {
+          "identifier": "PhoneOS",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/company_type"
+            }
+          ]
+        }
       ]
     },
     "name_generator": {
       "identifier_count": 26,
       "identifiers": [
-        "2DEditor",
-        "3DEditor",
-        "Antivirus",
-        "Audio",
-        "Company",
-        "Console",
-        "ContentPack",
-        "ContractCompany",
-        "Distribution",
-        "Financial",
-        "Framework",
-        "GameAdventure",
-        "GameExpansion",
-        "GameFPS",
-        "GameRPG",
-        "GameRTS",
-        "GameSimulation",
-        "GameSport",
-        "Joystick",
-        "None",
-        "Office",
-        "OS",
-        "Phone",
-        "UMLNames",
-        "WebPublishing",
-        "Workflow"
+        {
+          "identifier": "2DEditor",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/name_generator"
+            }
+          ]
+        },
+        {
+          "identifier": "3DEditor",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/name_generator"
+            }
+          ]
+        },
+        {
+          "identifier": "Antivirus",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/name_generator"
+            }
+          ]
+        },
+        {
+          "identifier": "Audio",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/name_generator"
+            }
+          ]
+        },
+        {
+          "identifier": "Company",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/name_generator"
+            }
+          ]
+        },
+        {
+          "identifier": "Console",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/name_generator"
+            }
+          ]
+        },
+        {
+          "identifier": "ContentPack",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/name_generator"
+            }
+          ]
+        },
+        {
+          "identifier": "ContractCompany",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/name_generator"
+            }
+          ]
+        },
+        {
+          "identifier": "Distribution",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/name_generator"
+            }
+          ]
+        },
+        {
+          "identifier": "Financial",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/name_generator"
+            }
+          ]
+        },
+        {
+          "identifier": "Framework",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/name_generator"
+            }
+          ]
+        },
+        {
+          "identifier": "GameAdventure",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/name_generator"
+            }
+          ]
+        },
+        {
+          "identifier": "GameExpansion",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/name_generator"
+            }
+          ]
+        },
+        {
+          "identifier": "GameFPS",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/name_generator"
+            }
+          ]
+        },
+        {
+          "identifier": "GameRPG",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/name_generator"
+            }
+          ]
+        },
+        {
+          "identifier": "GameRTS",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/name_generator"
+            }
+          ]
+        },
+        {
+          "identifier": "GameSimulation",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/name_generator"
+            }
+          ]
+        },
+        {
+          "identifier": "GameSport",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/name_generator"
+            }
+          ]
+        },
+        {
+          "identifier": "Joystick",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/name_generator"
+            }
+          ]
+        },
+        {
+          "identifier": "None",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/name_generator"
+            }
+          ]
+        },
+        {
+          "identifier": "Office",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/name_generator"
+            }
+          ]
+        },
+        {
+          "identifier": "OS",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/name_generator"
+            }
+          ]
+        },
+        {
+          "identifier": "Phone",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/name_generator"
+            }
+          ]
+        },
+        {
+          "identifier": "UMLNames",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/name_generator"
+            }
+          ]
+        },
+        {
+          "identifier": "WebPublishing",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/name_generator"
+            }
+          ]
+        },
+        {
+          "identifier": "Workflow",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/name_generator"
+            }
+          ]
+        }
       ]
     },
     "personality": {
       "identifier_count": 16,
       "identifiers": [
-        "Cocky",
-        "Dramatic",
-        "Extrovert",
-        "Flirt",
-        "Generous",
-        "Goofy",
-        "Introvert",
-        "Mean",
-        "Misanthropist",
-        "Naive",
-        "Optimistic",
-        "Paranoid",
-        "Pessimistic",
-        "Short-tempered",
-        "Snob",
-        "Stubborn"
+        {
+          "identifier": "Cocky",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/personality"
+            }
+          ]
+        },
+        {
+          "identifier": "Dramatic",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/personality"
+            }
+          ]
+        },
+        {
+          "identifier": "Extrovert",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/personality"
+            }
+          ]
+        },
+        {
+          "identifier": "Flirt",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/personality"
+            }
+          ]
+        },
+        {
+          "identifier": "Generous",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/personality"
+            }
+          ]
+        },
+        {
+          "identifier": "Goofy",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/personality"
+            }
+          ]
+        },
+        {
+          "identifier": "Introvert",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/personality"
+            }
+          ]
+        },
+        {
+          "identifier": "Mean",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/personality"
+            }
+          ]
+        },
+        {
+          "identifier": "Misanthropist",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/personality"
+            }
+          ]
+        },
+        {
+          "identifier": "Naive",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/personality"
+            }
+          ]
+        },
+        {
+          "identifier": "Optimistic",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/personality"
+            }
+          ]
+        },
+        {
+          "identifier": "Paranoid",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/personality"
+            }
+          ]
+        },
+        {
+          "identifier": "Pessimistic",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/personality"
+            }
+          ]
+        },
+        {
+          "identifier": "Short-tempered",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/personality"
+            }
+          ]
+        },
+        {
+          "identifier": "Snob",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/personality"
+            }
+          ]
+        },
+        {
+          "identifier": "Stubborn",
+          "occurrences": [
+            {
+              "evidence_ref": "resolved-vanilla-data-manifest.json#identifier_namespaces/personality"
+            }
+          ]
+        }
       ]
     }
   },

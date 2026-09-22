@@ -71,7 +71,13 @@ def test_analyze_records_builds_nonempty_collision_namespaces():
     assert result['family_counts'] == {
         'SOFTWARE_TYPE': 1, 'COMPANY_TYPE': 1, 'NAME_GENERATOR': 1, 'PERSONALITIES': 1, 'HARDWARE_DESIGN': 1, 'OTHER': 0
     }
+    assert result['collision_index']['schema_version'] == 1
     assert set(result['collision_index']['namespaces']) >= {'software_type', 'company_type', 'name_generator', 'personality', 'hardware_design'}
+    assert all(
+        isinstance(entry, dict) and 'identifier' in entry and 'occurrences' in entry
+        for record in result['collision_index']['namespaces'].values()
+        for entry in record['identifiers']
+    )
 
 
 def test_write_and_bundle_outputs_are_metadata_only(tmp_path):

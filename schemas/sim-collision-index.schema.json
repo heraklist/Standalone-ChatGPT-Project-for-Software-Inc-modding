@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SIM Collision Index",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "namespaces",
+    "collisions",
+    "total_identifier_count"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "game_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "currency": {
+      "type": "string",
+      "minLength": 1
+    },
+    "complete": {
+      "type": "boolean"
+    },
+    "source_probe_zip_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "source_sanitized_bundle_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "normalization": {
+      "type": "object",
+      "properties": {
+        "representation": {
+          "const": "OBJECT_IDENTIFIERS"
+        },
+        "derived_from": {
+          "type": "string",
+          "minLength": 1
+        },
+        "identifier_set_preserved": {
+          "const": true
+        }
+      },
+      "required": [
+        "representation",
+        "derived_from",
+        "identifier_set_preserved"
+      ],
+      "additionalProperties": false
+    },
+    "namespaces": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "identifier_count",
+          "identifiers"
+        ],
+        "properties": {
+          "identifier_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "identifiers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "identifier",
+                "occurrences"
+              ],
+              "properties": {
+                "identifier": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "occurrences": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "minProperties": 1
+                  }
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "collisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "namespace",
+          "identifier",
+          "occurrences"
+        ],
+        "properties": {
+          "namespace": {
+            "type": "string",
+            "minLength": 1
+          },
+          "identifier": {
+            "type": "string",
+            "minLength": 1
+          },
+          "occurrences": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "minProperties": 1
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "total_identifier_count": {
+      "type": "integer",
+      "minimum": 0
+    }
+  },
+  "additionalProperties": false
+}
