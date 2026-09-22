@@ -18,6 +18,8 @@ from tools.validate_sim_layout import verify_sim_layout
 from tools.validate_sim_references import validate_references
 
 FIXED_ZIP_TIME = (1980, 1, 1, 0, 0, 0)
+ACCEPTANCE_CASE_IDS = tuple(f"A{index:02d}" for index in range(1, 13))
+ACCEPTANCE_RESULTS = {"PASS", "FAIL", "PLATFORM_LIMITATION", "NOT_TESTED"}
 
 
 def _sha256_bytes(data: bytes) -> str:
@@ -31,6 +33,74 @@ def _sha256_file(path: Path) -> str:
 def _gate(label: str, errors: list[str]) -> None:
     if errors:
         raise RuntimeError(f"{label} failed: " + "; ".join(errors))
+
+
+def _live_acceptance_summary(root: Path) -> tuple[str, list[str]]:
+    acceptance_dir = root / "work/evidence/sim-acceptance"
+    records: list[tuple[Path, dict]] = []
+    if acceptance_dir.is_dir():
+        for path in sorted(acceptance_dir.glob("*.json")):
+            try:
+                data = json.loads(path.read_text(encoding="utf-8"))
+            except (OSError, UnicodeError, json.JSONDecodeError) as exc:
+                raise RuntimeError(f"invalid SIM acceptance evidence {path.name}: {exc}") from exc
+            if not isinstance(data, dict):
+                continue
+            case_id = data.get("case_id")
+            if case_id not in ACCEPTANCE_CASE_IDS or data.get("surface") != "ChatGPT":
+                continue
+            result = data.get("result")
+            if result not in ACCEPTANCE_RESULTS:
+                raise RuntimeError(
+                    f"invalid SIM acceptance result for {case_id} in {path.name}: {result!r}"
+                )
+            records.append((path, data))
+
+    if not records:
+        return (
+            "NOT_TESTED",
+            [f"{case_id} ChatGPT acceptance NOT_TESTED" for case_id in ACCEPTANCE_CASE_IDS],
+        )
+
+    latest: dict[str, str] = {}
+    for case_id in ACCEPTANCE_CASE_IDS:
+        case_records = [(path, data) for path, data in records if data["case_id"] == case_id]
+        if not case_records:
+            latest[case_id] = "NOT_TESTED"
+            continue
+
+        superseded = {
+            data["retest_of"]
+            for _, data in case_records
+            if isinstance(data.get("retest_of"), str)
+        }
+        terminal = [
+            (path, data)
+            for path, data in case_records
+            if path.name not in superseded
+        ]
+        if len(terminal) != 1:
+            names = ", ".join(path.name for path, _ in terminal) or "<none>"
+            raise RuntimeError(
+                f"ambiguous latest SIM acceptance evidence for {case_id}: {names}"
+            )
+        latest[case_id] = terminal[0][1]["result"]
+
+    if any(result == "FAIL" for result in latest.values()):
+        overall = "FAIL"
+    elif all(result == "PASS" for result in latest.values()):
+        overall = "PASS"
+    elif all(result == "NOT_TESTED" for result in latest.values()):
+        overall = "NOT_TESTED"
+    else:
+        overall = "INCOMPLETE"
+
+    gaps = [
+        f"{case_id} ChatGPT acceptance {result}"
+        for case_id, result in latest.items()
+        if result != "PASS"
+    ]
+    return overall, gaps
 
 
 def build_sim_release(
@@ -66,6 +136,7 @@ def build_sim_release(
         relative = path.relative_to(root).as_posix()
         payload[relative] = path.read_bytes()
 
+    surface_acceptance, known_gaps = _live_acceptance_summary(root)
     file_hashes = {name: _sha256_bytes(data) for name, data in sorted(payload.items())}
     reference_map_path = root / "production/sim/manifests/reference-source-map.json"
     report = {
@@ -79,10 +150,10 @@ def build_sim_release(
             "domain": ["E01-E74: VALIDATED"],
             "sim": ["S001+: VALIDATED"],
         },
-        "security_results": [],
-        "artifact_fixture_results": [],
-        "surface_acceptance": "NOT_RUN",
-        "known_gaps": ["Live ChatGPT A01-A12 acceptance not yet executed"],
+        "security_results": ["NOT_EXECUTED_BY_RELEASE_BUILDER"],
+        "artifact_fixture_results": ["NOT_EXECUTED_BY_RELEASE_BUILDER"],
+        "surface_acceptance": surface_acceptance,
+        "known_gaps": known_gaps,
         "bundle_sha256": "0" * 64,
         "files": file_hashes,
         "release_status": "PREVIEW_CANDIDATE",
