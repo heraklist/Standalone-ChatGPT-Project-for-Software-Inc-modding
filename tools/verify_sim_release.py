@@ -21,7 +21,15 @@ def _sha256_file(path: Path) -> str:
     return _sha256_bytes(path.read_bytes())
 
 
-def verify_sim_release(zip_path: Path, report_path: Path, expected_version: str) -> list[str]:
+def verify_sim_release(
+    zip_path: Path,
+    report_path: Path,
+    expected_version: str,
+    *,
+    certification_context=None,
+    evidence_dir: Path | None = None,
+    required_cases: tuple[str, ...] | None = None,
+) -> list[str]:
     if not zip_path.is_file():
         return [f"SIM release ZIP not found: {zip_path}"]
     if not report_path.is_file():
@@ -51,6 +59,13 @@ def verify_sim_release(zip_path: Path, report_path: Path, expected_version: str)
         "PREVIEW_CERTIFIED",
     }:
         errors.append("SIM release status is not a Preview state")
+
+    if report.get("release_status") == "PREVIEW_CERTIFIED" and (
+        certification_context is None or evidence_dir is None
+    ):
+        errors.append(
+            "PREVIEW_CERTIFIED requires certification context and acceptance evidence"
+        )
 
     if report.get("bundle_sha256") != _sha256_file(zip_path):
         errors.append("bundle SHA-256 mismatch")
