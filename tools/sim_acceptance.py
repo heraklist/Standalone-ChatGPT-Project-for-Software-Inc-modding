@@ -2,7 +2,12 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass
+from functools import lru_cache
 from pathlib import Path
+
+import jsonschema
+
+ROOT = Path(__file__).resolve().parents[1]
 
 
 ALLOWED_RESULTS = {"PASS", "FAIL", "PLATFORM_LIMITATION", "NOT_TESTED"}
@@ -55,6 +60,36 @@ def _matches_context(record: dict, context: CertificationContext) -> bool:
         and record.get("certification_protocol_version") == context.protocol_version
         and record.get("surface") == context.surface
     )
+
+
+@lru_cache(maxsize=1)
+def _acceptance_validator() -> jsonschema.Draft202012Validator:
+    schema_path = ROOT / "schemas/sim-acceptance-evidence.schema.json"
+    try:
+        schema = json.loads(schema_path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeError, json.JSONDecodeError) as exc:
+        raise ValueError(f"invalid acceptance evidence schema: {exc}") from exc
+    return jsonschema.Draft202012Validator(schema)
+
+
+def _validate_matched_records(records: list[dict]) -> None:
+    validator = _acceptance_validator()
+    for record in records:
+        payload = {
+            key: value
+            for key, value in record.items()
+            if key != "_record_id"
+        }
+        errors = sorted(
+            validator.iter_errors(payload),
+            key=lambda error: tuple(str(part) for part in error.absolute_path),
+        )
+        if errors:
+            record_id = record.get("_record_id", "<unknown>")
+            raise ValueError(
+                "acceptance evidence schema violation "
+                f"in {record_id}: {errors[0].message}"
+            )
 
 
 def _terminal_result(records: list[dict], case_id: str) -> str:
@@ -112,6 +147,7 @@ def summarize_acceptance(
         for record in load_acceptance_records(evidence_dir)
         if _matches_context(record, context)
     ]
+    _validate_matched_records(records)
 
     case_results: dict[str, str] = {}
     for case_id in required_cases:
