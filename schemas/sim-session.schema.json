@@ -298,6 +298,27 @@
             "V4",
             "V5"
           ]
+        },
+        "family": {
+          "enum": [
+            "DATA_TYD",
+            "SIPL",
+            "CODE",
+            "FURNITURE",
+            "MATERIALS",
+            "LOCALIZATION",
+            "HARDWARE_DESIGN",
+            "BUILDING_BLUEPRINT",
+            "BUILDING"
+          ]
+        },
+        "claim_class": {
+          "enum": [
+            "STATIC_DELIVERY",
+            "NATIVE_OPEN_DELIVERY",
+            "BEHAVIOR_VERIFIED_DELIVERY",
+            "REGRESSION_VERIFIED_DELIVERY"
+          ]
         }
       },
       "additionalProperties": false
