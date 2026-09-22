@@ -12,6 +12,8 @@ These states describe the maturity of the exact artifact being produced. A trans
 
 ## Verification level
 
+The machine/session representation is the compact ID only: `V0`, `V1`, `V2`, `V3`, `V4`, or `V5`. Human-facing text uses the mapped labels below; the label text is display metadata, not a second state value.
+
 The canonical verification axis is:
 
 - `V0 DESIGN_READY` — the design/repair approach is evidence-bounded, but no artifact generation is proven.

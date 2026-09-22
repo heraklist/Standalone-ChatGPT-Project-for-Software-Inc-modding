@@ -46,7 +46,7 @@ def minimal_session() -> dict[str, object]:
         "validation": {},
         "artifact": {
             "state": "ARTIFACT_UNBUILT",
-            "verification_level": "V0 DESIGN_READY",
+            "verification_level": "V0",
         },
         "risks": [],
         "history": [],
