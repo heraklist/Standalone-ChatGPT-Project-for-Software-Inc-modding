@@ -18,6 +18,20 @@ from tools.validate_sim_layout import verify_sim_layout
 from tools.validate_sim_references import validate_references
 
 FIXED_ZIP_TIME = (1980, 1, 1, 0, 0, 0)
+
+
+def _sha256_bytes(data: bytes) -> str:
+    return hashlib.sha256(data).hexdigest()
+
+
+def _sha256_file(path: Path) -> str:
+    return _sha256_bytes(path.read_bytes())
+
+
+def _gate(label: str, errors: list[str]) -> None:
+    if errors:
+        raise RuntimeError(f"{label} failed: " + "; ".join(errors))
+
 def build_sim_release(
     root: Path,
     channel: str = "preview",
