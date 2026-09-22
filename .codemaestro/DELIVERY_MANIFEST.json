@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0",
+  "delivery_id": "DL-001",
+  "generated_for": "CodeMaestro",
+  "generated_date": "2026-09-22",
+  "status": "FINAL — COMPLETE / USER-VERIFIED EXTERNAL STEP REQUIRED",
+  "repository": "heraklist/Standalone-ChatGPT-Project-for-Software-Inc-modding",
+  "source_branch": "sim/v0.2.1-remediation",
+  "source_commit": "9c8ac46bf7cb821436dd935fda6e7c51a5ca2568",
+  "delivery_branch": "codemaestro/delivery-dl001-20260922",
+  "target": "Software Inc Beta 1.8.42",
+  "outputs": [
+    "build-output/software-inc-mod-studio-project-0.1.0.zip",
+    "build-output/software-inc-mod-studio-project-0.1.0.release-report.json",
+    "build-output/sim-0.2.0-preview.zip",
+    "build-output/sim-0.2.0-preview.release-report.json"
+  ],
+  "continuity_files": [
+    ".codemaestro/PROJECT_INTENT.md",
+    ".codemaestro/DESIGN_BASELINE.md",
+    ".codemaestro/PROJECT_STATE.md",
+    ".codemaestro/DECISIONS.md",
+    ".codemaestro/IMPLEMENTATION_LOG.md",
+    ".codemaestro/CONVERSATION_LOG.md",
+    ".codemaestro/VERIFICATION.md",
+    ".codemaestro/HANDOFF.md",
+    ".codemaestro/DELIVERY_MANIFEST.json",
+    ".codemaestro/KNOWN_ISSUES.md"
+  ],
+  "secrets_included": false,
+  "env_template": ".env.example",
+  "external_gate": "Fresh live A06 ChatGPT Skill retest; then A07-A12 if A06 passes",
+  "stable_release_authorized": false
+}
