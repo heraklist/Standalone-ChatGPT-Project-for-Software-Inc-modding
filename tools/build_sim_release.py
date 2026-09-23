@@ -56,7 +56,7 @@ def build_sim_release(
         (root / "production/sim/manifests/sim-manifest.json").read_text(encoding="utf-8")
     )
     version = sim_manifest["version"]
-    if version != "0.2.0-preview":
+    if version != "0.2.2-preview":
         raise RuntimeError("unexpected SIM Preview version")
 
     payload_root = root / "production/sim"

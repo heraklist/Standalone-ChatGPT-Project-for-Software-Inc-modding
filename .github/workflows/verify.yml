@@ -38,4 +38,4 @@ jobs:
       - name: Build SIM Preview release
         run: python tools/build_sim_release.py --channel preview
       - name: Verify SIM Preview release
-        run: python tools/verify_sim_release.py dist/sim-0.2.0-preview.zip dist/sim-0.2.0-preview.release-report.json --expected-version 0.2.0-preview
+        run: python tools/verify_sim_release.py dist/sim-0.2.2-preview.zip dist/sim-0.2.2-preview.release-report.json --expected-version 0.2.2-preview

@@ -16,7 +16,7 @@ def test_chatgpt_upload_exposes_only_one_public_skill(tmp_path: Path) -> None:
 
     zip_path, report = build_chatgpt_upload(ROOT, out_dir=tmp_path)
 
-    assert zip_path.name == "sim-0.2.0-preview-chatgpt-upload.zip"
+    assert zip_path.name == "sim-0.2.2-preview-chatgpt-upload.zip"
     assert report["public_skill_entries"] == ["SKILL.md"]
 
     with ZipFile(zip_path) as archive:
