@@ -264,3 +264,15 @@ def test_validator_rejects_compatibility_plugin_identity_drift(
     assert "SIM_PLUGIN_IDENTITY_INVALID" in _codes(
         validate_candidate(ROOT, candidate, source_sha)
     )
+
+
+
+def test_validator_rejects_undeclared_app_requirement(tmp_path: Path) -> None:
+    from tools.validate_sim_plugin import validate_candidate
+
+    candidate, source_sha, _ = _build(tmp_path)
+    skill = candidate / "skills/sim/SKILL.md"
+    skill.write_bytes(skill.read_bytes() + b"\nUNDECLARED_APP\n")
+
+    findings = validate_candidate(ROOT, candidate, source_sha)
+    assert "SIM_PLUGIN_FORBIDDEN_REQUIREMENT" in _codes(findings)
