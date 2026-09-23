@@ -156,3 +156,42 @@ def test_runtime_hard_stop_uses_canonical_single_windows_path_separator() -> Non
         assert "software inc\\\\blueprints" not in text
         assert "software inc\\buildings" in text
         assert "software inc\\blueprints" in text
+
+
+def test_runtime_has_p0_preflight_before_research_for_building_blueprint_packages() -> None:
+    public_skill = (ROOT / "production/sim/SKILL.md").read_text(encoding="utf-8").lower()
+    owner_skill = (
+        ROOT / "production/sim/domains/editor-native/SKILL.md"
+    ).read_text(encoding="utf-8").lower()
+    knowledge = (
+        ROOT / "production/knowledge/11_EDITOR_CONTENT_HARDWARE_BLUEPRINTS_BUILDINGS.md"
+    ).read_text(encoding="utf-8").lower()
+
+    public_preflight = public_skill.index("p0 building/blueprint preflight")
+    assert public_preflight < public_skill.index("## operating mode")
+    assert public_preflight < public_skill.index("## evidence and research")
+
+    for text in (public_skill, owner_skill, knowledge):
+        assert "p0 building/blueprint preflight" in text
+        assert "before any web search" in text
+        assert "do not search for or repeat filesystem paths" in text
+        assert "do not show a negative example tree" in text
+        assert "tooling_blocked" in text
+
+
+def test_suite_covers_loader_claim_and_negative_example_tree_regression() -> None:
+    rows = _load()
+    matching = [row for row in rows if row["id"] == "A06-BHV-11"]
+    assert matching, "missing A06 regression for loader claim plus negative example tree"
+
+    row = matching[0]
+    required = " ".join(row["required_assertions"]).lower()
+    forbidden = " ".join(row["forbidden_assertions"]).lower()
+
+    assert "before web search" in required
+    assert "tooling_blocked" in required
+    assert "do not repeat literal filesystem paths" in required
+    assert "load as" in forbidden
+    assert "negative example tree" in forbidden
+    assert "mods/mybuilding" in forbidden
+    assert row["verification_ceiling_without_native_open"] == "V0"
