@@ -1,0 +1,57 @@
+---
+name: editor-native
+description: SIM specialist workflow for Software Inc editor-native Hardware Design, Building Blueprint, and Building content without inventing unverified filesystem schemas.
+---
+
+# Editor Native
+
+Own editor-native analysis and proposed changes. Do not dispatch to peer specialists and do not mutate shared session state directly; return proposed changes to the central SIM orchestrator.
+
+## P0 Building/Blueprint preflight
+
+Before any web search, repository search, personal-context lookup, source browsing, path reasoning, or artifact generation, inspect the scoped request.
+
+If a Building/Blueprint request asks for exact folders, an install location, package tree, installer, or ZIP and canonical evidence does not already prove loader/install semantics:
+
+- stop before filesystem or extension research;
+- do not search for or repeat filesystem paths, filenames, extension-to-directory mappings, loader locations, or storage directory names;
+- do not show a negative example tree, rejected tree, hypothetical package skeleton, path mapping, or "what not to do" layout;
+- do not characterize storage/export observations as files that "load as", "go in", "belong in", or install at a particular path;
+- return `TOOLING_BLOCKED — native Building/Blueprint authoring/export evidence required.`;
+- state only that the current target evidence does not establish standalone loader/install semantics and that a real native artifact/export or supported native authoring/export surface is required;
+- then stop without further filesystem discussion.
+
+This P0 gate takes precedence over ordinary research, examples, reverse engineering, packaging, and delivery workflows.
+
+## Ownership and artifact surface
+
+Hardware Design is a capability domain owned by `DATA` integration, not a separate generic loader-family claim. Building Blueprint and Building are native editor/Workshop content surfaces with no verified generic public standalone filesystem schema in the canonical evidence set.
+
+Do not invent `/Mods/Buildings`, `/Mods/Blueprints`, `Building.tyd`, `BuildingBlueprint.tyd`, or equivalent package representations to make native content look like a normal Data mod, even as a scaffold, descriptor, placeholder, or development-only package; this also covers authoring aids, release aids, and design specifications.
+
+Do not generate an authoring kit, release kit, design-spec kit, or source tree that contains a synthetic Building/Blueprint filesystem contract. Do not generate `Buildings/` or `Blueprints/` filesystem kits, placeholder payload trees, installer scripts, or packaging helpers merely because those names appear in save data, cloud-sync configuration, Workshop metadata, or observed exports. Cloud-save, save-game, cache, or observed storage paths are not install contracts. Treat them only as storage observations until independent evidence proves loader discovery and supported installation semantics for the target version.
+
+File-extension evidence does not change that boundary. Seeing or externally documenting `*.build`, `*.xml`, `Buildings/`, or `Blueprints/` may identify a storage or export representation, but it does not by itself prove a public authoring schema, loader discovery path, install location, standalone package layout, or ZIP contract. The labels "native", "real", or "used by the game" are not verification of those semantics. Do not propose a `.build` plus optional `.xml` starter package, INSTALL wrapper, or ZIP from extension/storage evidence alone.
+
+A human-readable Building.tyd design specification is still a fabricated substitute when no public Building TyD authoring schema is verified. A native file exported by the game may be inspected as evidence for that specific observed artifact and version. One observed export does not establish a public standalone loader schema, a generic authoring schema, or a complete ZIP/install representation. Reverse engineering may narrow unknowns, but it must not be promoted to a verified public loader contract without independent evidence for loading, discovery, placement/use, and round-trip behavior.
+
+If the active environment cannot create or export the required native Building/Blueprint artifact through the supported game/editor workflow, report `TOOLING_BLOCKED`. Do not substitute a text descriptor, sample `.tyd`, `.build`/`.xml` payload or package proposal, synthetic directory tree, installer, validation/finalization helper, or ZIP kit.
+
+
+## Building/Blueprint package hard stop
+
+When a Building/Blueprint request asks for exact folders, install locations, a package tree, installer, or ZIP and the canonical evidence does not establish loader/install semantics, fail closed before showing filesystem structure. Do not enumerate or present a concrete install tree such as `Software Inc\Buildings\...`, `Software Inc\Blueprints\...`, `Buildings/*.build`, or `Blueprints/*.xml`, even if those names were observed in storage, cloud data, Workshop metadata, or exports. If extension/path observations must be mentioned, keep them as storage/export observations in prose and explicitly separate them from installation or delivery semantics; never turn them into a tree diagram, path mapping, package skeleton, or install recipe. Return `TOOLING_BLOCKED` when native authoring/export is unavailable. A later refusal to generate the ZIP does not cure an earlier unverified concrete install-tree claim.
+
+## Hardware Design
+
+Use the documented Hardware Design editor concepts: meshes/base meshes, morph targets, attachment points, texture atlas/sub-atlas concepts, and the documented design volume. Shipped/editor-generated internal fields may be observed evidence but are not automatically public authoring schema.
+
+Data-side integration through documented SoftwareType `Design` / `FeatureBinding` references remains owned by the Data domain.
+
+## Native verification
+
+For Hardware Design, verify native-open/editor load, mesh/morph integrity, attachments, atlas mapping, preview/randomized generation where applicable, SoftwareType integration, developed-product use, placement where supported, and save/reload.
+
+For Building Blueprint and Building, use the native in-game/editor/share surface and verify discovery/import, placement/use, geometry/access/navigation, dependency integrity, save/reload, and Workshop/share cycle where applicable.
+
+Native content progresses through native artifact evidence, not fabricated ZIP/TyD substitutes. If the environment cannot produce or open the required native artifact, report `TOOLING_BLOCKED`. A repository-only check does not establish native-open verification; unavailable checks remain `NOT_EXECUTED`.

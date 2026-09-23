@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "rules": [
+    {
+      "artifact_family": "DATA_TYD",
+      "artifact_surface": "MOD_PACKAGE",
+      "delivery_mode": "INSTALLABLE_ZIP",
+      "claim_class": "STATIC_DELIVERY",
+      "minimum_verification_level": "V2",
+      "required_checks": [
+        "DATA_LAYOUT",
+        "STATIC_REVIEW"
+      ]
+    },
+    {
+      "artifact_family": "SIPL",
+      "artifact_surface": "MOD_PACKAGE",
+      "delivery_mode": "INSTALLABLE_ZIP",
+      "claim_class": "STATIC_DELIVERY",
+      "minimum_verification_level": "V2",
+      "required_checks": [
+        "SIPL_STATIC",
+        "STATIC_REVIEW"
+      ]
+    },
+    {
+      "artifact_family": "CODE",
+      "artifact_surface": "MOD_PACKAGE",
+      "delivery_mode": "INSTALLABLE_ZIP",
+      "claim_class": "STATIC_DELIVERY",
+      "minimum_verification_level": "V2",
+      "required_checks": [
+        "CODE_PROFILE",
+        "STATIC_REVIEW"
+      ]
+    },
+    {
+      "artifact_family": "FURNITURE",
+      "artifact_surface": "MOD_PACKAGE",
+      "delivery_mode": "INSTALLABLE_ZIP",
+      "claim_class": "STATIC_DELIVERY",
+      "minimum_verification_level": "V2",
+      "required_checks": [
+        "FURNITURE_STATIC",
+        "STATIC_REVIEW"
+      ]
+    },
+    {
+      "artifact_family": "MATERIALS",
+      "artifact_surface": "MOD_PACKAGE",
+      "delivery_mode": "INSTALLABLE_ZIP",
+      "claim_class": "STATIC_DELIVERY",
+      "minimum_verification_level": "V2",
+      "required_checks": [
+        "MATERIALS_STATIC",
+        "STATIC_REVIEW"
+      ]
+    },
+    {
+      "artifact_family": "LOCALIZATION",
+      "artifact_surface": "MOD_PACKAGE",
+      "delivery_mode": "INSTALLABLE_ZIP",
+      "claim_class": "STATIC_DELIVERY",
+      "minimum_verification_level": "V2",
+      "required_checks": [
+        "LOCALIZATION_STATIC",
+        "STATIC_REVIEW"
+      ]
+    },
+    {
+      "artifact_family": "HARDWARE_DESIGN",
+      "artifact_surface": "EDITOR_CONTENT",
+      "delivery_mode": "NATIVE_EDITOR_ARTIFACT",
+      "claim_class": "NATIVE_OPEN_DELIVERY",
+      "minimum_verification_level": "V3",
+      "required_checks": [
+        "NATIVE_OPEN"
+      ]
+    },
+    {
+      "artifact_family": "HARDWARE_DESIGN",
+      "artifact_surface": "EDITOR_CONTENT",
+      "delivery_mode": "WORKSHOP_READY_EDITOR_CONTENT",
+      "claim_class": "NATIVE_OPEN_DELIVERY",
+      "minimum_verification_level": "V3",
+      "required_checks": [
+        "NATIVE_OPEN"
+      ]
+    },
+    {
+      "artifact_family": "BUILDING_BLUEPRINT",
+      "artifact_surface": "EDITOR_CONTENT",
+      "delivery_mode": "NATIVE_EDITOR_ARTIFACT",
+      "claim_class": "NATIVE_OPEN_DELIVERY",
+      "minimum_verification_level": "V3",
+      "required_checks": [
+        "NATIVE_OPEN"
+      ]
+    },
+    {
+      "artifact_family": "BUILDING_BLUEPRINT",
+      "artifact_surface": "EDITOR_CONTENT",
+      "delivery_mode": "WORKSHOP_READY_EDITOR_CONTENT",
+      "claim_class": "NATIVE_OPEN_DELIVERY",
+      "minimum_verification_level": "V3",
+      "required_checks": [
+        "NATIVE_OPEN"
+      ]
+    },
+    {
+      "artifact_family": "BUILDING",
+      "artifact_surface": "EDITOR_CONTENT",
+      "delivery_mode": "NATIVE_EDITOR_ARTIFACT",
+      "claim_class": "NATIVE_OPEN_DELIVERY",
+      "minimum_verification_level": "V3",
+      "required_checks": [
+        "NATIVE_OPEN"
+      ]
+    },
+    {
+      "artifact_family": "BUILDING",
+      "artifact_surface": "EDITOR_CONTENT",
+      "delivery_mode": "WORKSHOP_READY_EDITOR_CONTENT",
+      "claim_class": "NATIVE_OPEN_DELIVERY",
+      "minimum_verification_level": "V3",
+      "required_checks": [
+        "NATIVE_OPEN"
+      ]
+    }
+  ]
+}
