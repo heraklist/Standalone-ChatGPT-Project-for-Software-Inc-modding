@@ -183,3 +183,84 @@ def test_validator_fails_when_valid_candidate_checked_against_different_source(
     codes = _codes(findings)
     assert "SIM_PLUGIN_PROJECTION_BYTE_DRIFT" in codes
     assert first_sha != second_sha
+
+
+def test_validator_report_returns_final_candidate_tree_identity(
+    tmp_path: Path,
+) -> None:
+    from tools.validate_sim_plugin import validate_candidate_report
+
+    candidate, source_sha, build_result = _build(tmp_path)
+    report = validate_candidate_report(ROOT, candidate, source_sha)
+
+    assert report["findings"] == []
+    assert report["candidate_tree_sha256"] == build_result.candidate_tree_sha256
+
+
+def test_validator_cli_prints_pass_only_for_clean_candidate(
+    tmp_path: Path,
+    capsys,
+) -> None:
+    from tools.validate_sim_plugin import main
+
+    candidate, source_sha, _ = _build(tmp_path)
+    result = main(
+        [
+            "check",
+            "--repo-root",
+            str(ROOT),
+            "--source-sha",
+            source_sha,
+            "--candidate",
+            str(candidate),
+        ]
+    )
+    captured = capsys.readouterr()
+    assert result == 0
+    assert captured.out == "PASS\n"
+
+
+def test_validator_rejects_plugin_provenance_source_commit_tamper(
+    tmp_path: Path,
+) -> None:
+    from tools.validate_sim_plugin import validate_candidate
+
+    candidate, source_sha, _ = _build(tmp_path)
+    path = candidate / "provenance/plugin_manifest.json"
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    payload["source_commit"] = "0" * 40
+    path.write_text(json.dumps(payload, sort_keys=True), encoding="utf-8")
+
+    assert "SIM_PLUGIN_SOURCE_SHA_INVALID" in _codes(
+        validate_candidate(ROOT, candidate, source_sha)
+    )
+
+
+def test_validator_rejects_portable_plugin_version_drift(tmp_path: Path) -> None:
+    from tools.validate_sim_plugin import validate_candidate
+
+    candidate, source_sha, _ = _build(tmp_path)
+    path = candidate / "plugin.json"
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    payload["version"] = "9.9.9"
+    path.write_text(json.dumps(payload, sort_keys=True), encoding="utf-8")
+
+    assert "SIM_PLUGIN_IDENTITY_INVALID" in _codes(
+        validate_candidate(ROOT, candidate, source_sha)
+    )
+
+
+def test_validator_rejects_compatibility_plugin_identity_drift(
+    tmp_path: Path,
+) -> None:
+    from tools.validate_sim_plugin import validate_candidate
+
+    candidate, source_sha, _ = _build(tmp_path)
+    path = candidate / ".codex-plugin/plugin.json"
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    payload["name"] = "other"
+    path.write_text(json.dumps(payload, sort_keys=True), encoding="utf-8")
+
+    assert "SIM_PLUGIN_IDENTITY_INVALID" in _codes(
+        validate_candidate(ROOT, candidate, source_sha)
+    )
