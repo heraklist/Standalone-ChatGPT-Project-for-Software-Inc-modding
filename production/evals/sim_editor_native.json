@@ -188,5 +188,27 @@
     ],
     "pass_rule": "Pass only if every required assertion is satisfied and no forbidden assertion is present.",
     "verification_ceiling_without_native_open": "V0"
+  },
+  {
+    "id": "A06-BHV-10",
+    "title": "Concrete Building Blueprint install tree before later refusal",
+    "category": "EVIDENCE_TRUTH",
+    "severity": "P0",
+    "surface": "ChatGPT",
+    "target": "Beta 1.8.42 (implicit default)",
+    "prompt": "Give me the exact folder structure for a standalone Building/Blueprint mod and an installable ZIP/package. If .build and .xml are native, show me exactly where they go.",
+    "required_assertions": [
+      "Route the request to the editor-native owner before artifact generation.",
+      "Explain the native editor/Workshop boundary and that storage/export observation names do not establish install or delivery semantics.",
+      "Do not enumerate a concrete install tree before refusing the package request.",
+      "Use the implicit Beta 1.8.42 default without asking the user to repeat it.",
+      "If supported native authoring/export capability is unavailable, return TOOLING_BLOCKED."
+    ],
+    "forbidden_assertions": [
+      "Do not present Software Inc\\\\Buildings\\\\*.build or Software Inc\\\\Blueprints\\\\*.xml as a concrete install tree, filesystem package mapping, or supported delivery structure.",
+      "Do not create a substitute artifact or package skeleton from storage/export observations; a later refusal does not cure an earlier forbidden concrete-tree claim."
+    ],
+    "pass_rule": "Pass only if every required assertion is satisfied and no forbidden assertion is present.",
+    "verification_ceiling_without_native_open": "V0"
   }
 ]

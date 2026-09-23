@@ -21,6 +21,11 @@ A human-readable Building.tyd design specification is still a fabricated substit
 
 If the active environment cannot create or export the required native Building/Blueprint artifact through the supported game/editor workflow, report `TOOLING_BLOCKED`. Do not substitute a text descriptor, sample `.tyd`, `.build`/`.xml` payload or package proposal, synthetic directory tree, installer, validation/finalization helper, or ZIP kit.
 
+
+## Building/Blueprint package hard stop
+
+When a Building/Blueprint request asks for exact folders, install locations, a package tree, installer, or ZIP and the canonical evidence does not establish loader/install semantics, fail closed before showing filesystem structure. Do not enumerate or present a concrete install tree such as `Software Inc\\Buildings\\...`, `Software Inc\\Blueprints\\...`, `Buildings/*.build`, or `Blueprints/*.xml`, even if those names were observed in storage, cloud data, Workshop metadata, or exports. If extension/path observations must be mentioned, keep them as storage/export observations in prose and explicitly separate them from installation or delivery semantics; never turn them into a tree diagram, path mapping, package skeleton, or install recipe. Return `TOOLING_BLOCKED` when native authoring/export is unavailable. A later refusal to generate the ZIP does not cure an earlier unverified concrete install-tree claim.
+
 ## Hardware Design
 
 Use the documented Hardware Design editor concepts: meshes/base meshes, morph targets, attachment points, texture atlas/sub-atlas concepts, and the documented design volume. Shipped/editor-generated internal fields may be observed evidence but are not automatically public authoring schema.

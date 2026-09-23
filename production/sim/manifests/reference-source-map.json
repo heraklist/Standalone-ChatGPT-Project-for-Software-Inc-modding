@@ -107,9 +107,9 @@
       "output_path": "production/sim/references/editor-content.md",
       "package_path": "references/editor-content.md",
       "canonical_source_paths": ["production/knowledge/11_EDITOR_CONTENT_HARDWARE_BLUEPRINTS_BUILDINGS.md"],
-      "source_sha256": {"production/knowledge/11_EDITOR_CONTENT_HARDWARE_BLUEPRINTS_BUILDINGS.md": "ed3f53a7e1c5cf2efe2b44f058b4c40898d2e607d2409e66c7324ae1c995cf96"},
+      "source_sha256": {"production/knowledge/11_EDITOR_CONTENT_HARDWARE_BLUEPRINTS_BUILDINGS.md": "ab233fa1834aa3578d2b94fb574a235fd2624f8fda0d5dd09f5f6cc92a31aebe"},
       "transform_type": "COPY",
-      "output_sha256": "ed3f53a7e1c5cf2efe2b44f058b4c40898d2e607d2409e66c7324ae1c995cf96"
+      "output_sha256": "ab233fa1834aa3578d2b94fb574a235fd2624f8fda0d5dd09f5f6cc92a31aebe"
     },
     {
       "reference_id": "debugging",
