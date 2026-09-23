@@ -71,3 +71,12 @@ def test_chatgpt_upload_is_deterministic(tmp_path: Path) -> None:
     assert _sha256(first) == _sha256(second)
     assert first_report["bundle_sha256"] == second_report["bundle_sha256"]
     assert first_report["files"] == second_report["files"]
+
+
+def test_chatgpt_upload_root_skill_is_exact_canonical_bytes(tmp_path: Path) -> None:
+    from tools.build_sim_chatgpt_upload import build_chatgpt_upload
+
+    zip_path, _ = build_chatgpt_upload(ROOT, out_dir=tmp_path)
+    canonical = (ROOT / "production/sim/SKILL.md").read_bytes()
+    with ZipFile(zip_path) as archive:
+        assert archive.read("SKILL.md") == canonical
