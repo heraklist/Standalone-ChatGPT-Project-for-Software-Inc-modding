@@ -4,7 +4,11 @@ import hashlib
 from pathlib import Path
 from zipfile import ZIP_DEFLATED, ZipFile, ZipInfo
 
-from tools.safe_artifacts import assert_regular_file_within, safe_source_files
+from tools.safe_artifacts import (
+    assert_regular_file_within,
+    safe_source_files,
+    validate_archive_names,
+)
 
 FIXED_ZIP_TIME = (1980, 1, 1, 0, 0, 0)
 
@@ -29,7 +33,10 @@ def build_mod_zip(source_dir: Path, output_zip: Path) -> dict:
         raise ValueError("output ZIP must not be inside source tree")
 
     source_files = safe_source_files(source)
-    files = [path.relative_to(source).as_posix() for path in source_files]
+    files = validate_archive_names(
+        [path.relative_to(source).as_posix() for path in source_files],
+        windows_casefold=True,
+    )
 
     output.parent.mkdir(parents=True, exist_ok=True)
     with ZipFile(output, "w", compression=ZIP_DEFLATED) as archive:
