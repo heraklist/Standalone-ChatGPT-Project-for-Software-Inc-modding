@@ -14,7 +14,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from tools.safe_artifacts import normalize_archive_member
-from tools.sim_candidate_identity import aggregate_file_hashes
+from tools.sim_candidate_identity import aggregate_file_hashes, hash_tree
 from tools.sim_git_source import GitSource
 
 POLICY_PATH = "docs/architecture/plugin/SIM-PLUGIN-PROJECTION-POLICY.json"
@@ -23,14 +23,21 @@ SIM_MANIFEST_PATH = "production/sim/manifests/sim-manifest.json"
 
 
 @dataclass(frozen=True)
-class Finding:
+class PluginFinding:
     code: str
+    path: str | None
     message: str
-    path: str | None = None
 
 
-def _finding(code: str, message: str, path: str | None = None) -> Finding:
-    return Finding(code=code, message=message, path=path)
+Finding = PluginFinding
+
+
+def _finding(
+    code: str,
+    message: str,
+    path: str | None = None,
+) -> PluginFinding:
+    return PluginFinding(code=code, path=path, message=message)
 
 
 def _json_bytes(value: object) -> bytes:
@@ -456,15 +463,25 @@ def validate_candidate(
             )
 
     portable = _parse_json_candidate(actual, "plugin.json")
-    if portable is None or portable.get("name") != "sim":
+    expected_portable = _parse_json_candidate(expected, "plugin.json")
+    if (
+        portable is None
+        or expected_portable is None
+        or portable.get("name") != expected_portable.get("name")
+        or portable.get("version") != expected_portable.get("version")
+    ):
         findings.append(
             _finding(
                 "SIM_PLUGIN_IDENTITY_INVALID",
-                "portable plugin identity is invalid",
+                "portable plugin identity/version differs from exact source projection",
                 "plugin.json",
             )
         )
-    if portable is None or portable.get("entrypoint") != "@sim":
+    if (
+        portable is None
+        or expected_portable is None
+        or portable.get("entrypoint") != expected_portable.get("entrypoint")
+    ):
         findings.append(
             _finding(
                 "SIM_PLUGIN_ENTRYPOINT_INVALID",
@@ -472,7 +489,12 @@ def validate_candidate(
                 "plugin.json",
             )
         )
-    if portable is None or portable.get("runtime_skill") != "skills/sim/SKILL.md":
+    if (
+        portable is None
+        or expected_portable is None
+        or portable.get("runtime_skill")
+        != expected_portable.get("runtime_skill")
+    ):
         findings.append(
             _finding(
                 "SIM_PLUGIN_RUNTIME_SKILL_INVALID",
@@ -480,12 +502,77 @@ def validate_candidate(
                 "plugin.json",
             )
         )
-    if portable is None or portable.get("public_skill_count") != 1:
+    if (
+        portable is None
+        or expected_portable is None
+        or portable.get("public_skill_count")
+        != expected_portable.get("public_skill_count")
+    ):
         findings.append(
             _finding(
                 "SIM_PLUGIN_PUBLIC_SKILL_COUNT_INVALID",
                 "portable public skill count is invalid",
                 "plugin.json",
+            )
+        )
+
+    compatibility_path = normalize_archive_member(
+        policy["compatibility_manifest_path"]
+    )
+    compatibility = _parse_json_candidate(actual, compatibility_path)
+    expected_compatibility = _parse_json_candidate(
+        expected, compatibility_path
+    )
+    if (
+        compatibility is None
+        or expected_compatibility is None
+        or compatibility.get("name") != expected_compatibility.get("name")
+        or compatibility.get("version")
+        != expected_compatibility.get("version")
+    ):
+        findings.append(
+            _finding(
+                "SIM_PLUGIN_IDENTITY_INVALID",
+                "compatibility plugin identity/version differs from exact source projection",
+                compatibility_path,
+            )
+        )
+    if (
+        compatibility is None
+        or expected_compatibility is None
+        or compatibility.get("entrypoint")
+        != expected_compatibility.get("entrypoint")
+    ):
+        findings.append(
+            _finding(
+                "SIM_PLUGIN_ENTRYPOINT_INVALID",
+                "compatibility plugin entrypoint is invalid",
+                compatibility_path,
+            )
+        )
+    if (
+        compatibility is None
+        or expected_compatibility is None
+        or compatibility.get("skill") != expected_compatibility.get("skill")
+    ):
+        findings.append(
+            _finding(
+                "SIM_PLUGIN_RUNTIME_SKILL_INVALID",
+                "compatibility runtime skill path is invalid",
+                compatibility_path,
+            )
+        )
+    if (
+        compatibility is None
+        or expected_compatibility is None
+        or compatibility.get("publicSkillCount")
+        != expected_compatibility.get("publicSkillCount")
+    ):
+        findings.append(
+            _finding(
+                "SIM_PLUGIN_PUBLIC_SKILL_COUNT_INVALID",
+                "compatibility public skill count is invalid",
+                compatibility_path,
             )
         )
 
@@ -535,9 +622,41 @@ def validate_candidate(
                         )
                     )
 
-    plugin_manifest_path = normalize_archive_member(policy["plugin_provenance_path"])
+    plugin_manifest_path = normalize_archive_member(
+        policy["plugin_provenance_path"]
+    )
     plugin_manifest = _parse_json_candidate(actual, plugin_manifest_path)
-    expected_plugin_manifest = _parse_json_candidate(expected, plugin_manifest_path)
+    expected_plugin_manifest = _parse_json_candidate(
+        expected, plugin_manifest_path
+    )
+    if (
+        plugin_manifest is None
+        or expected_plugin_manifest is None
+        or plugin_manifest.get("source_commit")
+        != expected_plugin_manifest.get("source_commit")
+    ):
+        findings.append(
+            _finding(
+                "SIM_PLUGIN_SOURCE_SHA_INVALID",
+                "plugin provenance source commit differs from exact validation source",
+                plugin_manifest_path,
+            )
+        )
+    if (
+        plugin_manifest is None
+        or expected_plugin_manifest is None
+        or plugin_manifest.get("plugin_identity")
+        != expected_plugin_manifest.get("plugin_identity")
+        or plugin_manifest.get("plugin_version")
+        != expected_plugin_manifest.get("plugin_version")
+    ):
+        findings.append(
+            _finding(
+                "SIM_PLUGIN_IDENTITY_INVALID",
+                "plugin provenance identity/version differs from exact source projection",
+                plugin_manifest_path,
+            )
+        )
     if (
         plugin_manifest is None
         or expected_plugin_manifest is None
@@ -548,6 +667,27 @@ def validate_candidate(
             _finding(
                 "SIM_PLUGIN_AGGREGATE_HASH_DRIFT",
                 "semantic aggregate identity differs from exact source projection",
+                plugin_manifest_path,
+            )
+        )
+    provenance_fields = (
+        "projection_policy_sha256",
+        "runtime_manifest_sha256",
+        "candidate_tree_sha256_external",
+    )
+    if (
+        plugin_manifest is None
+        or expected_plugin_manifest is None
+        or any(
+            plugin_manifest.get(field)
+            != expected_plugin_manifest.get(field)
+            for field in provenance_fields
+        )
+    ):
+        findings.append(
+            _finding(
+                "SIM_PLUGIN_RUNTIME_PROVENANCE_DRIFT",
+                "plugin provenance metadata differs from independently recomputed values",
                 plugin_manifest_path,
             )
         )
@@ -597,6 +737,23 @@ def validate_candidate(
     return findings
 
 
+def validate_candidate_report(
+    repo_root: Path,
+    candidate_root: Path,
+    source_sha: str,
+) -> dict[str, object]:
+    findings = validate_candidate(repo_root, candidate_root, source_sha)
+    candidate_tree_sha256: str | None
+    try:
+        candidate_tree_sha256 = hash_tree(Path(candidate_root))
+    except (OSError, ValueError):
+        candidate_tree_sha256 = None
+    return {
+        "candidate_tree_sha256": candidate_tree_sha256,
+        "findings": findings,
+    }
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -606,24 +763,30 @@ def main(argv: list[str] | None = None) -> int:
     check.add_argument("--source-sha", required=True)
     args = parser.parse_args(argv)
 
-    findings = validate_candidate(
+    report = validate_candidate_report(
         args.repo_root,
         args.candidate,
         args.source_sha,
     )
-    payload = {
-        "status": "PASS" if not findings else "FAIL",
-        "findings": [
-            {
-                "code": finding.code,
-                "message": finding.message,
-                **({"path": finding.path} if finding.path is not None else {}),
-            }
-            for finding in findings
-        ],
-    }
-    print(json.dumps(payload, sort_keys=True))
-    return 0 if not findings else 1
+    findings = report["findings"]
+    if not findings:
+        print("PASS")
+        return 0
+
+    assert isinstance(findings, list)
+    for finding in sorted(
+        findings,
+        key=lambda item: (
+            item.code,
+            item.path or "",
+            item.message,
+        ),
+    ):
+        if finding.path:
+            print(f"{finding.code}: {finding.path}: {finding.message}")
+        else:
+            print(f"{finding.code}: {finding.message}")
+    return 1
 
 
 if __name__ == "__main__":
