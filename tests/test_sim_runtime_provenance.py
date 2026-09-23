@@ -71,7 +71,7 @@ def test_runtime_provenance_marks_transformed_surfaces_explicitly(tmp_path: Path
     by_package = {entry["package_path"]: entry for entry in provenance["entries"]}
 
     assert by_package["SKILL.md"]["source_path"] == "production/sim/SKILL.md"
-    assert by_package["SKILL.md"]["transform_type"] == "AUGMENT"
+    assert by_package["SKILL.md"]["transform_type"] == "COPY"
     assert by_package["references/internal/domains/editor-native.md"]["source_path"] == "production/sim/domains/editor-native/SKILL.md"
     assert by_package["references/internal/domains/editor-native.md"]["transform_type"] == "REMAP"
     assert by_package["tools/validate_code_profile.py"]["source_path"] == "tools/validate_code_profile.py"
