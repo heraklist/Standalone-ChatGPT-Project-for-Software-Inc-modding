@@ -152,3 +152,25 @@ def test_packaging_skill_exposes_validation_coverage_ceiling() -> None:
         "must not be presented as fully validated",
     ):
         assert phrase in text
+
+
+
+def test_build_mod_zip_rejects_windows_casefold_path_collision(
+    tmp_path: Path,
+) -> None:
+    from tools.build_mod_zip import build_mod_zip
+
+    source = tmp_path / "mod"
+    upper = source / "Data"
+    lower = source / "data"
+    upper.mkdir(parents=True)
+    try:
+        lower.mkdir(parents=True)
+    except FileExistsError:
+        pytest.skip("filesystem is case-insensitive")
+
+    (upper / "Game.tyd").write_text("one", encoding="utf-8")
+    (lower / "game.tyd").write_text("two", encoding="utf-8")
+
+    with pytest.raises(ValueError, match="case-insensitive"):
+        build_mod_zip(source, tmp_path / "mod.zip")
