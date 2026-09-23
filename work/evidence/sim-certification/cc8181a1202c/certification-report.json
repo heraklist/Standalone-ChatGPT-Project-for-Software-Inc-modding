@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "plugin_version": "0.2.2-preview",
+  "candidate_tree_sha256": "cc8181a1202cc95e2aed7a5f67c37795b9080db17a4b03b88f0ced42780ed439",
+  "semantic_aggregate_sha256": "2ae897092c2a4b37d5cc4acfba86f691e6784c8fb51bd4e0a01f45501ec4b304",
+  "source_commit": "c334c68edc234f33b826d8c5928feec55d6946d0",
+  "exact_target_manifest_sha256": "00fb0a1628c1be1ccaa9ac2a53e619b941599e9ad723375ede4213ca50ba95d3",
+  "certification_protocol_version": "sim-live-v2",
+  "surface_results": {
+    "ChatGPT": "FAIL",
+    "Codex": "INCOMPLETE",
+    "ChatGPT Project": "NOT_REQUIRED"
+  },
+  "known_gaps": [
+    "A01 ChatGPT acceptance NOT_TESTED",
+    "A02 ChatGPT acceptance NOT_TESTED",
+    "A03 ChatGPT acceptance NOT_TESTED",
+    "A04 ChatGPT acceptance NOT_TESTED",
+    "A05 ChatGPT acceptance NOT_TESTED",
+    "A06 ChatGPT acceptance FAIL",
+    "A07 ChatGPT acceptance NOT_TESTED",
+    "A08 ChatGPT acceptance NOT_TESTED",
+    "A09 ChatGPT acceptance NOT_TESTED",
+    "A10 ChatGPT acceptance NOT_TESTED",
+    "A11 ChatGPT acceptance NOT_TESTED",
+    "A12 ChatGPT acceptance NOT_TESTED",
+    "Codex installation evidence missing"
+  ],
+  "release_blocking_complete": false
+}

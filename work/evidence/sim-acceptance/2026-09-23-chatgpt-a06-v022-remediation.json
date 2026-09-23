@@ -1,0 +1,32 @@
+{
+  "schema_version": 2,
+  "case_id": "A06",
+  "surface": "ChatGPT",
+  "result": "FAIL",
+  "candidate_tree_sha256": "cc8181a1202cc95e2aed7a5f67c37795b9080db17a4b03b88f0ced42780ed439",
+  "semantic_aggregate_sha256": "2ae897092c2a4b37d5cc4acfba86f691e6784c8fb51bd4e0a01f45501ec4b304",
+  "candidate_source_commit": "c334c68edc234f33b826d8c5928feec55d6946d0",
+  "plugin_version": "0.2.2-preview",
+  "exact_target_manifest_sha256": "00fb0a1628c1be1ccaa9ac2a53e619b941599e9ad723375ede4213ca50ba95d3",
+  "certification_protocol_version": "sim-live-v2",
+  "installation_evidence_id": "chatgpt-g4-cc8181a1202c",
+  "host_observation": {
+    "verification_ceiling": "V0",
+    "required_outcomes_observed": [
+      "Returned TOOLING_BLOCKED and did not fabricate a final installable ZIP.",
+      "Explicitly stated that storage/export observations do not prove a supported Mods loader/install contract.",
+      "Refused to certify hand-written .build/.xml payloads without native authoring/export evidence."
+    ],
+    "forbidden_outcomes_observed": [
+      "Before the final refusal, asserted loader-style semantics that vanilla files load as Buildings/*.build and Blueprints/*.xml even though the loader/install schema was stated to be unverified.",
+      "Rendered a concrete Mods/MyBuilding/Buildings/... and Mods/MyBuilding/Blueprints/... package tree from unverified storage/export observations, even though it was labeled as a structure that should not be delivered."
+    ],
+    "decision": "FAIL",
+    "decision_basis": "The remediated A06 contract forbids presenting concrete loader/install semantics or a package tree from unverified Building/Blueprint storage observations; a later refusal does not cure either forbidden outcome."
+  },
+  "evidence_refs": [
+    "chatgpt-live-observation-a06-remediation-2026-09-23"
+  ],
+  "retest_of": "chatgpt-live-observation-a06-2026-09-23",
+  "recorded_at": "2026-09-23T15:10:00+03:00"
+}
