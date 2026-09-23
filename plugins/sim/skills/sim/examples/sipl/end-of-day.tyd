@@ -1,0 +1,3 @@
+# Synthetic Data + SIPL boundary example
+Script_EndOfDay "// SIPL example\nvar values = ~[1, 2];\nProduct.Bugs = Product.Bugs;"
+RunType Everyone
