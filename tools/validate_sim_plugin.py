@@ -62,24 +62,23 @@ def _load_object(source: GitSource, path: str) -> tuple[dict, bytes]:
 
 
 def _metadata(runtime: dict, sim_manifest: dict) -> tuple[dict, dict]:
+    target = runtime["canonical_game_target"]
+    description = f"SIM — Software Inc modding workflows for {target}."
     portable = {
-        "schema_version": 1,
+        "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
         "name": runtime["plugin_identity"],
-        "display_name": "SIM",
         "version": sim_manifest["version"],
-        "entrypoint": runtime["public_entrypoint"],
-        "runtime_skill": "skills/sim/SKILL.md",
-        "public_skill_count": runtime["public_skill_count"],
-        "canonical_game_target": runtime["canonical_game_target"],
+        "description": description,
     }
     compatibility = {
-        "schema_version": 1,
         "name": runtime["plugin_identity"],
-        "displayName": "SIM",
         "version": sim_manifest["version"],
-        "entrypoint": runtime["public_entrypoint"],
-        "skill": "skills/sim/SKILL.md",
-        "publicSkillCount": runtime["public_skill_count"],
+        "description": description,
+        "skills": "./skills/",
+        "interface": {
+            "displayName": "SIM",
+            "shortDescription": f"Software Inc modding for {target}.",
+        },
     }
     return portable, compatibility
 
@@ -464,6 +463,30 @@ def validate_candidate(
 
     portable = _parse_json_candidate(actual, "plugin.json")
     expected_portable = _parse_json_candidate(expected, "plugin.json")
+    portable_forbidden = {
+        "schema_version",
+        "display_name",
+        "entrypoint",
+        "runtime_skill",
+        "public_skill_count",
+        "canonical_game_target",
+    }
+    portable_valid = (
+        isinstance(portable, dict)
+        and portable.get("$schema")
+        == "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json"
+        and isinstance(portable.get("description"), str)
+        and bool(portable["description"].strip())
+        and not (portable_forbidden & set(portable))
+    )
+    if not portable_valid:
+        findings.append(
+            _finding(
+                "SIM_PLUGIN_PORTABLE_MANIFEST_INVALID",
+                "portable root plugin.json does not match the supported Agent Plugins manifest shape",
+                "plugin.json",
+            )
+        )
     if (
         portable is None
         or expected_portable is None
@@ -477,44 +500,6 @@ def validate_candidate(
                 "plugin.json",
             )
         )
-    if (
-        portable is None
-        or expected_portable is None
-        or portable.get("entrypoint") != expected_portable.get("entrypoint")
-    ):
-        findings.append(
-            _finding(
-                "SIM_PLUGIN_ENTRYPOINT_INVALID",
-                "portable plugin entrypoint is invalid",
-                "plugin.json",
-            )
-        )
-    if (
-        portable is None
-        or expected_portable is None
-        or portable.get("runtime_skill")
-        != expected_portable.get("runtime_skill")
-    ):
-        findings.append(
-            _finding(
-                "SIM_PLUGIN_RUNTIME_SKILL_INVALID",
-                "portable runtime skill path is invalid",
-                "plugin.json",
-            )
-        )
-    if (
-        portable is None
-        or expected_portable is None
-        or portable.get("public_skill_count")
-        != expected_portable.get("public_skill_count")
-    ):
-        findings.append(
-            _finding(
-                "SIM_PLUGIN_PUBLIC_SKILL_COUNT_INVALID",
-                "portable public skill count is invalid",
-                "plugin.json",
-            )
-        )
 
     compatibility_path = normalize_archive_member(
         policy["compatibility_manifest_path"]
@@ -523,6 +508,35 @@ def validate_candidate(
     expected_compatibility = _parse_json_candidate(
         expected, compatibility_path
     )
+    compatibility_forbidden = {
+        "schema_version",
+        "displayName",
+        "entrypoint",
+        "skill",
+        "publicSkillCount",
+    }
+    interface = (
+        compatibility.get("interface")
+        if isinstance(compatibility, dict)
+        else None
+    )
+    compatibility_valid = (
+        isinstance(compatibility, dict)
+        and isinstance(compatibility.get("description"), str)
+        and bool(compatibility["description"].strip())
+        and compatibility.get("skills") == "./skills/"
+        and isinstance(interface, dict)
+        and interface.get("displayName") == "SIM"
+        and not (compatibility_forbidden & set(compatibility))
+    )
+    if not compatibility_valid:
+        findings.append(
+            _finding(
+                "SIM_PLUGIN_COMPATIBILITY_MANIFEST_INVALID",
+                "Codex compatibility manifest does not match the supported skills-plugin manifest shape",
+                compatibility_path,
+            )
+        )
     if (
         compatibility is None
         or expected_compatibility is None
@@ -534,44 +548,6 @@ def validate_candidate(
             _finding(
                 "SIM_PLUGIN_IDENTITY_INVALID",
                 "compatibility plugin identity/version differs from exact source projection",
-                compatibility_path,
-            )
-        )
-    if (
-        compatibility is None
-        or expected_compatibility is None
-        or compatibility.get("entrypoint")
-        != expected_compatibility.get("entrypoint")
-    ):
-        findings.append(
-            _finding(
-                "SIM_PLUGIN_ENTRYPOINT_INVALID",
-                "compatibility plugin entrypoint is invalid",
-                compatibility_path,
-            )
-        )
-    if (
-        compatibility is None
-        or expected_compatibility is None
-        or compatibility.get("skill") != expected_compatibility.get("skill")
-    ):
-        findings.append(
-            _finding(
-                "SIM_PLUGIN_RUNTIME_SKILL_INVALID",
-                "compatibility runtime skill path is invalid",
-                compatibility_path,
-            )
-        )
-    if (
-        compatibility is None
-        or expected_compatibility is None
-        or compatibility.get("publicSkillCount")
-        != expected_compatibility.get("publicSkillCount")
-    ):
-        findings.append(
-            _finding(
-                "SIM_PLUGIN_PUBLIC_SKILL_COUNT_INVALID",
-                "compatibility public skill count is invalid",
                 compatibility_path,
             )
         )
