@@ -29,3 +29,24 @@ def test_sim_preview_steps_follow_exact_target_and_project_release_gates() -> No
     sim_verify = text.index("python tools/verify_sim_release.py")
 
     assert exact_target < project_release < sim_layout < sim_build < sim_verify
+
+
+def test_verify_workflow_builds_and_validates_exact_sha_sim_plugin_twice() -> None:
+    text = WORKFLOW.read_text(encoding="utf-8")
+
+    required = (
+        'python tools/build_sim_plugin.py build --repo-root . --source-sha "$GITHUB_SHA" --output dist/sim-plugin-a',
+        'python tools/build_sim_plugin.py build --repo-root . --source-sha "$GITHUB_SHA" --output dist/sim-plugin-b',
+        'python tools/validate_sim_plugin.py check --repo-root . --source-sha "$GITHUB_SHA" --candidate dist/sim-plugin-a',
+        'python tools/validate_sim_plugin.py check --repo-root . --source-sha "$GITHUB_SHA" --candidate dist/sim-plugin-b',
+        "SIM_PLUGIN_REPRODUCIBLE",
+        "actions/upload-artifact@v4",
+    )
+    for command in required:
+        assert command in text
+
+
+def test_sim_plugin_ci_does_not_publish_marketplace_or_materialize_plugins_tree() -> None:
+    text = WORKFLOW.read_text(encoding="utf-8")
+    assert ".agents/plugins/marketplace.json" not in text
+    assert "--output plugins/sim" not in text
