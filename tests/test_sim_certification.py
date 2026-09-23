@@ -235,3 +235,23 @@ def test_certification_passes_only_same_candidate_across_required_surfaces(
         )
 
     assert verify_certification(ROOT, candidate, source_sha, evidence) == []
+
+
+def test_installation_schema_accepts_platform_limitation_as_observation() -> None:
+    record = {
+        "schema_version": 1,
+        "installation_evidence_id": "codex-install-blocked",
+        "surface": "Codex",
+        "result": "PLATFORM_LIMITATION",
+        "candidate_tree_sha256": "a" * 64,
+        "semantic_aggregate_sha256": "b" * 64,
+        "source_commit": "c" * 40,
+        "projection_commit": "d" * 40,
+        "plugin_version": "0.2.2-preview",
+        "exact_target_manifest_sha256": "e" * 64,
+        "transport": "UNAVAILABLE",
+        "observed_public_skill_count": 0,
+        "observed_public_skill_names": [],
+        "recorded_at": "2026-09-23T09:00:00Z",
+    }
+    jsonschema.Draft202012Validator(_installation_schema()).validate(record)
