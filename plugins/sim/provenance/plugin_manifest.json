@@ -1,0 +1,10 @@
+{
+  "candidate_tree_sha256_external": true,
+  "plugin_identity": "sim",
+  "plugin_version": "0.2.2-preview",
+  "projection_policy_sha256": "5244a87b14d5e06fd31055b5d5780da9249424f1c99e63814e131f7936293217",
+  "runtime_manifest_sha256": "a78a99a862c2f5784a2844bdbb4943ab5d6c6710805925378975261b313f9752",
+  "schema_version": 1,
+  "semantic_aggregate_sha256": "2ae897092c2a4b37d5cc4acfba86f691e6784c8fb51bd4e0a01f45501ec4b304",
+  "source_commit": "c334c68edc234f33b826d8c5928feec55d6946d0"
+}
