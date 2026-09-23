@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import stat
 from pathlib import Path
 from zipfile import ZIP_DEFLATED, ZipFile, ZipInfo
 
@@ -24,7 +25,19 @@ def _sha256(path: Path) -> str:
 def build_mod_zip(source_dir: Path, output_zip: Path) -> dict:
     source = Path(source_dir)
     source_resolved = source.resolve(strict=True)
-    output = Path(output_zip).resolve()
+
+    output_path = Path(output_zip)
+    if output_path.exists() or output_path.is_symlink():
+        metadata = output_path.lstat()
+        reparse_flag = getattr(stat, "FILE_ATTRIBUTE_REPARSE_POINT", 0)
+        attributes = getattr(metadata, "st_file_attributes", 0)
+        if (
+            stat.S_ISLNK(metadata.st_mode)
+            or bool(reparse_flag and attributes & reparse_flag)
+            or not stat.S_ISREG(metadata.st_mode)
+        ):
+            raise ValueError("output path must be a regular file, not a symlink or special file")
+    output = output_path.resolve()
     try:
         output.relative_to(source_resolved)
     except ValueError:
