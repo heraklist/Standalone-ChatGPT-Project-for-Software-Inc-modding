@@ -719,6 +719,8 @@ def validate_candidate(
         b"sk-proj-",
         b"mandatory paid service",
         b"requires OpenAI API billing",
+        b"UNDECLARED_APP",
+        b"undeclared app",
         b"undeclared MCP",
     )
     for path, data in sorted(actual.items()):
