@@ -36,6 +36,9 @@ def verify_sim_release(
     certification_context=None,
     evidence_dir: Path | None = None,
     required_cases: tuple[str, ...] | None = None,
+    candidate_root: Path | None = None,
+    source_sha: str | None = None,
+    evidence_root: Path | None = None,
 ) -> list[str]:
     if not zip_path.is_file():
         return [f"SIM release ZIP not found: {zip_path}"]
@@ -81,7 +84,62 @@ def verify_sim_release(
         if report.get("known_gaps") != []:
             errors.append(f"{release_status} requires empty known_gaps")
     elif release_status in live_states:
-        if certification_context is None or evidence_dir is None:
+        global_inputs = (candidate_root, source_sha, evidence_root)
+        if any(value is not None for value in global_inputs):
+            if not all(value is not None for value in global_inputs):
+                errors.append(
+                    f"{release_status} requires candidate_root, source_sha, and evidence_root together"
+                )
+            else:
+                from tools.verify_sim_certification import (
+                    build_certification_report,
+                    verify_certification,
+                )
+
+                assert candidate_root is not None
+                assert source_sha is not None
+                assert evidence_root is not None
+                certification_errors = verify_certification(
+                    ROOT,
+                    candidate_root,
+                    source_sha,
+                    evidence_root,
+                )
+                derived = build_certification_report(
+                    ROOT,
+                    candidate_root,
+                    source_sha,
+                    evidence_root,
+                )
+                errors.extend(
+                    f"global certification: {error}"
+                    for error in certification_errors
+                )
+                if derived["release_blocking_complete"]:
+                    expected_state = "PREVIEW_CERTIFIED"
+                    expected_acceptance = "PASS"
+                elif any(
+                    value == "FAIL"
+                    for value in derived["surface_results"].values()
+                ):
+                    expected_state = "PREVIEW_LIVE_FAILED"
+                    expected_acceptance = "FAIL"
+                else:
+                    expected_state = "PREVIEW_LIVE_INCOMPLETE"
+                    expected_acceptance = "INCOMPLETE"
+                if release_status != expected_state:
+                    errors.append(
+                        f"{release_status} does not match global certification; expected {expected_state}"
+                    )
+                if report.get("surface_acceptance") != expected_acceptance:
+                    errors.append(
+                        "surface_acceptance does not match global certification"
+                    )
+                if report.get("known_gaps") != list(derived["known_gaps"]):
+                    errors.append(
+                        "known_gaps do not match global certification"
+                    )
+        elif certification_context is None or evidence_dir is None:
             errors.append(
                 f"{release_status} requires certification context and acceptance evidence"
             )
@@ -198,8 +256,18 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("zip_path", type=Path)
     parser.add_argument("report_path", type=Path)
     parser.add_argument("--expected-version", required=True)
+    parser.add_argument("--candidate-root", type=Path)
+    parser.add_argument("--source-sha")
+    parser.add_argument("--evidence-root", type=Path)
     args = parser.parse_args(argv)
-    errors = verify_sim_release(args.zip_path, args.report_path, args.expected_version)
+    errors = verify_sim_release(
+        args.zip_path,
+        args.report_path,
+        args.expected_version,
+        candidate_root=args.candidate_root,
+        source_sha=args.source_sha,
+        evidence_root=args.evidence_root,
+    )
     if errors:
         for error in errors:
             print(f"SIM_RELEASE_ERROR: {error}")

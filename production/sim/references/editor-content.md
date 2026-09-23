@@ -30,6 +30,10 @@ Use the native in-game/editor/share surface. Minimum verification: discovery/imp
 ## Building
 Treat Building as a distinct editor/Workshop content type. Minimum verification: content discovery/enablement, intended building/rental behavior, geometry/access/pathing, dependencies, new-game/load path where applicable, save/restart and clean subscription/import cycle. Workshop ecosystem evidence does not reveal a public parser/file schema.
 
+
+## Building/Blueprint package hard stop
+When the target-version evidence does not establish a supported public loader/install schema, a request for exact folders, an install tree, package layout, installer, or ZIP must stop before any concrete filesystem structure is proposed. Do not enumerate or present a concrete install tree such as `Software Inc\Buildings\...`, `Software Inc\Blueprints\...`, `Buildings/*.build`, or `Blueprints/*.xml`, even if those names were observed in storage, cloud data, Workshop metadata, or exported artifacts. Such names may be described only as storage/export observations with an explicit statement that they do not establish installation or delivery semantics. Do not convert them into a tree diagram, path mapping, package skeleton, or install recipe. If the supported native authoring/export path is unavailable, report `TOOLING_BLOCKED`. A later refusal to fabricate the final ZIP does not cure an earlier unverified concrete install-tree claim.
+
 ## Native artifact delivery
 Editor-native content ends as `CANDIDATE_NATIVE_ARTIFACT` then `FINAL_VERIFIED_NATIVE_ARTIFACT` when the required evidence exists. If the environment cannot produce/export the native artifact, report `TOOLING_BLOCKED`; do not manufacture a ZIP or TyD format.
 

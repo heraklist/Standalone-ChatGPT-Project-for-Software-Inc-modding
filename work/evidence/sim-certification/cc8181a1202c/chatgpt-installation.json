@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "installation_evidence_id": "chatgpt-g4-cc8181a1202c",
+  "surface": "ChatGPT",
+  "result": "PASS",
+  "candidate_tree_sha256": "cc8181a1202cc95e2aed7a5f67c37795b9080db17a4b03b88f0ced42780ed439",
+  "semantic_aggregate_sha256": "2ae897092c2a4b37d5cc4acfba86f691e6784c8fb51bd4e0a01f45501ec4b304",
+  "source_commit": "c334c68edc234f33b826d8c5928feec55d6946d0",
+  "projection_commit": "1c2d059af8921e948904fb2ec05213646da2e505",
+  "marketplace_commit": "f39f4473d7f2297b0cbfc5c19f3d3d2ae6cd9a0d",
+  "plugin_version": "0.2.2-preview",
+  "exact_target_manifest_sha256": "00fb0a1628c1be1ccaa9ac2a53e619b941599e9ad723375ede4213ca50ba95d3",
+  "transport": "MARKETPLACE_GIT_SUBDIR",
+  "marketplace_name": "sim-certification",
+  "plugin_locator": "https://github.com/heraklist/Standalone-ChatGPT-Project-for-Software-Inc-modding.git@1c2d059af8921e948904fb2ec05213646da2e505:./plugins/sim",
+  "observed_public_skill_count": 1,
+  "observed_public_skill_names": [
+    "SIM"
+  ],
+  "recorded_at": "2026-09-23T15:10:00+03:00"
+}

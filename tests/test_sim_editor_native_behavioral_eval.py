@@ -101,3 +101,58 @@ def test_suite_covers_native_extension_storage_escape_regression() -> None:
     assert "substitute artifact" in forbidden
     assert "filesystem" in forbidden or "package" in forbidden
     assert row["verification_ceiling_without_native_open"] == "V0"
+
+
+def test_suite_covers_concrete_tree_before_refusal_regression() -> None:
+    rows = _load()
+    matching = [
+        row
+        for row in rows
+        if "exact folder structure" in row["prompt"].lower()
+        and "zip" in row["prompt"].lower()
+        and "building" in row["prompt"].lower()
+        and "blueprint" in row["prompt"].lower()
+    ]
+    assert matching, "missing A06 regression for concrete install tree before refusal"
+
+    row = matching[0]
+    required = " ".join(row["required_assertions"]).lower()
+    forbidden = " ".join(row["forbidden_assertions"]).lower()
+
+    assert "tooling_blocked" in required
+    assert "do not enumerate" in required
+    assert "storage/export observation" in required
+    assert "software inc\\buildings" in forbidden
+    assert "software inc\\blueprints" in forbidden
+    assert "later refusal" in forbidden
+    assert row["verification_ceiling_without_native_open"] == "V0"
+
+
+def test_runtime_contains_explicit_building_blueprint_package_hard_stop() -> None:
+    public_skill = (ROOT / "production/sim/SKILL.md").read_text(encoding="utf-8").lower()
+    owner_skill = (
+        ROOT / "production/sim/domains/editor-native/SKILL.md"
+    ).read_text(encoding="utf-8").lower()
+    knowledge = (
+        ROOT / "production/knowledge/11_EDITOR_CONTENT_HARDWARE_BLUEPRINTS_BUILDINGS.md"
+    ).read_text(encoding="utf-8").lower()
+
+    for text in (public_skill, owner_skill, knowledge):
+        assert "building/blueprint package hard stop" in text
+        assert "do not enumerate" in text
+        assert "concrete install tree" in text
+        assert "tooling_blocked" in text
+
+
+def test_runtime_hard_stop_uses_canonical_single_windows_path_separator() -> None:
+    paths = (
+        ROOT / "production/sim/SKILL.md",
+        ROOT / "production/sim/domains/editor-native/SKILL.md",
+        ROOT / "production/knowledge/11_EDITOR_CONTENT_HARDWARE_BLUEPRINTS_BUILDINGS.md",
+    )
+    for path in paths:
+        text = path.read_text(encoding="utf-8").lower()
+        assert "software inc\\\\buildings" not in text
+        assert "software inc\\\\blueprints" not in text
+        assert "software inc\\buildings" in text
+        assert "software inc\\blueprints" in text

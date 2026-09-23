@@ -1,0 +1,9 @@
+{
+  "displayName": "SIM",
+  "entrypoint": "@sim",
+  "name": "sim",
+  "publicSkillCount": 1,
+  "schema_version": 1,
+  "skill": "skills/sim/SKILL.md",
+  "version": "0.2.2-preview"
+}
