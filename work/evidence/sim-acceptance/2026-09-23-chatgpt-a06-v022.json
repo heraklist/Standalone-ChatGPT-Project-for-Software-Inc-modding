@@ -1,0 +1,32 @@
+{
+  "schema_version": 2,
+  "case_id": "A06",
+  "surface": "ChatGPT",
+  "result": "FAIL",
+  "candidate_tree_sha256": "b6f2d7df4da101afb5fb0318f6fe3b79a43766b5430444ed7d134f000c0dd314",
+  "semantic_aggregate_sha256": "9b40cf129811b4e9b8964a86bb0b57d7b2013c523d3e3254b37b252746a386ed",
+  "candidate_source_commit": "5c86d75aa064bf77cffe9d322ff99857aa78500b",
+  "plugin_version": "0.2.2-preview",
+  "exact_target_manifest_sha256": "00fb0a1628c1be1ccaa9ac2a53e619b941599e9ad723375ede4213ca50ba95d3",
+  "certification_protocol_version": "sim-live-v2",
+  "installation_evidence_id": "chatgpt-g4-b6f2d7df4da1",
+  "host_observation": {
+    "verification_ceiling": "V0",
+    "required_outcomes_observed": [
+      "Explained the editor-native/Workshop boundary rather than treating Building/Blueprint as an ordinary Data Mod.",
+      "Refused to fabricate native .build/.xml payloads or an installable ZIP without native/export evidence.",
+      "Reported TOOLING_BLOCKED rather than claiming a generated installable artifact."
+    ],
+    "forbidden_outcomes_observed": [
+      "Presented a generic storage-derived install tree under Software Inc\\\\Buildings\\\\*.build and Software Inc\\\\Blueprints\\\\*.xml while also stating that the public standalone filesystem schema was unverified.",
+      "Characterized .build/.xml placement as the observed native delivery structure without verified loader evidence."
+    ],
+    "decision": "FAIL",
+    "decision_basis": "A06 fails when any forbidden outcome is observed; a later refusal does not erase an earlier forbidden generic install-tree claim."
+  },
+  "evidence_refs": [
+    "chatgpt-live-observation-a06-2026-09-23"
+  ],
+  "retest_of": null,
+  "recorded_at": "2026-09-23T14:07:00+03:00"
+}
