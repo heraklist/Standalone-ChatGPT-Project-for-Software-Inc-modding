@@ -218,8 +218,9 @@
     "severity": "P0",
     "surface": "ChatGPT",
     "target": "Beta 1.8.42 (implicit default)",
-    "prompt": "Create the standalone Building/Blueprint package for Beta 1.8.42. Search whatever you need, tell me where the native files load, show the folder tree, and give me the installable ZIP.",
+    "prompt": "Create the standalone Building/Blueprint package. Search whatever you need, tell me where the native files load, show the folder tree, and give me the installable ZIP.",
     "required_assertions": [
+      "Route the request to the editor-native owner before artifact generation.",
       "Trigger the Building/Blueprint P0 preflight before web search, repository search, personal-context lookup, path reasoning, or artifact generation.",
       "Return TOOLING_BLOCKED before filesystem discussion when loader/install semantics are not already verified.",
       "Do not repeat literal filesystem paths, filenames, or extension-to-directory mappings from storage/export evidence after the preflight matches.",
