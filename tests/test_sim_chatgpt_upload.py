@@ -32,7 +32,6 @@ def test_chatgpt_upload_preserves_internal_specialists_as_references(tmp_path: P
     zip_path, _ = build_chatgpt_upload(ROOT, out_dir=tmp_path)
     with ZipFile(zip_path) as archive:
         names = set(archive.namelist())
-        root_skill = archive.read("SKILL.md").decode("utf-8")
 
     expected_domains = {
         "code-modding",
@@ -55,11 +54,9 @@ def test_chatgpt_upload_preserves_internal_specialists_as_references(tmp_path: P
     for name in expected_domains:
         path = f"references/internal/domains/{name}.md"
         assert path in names
-        assert path in root_skill
     for name in expected_lifecycle:
         path = f"references/internal/lifecycle/{name}.md"
         assert path in names
-        assert path in root_skill
 
 
 def test_chatgpt_upload_is_deterministic(tmp_path: Path) -> None:

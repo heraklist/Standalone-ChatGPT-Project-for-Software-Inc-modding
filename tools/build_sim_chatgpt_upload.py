@@ -58,7 +58,6 @@ def build_chatgpt_upload(root: Path, out_dir: Path | None = None) -> tuple[Path,
         raise RuntimeError("unexpected SIM Preview version")
 
     root_skill_path = sim_root / "SKILL.md"
-    root_skill = root_skill_path.read_text(encoding="utf-8")
     payload: dict[str, bytes] = {}
     provenance: dict[str, dict] = {}
     internal_refs: list[str] = []
@@ -120,22 +119,14 @@ def build_chatgpt_upload(root: Path, out_dir: Path | None = None) -> tuple[Path,
             "sha256": _sha256_file(repository_source),
         }
 
-    appendix = [
-        "",
-        "## Bundled internal workflow references",
-        "",
-        "The following files are internal orchestration references, not public peer skills. Read only the relevant file when routing requires it; the root SIM orchestrator remains the sole public skill and session owner.",
-        "",
-    ]
-    appendix.extend(f"- `{path}`" for path in sorted(internal_refs))
-    root_data = (root_skill.rstrip() + "\n" + "\n".join(appendix) + "\n").encode("utf-8")
+    root_data = root_skill_path.read_bytes()
     payload["SKILL.md"] = root_data
     provenance["SKILL.md"] = _provenance_entry(
         root=root,
         source=root_skill_path,
         package_path="SKILL.md",
         packaged_data=root_data,
-        transform_type="AUGMENT",
+        transform_type="COPY",
     )
 
     runtime_provenance = {
