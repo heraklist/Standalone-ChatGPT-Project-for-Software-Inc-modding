@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "max_archive_bytes": 536870912,
+  "max_entries": 10000,
+  "max_total_uncompressed_bytes": 1073741824,
+  "max_entry_uncompressed_bytes": 268435456,
+  "max_compression_ratio": 200.0,
+  "max_nested_depth": 3,
+  "max_cumulative_nested_uncompressed_bytes": 2147483648,
+  "windows_casefold_paths": true
+}
