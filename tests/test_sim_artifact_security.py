@@ -118,3 +118,25 @@ def test_safe_source_files_rejects_fifo_when_supported(tmp_path: Path) -> None:
 
     with pytest.raises(ValueError):
         safe_source_files(root)
+
+
+
+def test_build_mod_zip_rejects_symlink_output_target(tmp_path: Path) -> None:
+    from tools.build_mod_zip import build_mod_zip
+
+    source = tmp_path / "mod"
+    source.mkdir()
+    (source / "payload.txt").write_text("payload", encoding="utf-8")
+
+    victim = tmp_path / "victim.txt"
+    victim.write_text("KEEP", encoding="utf-8")
+    output = tmp_path / "out.zip"
+    try:
+        os.symlink(victim, output)
+    except OSError as exc:
+        pytest.skip(f"symlink creation unavailable: {exc}")
+
+    with pytest.raises(ValueError, match="output"):
+        build_mod_zip(source, output)
+
+    assert victim.read_text(encoding="utf-8") == "KEEP"
