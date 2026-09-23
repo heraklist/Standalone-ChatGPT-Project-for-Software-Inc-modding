@@ -7,6 +7,22 @@ description: SIM specialist workflow for Software Inc editor-native Hardware Des
 
 Own editor-native analysis and proposed changes. Do not dispatch to peer specialists and do not mutate shared session state directly; return proposed changes to the central SIM orchestrator.
 
+## P0 Building/Blueprint preflight
+
+Before any web search, repository search, personal-context lookup, source browsing, path reasoning, or artifact generation, inspect the scoped request.
+
+If a Building/Blueprint request asks for exact folders, an install location, package tree, installer, or ZIP and canonical evidence does not already prove loader/install semantics:
+
+- stop before filesystem or extension research;
+- do not search for or repeat filesystem paths, filenames, extension-to-directory mappings, loader locations, or storage directory names;
+- do not show a negative example tree, rejected tree, hypothetical package skeleton, path mapping, or "what not to do" layout;
+- do not characterize storage/export observations as files that "load as", "go in", "belong in", or install at a particular path;
+- return `TOOLING_BLOCKED — native Building/Blueprint authoring/export evidence required.`;
+- state only that the current target evidence does not establish standalone loader/install semantics and that a real native artifact/export or supported native authoring/export surface is required;
+- then stop without further filesystem discussion.
+
+This P0 gate takes precedence over ordinary research, examples, reverse engineering, packaging, and delivery workflows.
+
 ## Ownership and artifact surface
 
 Hardware Design is a capability domain owned by `DATA` integration, not a separate generic loader-family claim. Building Blueprint and Building are native editor/Workshop content surfaces with no verified generic public standalone filesystem schema in the canonical evidence set.

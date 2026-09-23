@@ -15,6 +15,20 @@ known_version_gaps: [Building and Blueprint public filesystem schema unverified]
 
 # Editor Content: Hardware, Blueprints and Buildings
 
+## P0 Building/Blueprint preflight
+
+Before any web search, repository search, personal-context lookup, source browsing, path reasoning, or artifact generation, a Building/Blueprint request for exact folders, an install path, package tree, installer, or ZIP must be classified against the loader/install evidence ceiling.
+
+When loader/install semantics are not already verified for the target version:
+
+- do not search for or repeat filesystem paths, filenames, extension-to-directory mappings, loader locations, or storage directory names;
+- do not show a negative example tree, rejected tree, hypothetical package skeleton, path mapping, or "what not to do" layout;
+- do not convert storage/export observations into claims that files "load as", "go in", "belong in", or install at a particular location;
+- return `TOOLING_BLOCKED — native Building/Blueprint authoring/export evidence required.`;
+- state that the current canonical evidence does not establish standalone loader/install semantics and require a real native export/artifact or supported native authoring/export surface before filesystem discussion continues.
+
+The preflight ends the package-path branch immediately. A disclaimer or later refusal cannot authorize path enumeration.
+
 ## Ownership and artifact surface
 Hardware Design is a **capability domain owned by `DATA` integration**, not a separate loader-family claim. Building Blueprints and Buildings are supported editor/Workshop content types, but their public standalone filesystem schema has not been verified. They therefore use `EDITOR_CONTENT`, not an invented Mods-root package.
 
