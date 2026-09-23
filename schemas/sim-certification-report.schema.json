@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://evochia.local/schemas/sim-certification-report.schema.json",
+  "title": "SIM Certification Report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "plugin_version",
+    "candidate_tree_sha256",
+    "semantic_aggregate_sha256",
+    "source_commit",
+    "exact_target_manifest_sha256",
+    "certification_protocol_version",
+    "surface_results",
+    "known_gaps",
+    "release_blocking_complete"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "plugin_version": {"type": "string", "minLength": 1},
+    "candidate_tree_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "semantic_aggregate_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "source_commit": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+    "exact_target_manifest_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "certification_protocol_version": {"type": "string", "minLength": 1},
+    "surface_results": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ChatGPT", "Codex", "ChatGPT Project"],
+      "properties": {
+        "ChatGPT": {"enum": ["PASS", "FAIL", "INCOMPLETE", "BLOCKED", "NOT_REQUIRED"]},
+        "Codex": {"enum": ["PASS", "FAIL", "INCOMPLETE", "BLOCKED", "NOT_REQUIRED"]},
+        "ChatGPT Project": {"enum": ["PASS", "FAIL", "INCOMPLETE", "BLOCKED", "NOT_REQUIRED"]}
+      }
+    },
+    "known_gaps": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1}
+    },
+    "release_blocking_complete": {"type": "boolean"}
+  }
+}

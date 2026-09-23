@@ -1,0 +1,22 @@
+{
+  "interface": {
+    "displayName": "SIM"
+  },
+  "name": "sim-certification",
+  "plugins": [
+    {
+      "category": "Developer Tools",
+      "name": "sim",
+      "policy": {
+        "authentication": "ON_INSTALL",
+        "installation": "AVAILABLE"
+      },
+      "source": {
+        "path": "./plugins/sim",
+        "sha": "77957cc0be9cfc62e89c0bb5328beb1aad9cc211",
+        "source": "git-subdir",
+        "url": "https://github.com/heraklist/Standalone-ChatGPT-Project-for-Software-Inc-modding.git"
+      }
+    }
+  ]
+}
