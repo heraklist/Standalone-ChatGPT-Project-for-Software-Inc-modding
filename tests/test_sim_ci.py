@@ -49,6 +49,15 @@ def test_verify_workflow_builds_and_validates_exact_source_sha_sim_plugin_twice(
 
     assert '--source-sha "$GITHUB_SHA"' not in text
 
+def test_verify_workflow_fetches_pull_request_head_git_object() -> None:
+    text = WORKFLOW.read_text(encoding="utf-8")
+    checkout = text.index("uses: actions/checkout@v4")
+    setup_python = text.index("uses: actions/setup-python@v5")
+    checkout_block = text[checkout:setup_python]
+
+    assert "fetch-depth: 2" in checkout_block
+
+
 def test_sim_plugin_ci_does_not_publish_marketplace_or_materialize_plugins_tree() -> None:
     text = WORKFLOW.read_text(encoding="utf-8")
     assert ".agents/plugins/marketplace.json" not in text
