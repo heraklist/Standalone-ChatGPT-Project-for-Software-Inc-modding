@@ -8,6 +8,8 @@ on:
 jobs:
   verify:
     runs-on: ubuntu-latest
+    env:
+      SIM_SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -43,13 +45,13 @@ jobs:
         shell: bash
         run: |
           mkdir -p dist/sim-plugin-ci
-          python tools/build_sim_plugin.py build --repo-root . --source-sha "$GITHUB_SHA" --output dist/sim-plugin-a > dist/sim-plugin-ci/sim-plugin-a.identity.json
-          python tools/build_sim_plugin.py build --repo-root . --source-sha "$GITHUB_SHA" --output dist/sim-plugin-b > dist/sim-plugin-ci/sim-plugin-b.identity.json
+          python tools/build_sim_plugin.py build --repo-root . --source-sha "$SIM_SOURCE_SHA" --output dist/sim-plugin-a > dist/sim-plugin-ci/sim-plugin-a.identity.json
+          python tools/build_sim_plugin.py build --repo-root . --source-sha "$SIM_SOURCE_SHA" --output dist/sim-plugin-b > dist/sim-plugin-ci/sim-plugin-b.identity.json
       - name: Independently validate deterministic SIM plugin candidates
         shell: bash
         run: |
-          python tools/validate_sim_plugin.py check --repo-root . --source-sha "$GITHUB_SHA" --candidate dist/sim-plugin-a
-          python tools/validate_sim_plugin.py check --repo-root . --source-sha "$GITHUB_SHA" --candidate dist/sim-plugin-b
+          python tools/validate_sim_plugin.py check --repo-root . --source-sha "$SIM_SOURCE_SHA" --candidate dist/sim-plugin-a
+          python tools/validate_sim_plugin.py check --repo-root . --source-sha "$SIM_SOURCE_SHA" --candidate dist/sim-plugin-b
       - name: Compare SIM plugin candidate identities
         shell: bash
         run: |
@@ -67,7 +69,7 @@ jobs:
       - name: Upload deterministic SIM plugin candidate evidence
         uses: actions/upload-artifact@v4
         with:
-          name: sim-plugin-candidate-${{ github.sha }}
+          name: sim-plugin-candidate-${{ env.SIM_SOURCE_SHA }}
           path: |
             dist/sim-plugin-a
             dist/sim-plugin-ci/sim-plugin-a.identity.json
