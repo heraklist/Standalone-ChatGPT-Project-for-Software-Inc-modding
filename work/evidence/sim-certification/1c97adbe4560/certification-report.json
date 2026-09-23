@@ -7,7 +7,7 @@
   "exact_target_manifest_sha256": "00fb0a1628c1be1ccaa9ac2a53e619b941599e9ad723375ede4213ca50ba95d3",
   "certification_protocol_version": "sim-live-v2",
   "surface_results": {
-    "ChatGPT": "FAIL",
+    "ChatGPT": "BLOCKED",
     "Codex": "INCOMPLETE",
     "ChatGPT Project": "NOT_REQUIRED"
   },
@@ -17,13 +17,14 @@
     "A03 ChatGPT acceptance NOT_TESTED",
     "A04 ChatGPT acceptance NOT_TESTED",
     "A05 ChatGPT acceptance NOT_TESTED",
-    "A06 ChatGPT acceptance FAIL",
+    "A06 ChatGPT acceptance NOT_TESTED",
     "A07 ChatGPT acceptance NOT_TESTED",
     "A08 ChatGPT acceptance NOT_TESTED",
     "A09 ChatGPT acceptance NOT_TESTED",
     "A10 ChatGPT acceptance NOT_TESTED",
     "A11 ChatGPT acceptance NOT_TESTED",
     "A12 ChatGPT acceptance NOT_TESTED",
+    "ChatGPT installation/resolver PLATFORM_LIMITATION",
     "Codex installation evidence missing"
   ],
   "release_blocking_complete": false

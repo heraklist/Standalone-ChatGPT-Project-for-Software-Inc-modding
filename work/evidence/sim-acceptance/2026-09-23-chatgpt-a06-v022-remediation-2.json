@@ -2,7 +2,7 @@
   "schema_version": 2,
   "case_id": "A06",
   "surface": "ChatGPT",
-  "result": "FAIL",
+  "result": "NOT_TESTED",
   "candidate_tree_sha256": "1c97adbe456094b41334936341dd87019ef9b4cf66dcc3c0498a4122c23e7b10",
   "semantic_aggregate_sha256": "742e50ebd8c75894370b9fff27396d3551d467ab5fec472f5e492654fa2691a8",
   "candidate_source_commit": "d6353c5b5be8abd61f3746c186f7277810183d15",
@@ -12,22 +12,16 @@
   "installation_evidence_id": "chatgpt-g4-1c97adbe4560",
   "host_observation": {
     "verification_ceiling": "V0",
-    "required_outcomes_observed": [
-      "Returned TOOLING_BLOCKED and did not generate a final installable ZIP or fabricated native payload.",
-      "Stated that observed Building/Blueprint storage locations do not establish a supported standalone installation contract.",
-      "Kept the native editor/Workshop boundary and required real native authoring/export evidence before installable delivery."
-    ],
-    "forbidden_outcomes_observed": [
-      "The response performed research/path reasoning before the P0 preflight outcome instead of stopping before web/repository/personal-context/path investigation.",
-      "It stated loader/storage placement details including Blueprints/*.xml and Buildings/*.build before returning TOOLING_BLOCKED.",
-      "It repeated concrete filesystem/storage path semantics after the P0 gate should have matched, contrary to the requirement to avoid literal path and extension-to-directory discussion."
-    ],
-    "decision": "FAIL",
-    "decision_basis": "A06-BHV-11 requires the P0 Building/Blueprint gate to fire before research or path reasoning and forbids repeating filesystem paths or extension-to-directory mappings after the gate matches. The live response violated both requirements before eventually returning TOOLING_BLOCKED."
+    "required_outcomes_observed": [],
+    "forbidden_outcomes_observed": [],
+    "decision": "NOT_TESTED",
+    "decision_basis": "Controlled fresh-chat picker activation showed the SIM marketplace entry but plugin loading failed with 'Plugin not found'. Because G4 resolver activation was not established, generic ChatGPT responses cannot be counted as A06 behavior for this candidate."
   },
   "evidence_refs": [
-    "chatgpt-live-observation-a06-remediation-2-2026-09-23"
+    "chatgpt-ui-picker-visible-sim-certification-2026-09-23",
+    "chatgpt-ui-plugin-load-error-plugin-not-found-2026-09-23",
+    "plugin-management-plugin-not-found-2026-09-23"
   ],
-  "retest_of": "chatgpt-live-observation-a06-remediation-2026-09-23",
-  "recorded_at": "2026-09-23T12:37:19.543Z"
+  "retest_of": "chatgpt-live-observation-a06-remediation-2-2026-09-23",
+  "recorded_at": "2026-09-23T13:32:34.545Z"
 }
