@@ -42,7 +42,17 @@ def verify_release_artifacts(zip_path: Path, report_path: Path, *, expected_vers
                 errors.append(f"corrupt ZIP member: {bad_member}")
                 return errors
 
-            names = set(zf.namelist())
+            name_list = zf.namelist()
+            names = set(name_list)
+            if len(name_list) != len(names):
+                seen: set[str] = set()
+                duplicates: set[str] = set()
+                for name in name_list:
+                    if name in seen:
+                        duplicates.add(name)
+                    seen.add(name)
+                for name in sorted(duplicates):
+                    errors.append(f"duplicate ZIP entry: {name}")
             if len(names) != 21:
                 errors.append(f"bundle must contain exactly 21 entries, found {len(names)}")
 
