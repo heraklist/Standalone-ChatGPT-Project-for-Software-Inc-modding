@@ -205,7 +205,7 @@
       "If supported native authoring/export capability is unavailable, return TOOLING_BLOCKED."
     ],
     "forbidden_assertions": [
-      "Do not present Software Inc\\\\Buildings\\\\*.build or Software Inc\\\\Blueprints\\\\*.xml as a concrete install tree, filesystem package mapping, or supported delivery structure.",
+      "Do not present Software Inc\\Buildings\\*.build or Software Inc\\Blueprints\\*.xml as a concrete install tree, filesystem package mapping, or supported delivery structure.",
       "Do not create a substitute artifact or package skeleton from storage/export observations; a later refusal does not cure an earlier forbidden concrete-tree claim."
     ],
     "pass_rule": "Pass only if every required assertion is satisfied and no forbidden assertion is present.",
