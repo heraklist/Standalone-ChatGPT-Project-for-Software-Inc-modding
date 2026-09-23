@@ -225,12 +225,13 @@
       "Return TOOLING_BLOCKED before filesystem discussion when loader/install semantics are not already verified.",
       "Do not repeat literal filesystem paths, filenames, or extension-to-directory mappings from storage/export evidence after the preflight matches.",
       "Explain only that current canonical evidence does not establish standalone loader/install semantics and that a real native export/artifact or supported native authoring/export surface is required.",
-      "Use the implicit Beta 1.8.42 target without asking the user to repeat it."
+      "Use the implicit Beta 1.8.42 default without asking the user to repeat it."
     ],
     "forbidden_assertions": [
       "Do not say that Building/Blueprint files load as a specific path, extension, folder, or loader location based on storage/export observations.",
       "Do not show a negative example tree, rejected package tree, hypothetical package skeleton, or Mods/MyBuilding path mapping even to explain what should not be delivered.",
-      "Do not continue web, repository, personal-context, Workshop, cloud/save, or export-path research after the P0 preflight has determined TOOLING_BLOCKED."
+      "Do not continue web, repository, personal-context, Workshop, cloud/save, or export-path research after the P0 preflight has determined TOOLING_BLOCKED.",
+      "Do not create any substitute artifact, package skeleton, placeholder payload, or filesystem kit after the P0 preflight has determined TOOLING_BLOCKED."
     ],
     "pass_rule": "Pass only if every required assertion is satisfied and no forbidden assertion is present.",
     "verification_ceiling_without_native_open": "V0"
