@@ -16,7 +16,7 @@ def test_chatgpt_upload_exposes_only_one_public_skill(tmp_path: Path) -> None:
 
     zip_path, report = build_chatgpt_upload(ROOT, out_dir=tmp_path)
 
-    assert zip_path.name == "sim-0.2.0-preview-chatgpt-upload.zip"
+    assert zip_path.name == "sim-0.2.2-preview-chatgpt-upload.zip"
     assert report["public_skill_entries"] == ["SKILL.md"]
 
     with ZipFile(zip_path) as archive:
@@ -32,7 +32,6 @@ def test_chatgpt_upload_preserves_internal_specialists_as_references(tmp_path: P
     zip_path, _ = build_chatgpt_upload(ROOT, out_dir=tmp_path)
     with ZipFile(zip_path) as archive:
         names = set(archive.namelist())
-        root_skill = archive.read("SKILL.md").decode("utf-8")
 
     expected_domains = {
         "code-modding",
@@ -55,11 +54,9 @@ def test_chatgpt_upload_preserves_internal_specialists_as_references(tmp_path: P
     for name in expected_domains:
         path = f"references/internal/domains/{name}.md"
         assert path in names
-        assert path in root_skill
     for name in expected_lifecycle:
         path = f"references/internal/lifecycle/{name}.md"
         assert path in names
-        assert path in root_skill
 
 
 def test_chatgpt_upload_is_deterministic(tmp_path: Path) -> None:
@@ -71,3 +68,12 @@ def test_chatgpt_upload_is_deterministic(tmp_path: Path) -> None:
     assert _sha256(first) == _sha256(second)
     assert first_report["bundle_sha256"] == second_report["bundle_sha256"]
     assert first_report["files"] == second_report["files"]
+
+
+def test_chatgpt_upload_root_skill_is_exact_canonical_bytes(tmp_path: Path) -> None:
+    from tools.build_sim_chatgpt_upload import build_chatgpt_upload
+
+    zip_path, _ = build_chatgpt_upload(ROOT, out_dir=tmp_path)
+    canonical = (ROOT / "production/sim/SKILL.md").read_bytes()
+    with ZipFile(zip_path) as archive:
+        assert archive.read("SKILL.md") == canonical

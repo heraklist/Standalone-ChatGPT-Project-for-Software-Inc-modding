@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -68,3 +69,24 @@ def test_blocked_readiness_labels_do_not_advance_artifact_or_verification_state(
     for value in ("READY_FOR_GAME_TESTING", "TOOLING_BLOCKED", "PARTIAL_BUILD"):
         assert value in state
     assert "do not by themselves advance" in state
+
+
+def test_session_schema_uses_machine_verification_ids() -> None:
+    schema = json.loads(
+        (ROOT / "schemas/sim-session.schema.json").read_text(encoding="utf-8")
+    )
+    enum = schema["properties"]["artifact"]["properties"]["verification_level"]["enum"]
+    assert enum == ["V0", "V1", "V2", "V3", "V4", "V5"]
+
+
+def test_machine_verification_ids_have_one_display_label_mapping() -> None:
+    from tools.sim_contracts import VERIFICATION_LABELS
+
+    assert VERIFICATION_LABELS == {
+        "V0": "DESIGN_READY",
+        "V1": "ARTIFACT_GENERATED",
+        "V2": "STATICALLY_REVIEWED",
+        "V3": "LOAD_OR_NATIVE_OPEN_VERIFIED",
+        "V4": "BEHAVIOR_VERIFIED",
+        "V5": "REGRESSION_VERIFIED",
+    }

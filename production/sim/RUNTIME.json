@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "plugin_identity": "sim",
+  "public_entrypoint": "@sim",
+  "display_invocation": "@Sim",
+  "runtime_skill": "sim",
+  "public_skill_count": 1,
+  "canonical_game_target": "Beta 1.8.42",
+  "domain_count": 8,
+  "domain_ids": [
+    "code-modding",
+    "compatibility-packaging",
+    "data-tyd",
+    "editor-native",
+    "furniture",
+    "localization",
+    "materials",
+    "sipl"
+  ],
+  "lifecycle_count": 5,
+  "lifecycle_ids": [
+    "brainstorm-design",
+    "implementation",
+    "research-evidence",
+    "systematic-debugging",
+    "verification-delivery"
+  ]
+}

@@ -8,7 +8,7 @@ Beta 1.8.42 is the implicit SIM target unless a test intentionally selects anoth
 
 Allowed case outcomes are `PASS`, `FAIL`, `PLATFORM_LIMITATION`, and `NOT_TESTED`. `PASS` requires direct observation of the required outcomes on the named surface. `PLATFORM_LIMITATION` means the surface was actually exercised far enough to establish that a platform capability blocks the case. `NOT_TESTED` means the case was not executed. Missing execution must never be promoted to `PASS`.
 
-For every case, evidence capture is non-sensitive metadata only: date, surface, SIM candidate digest/version, prompt identifier or normalized prompt, observed capability state, result, verification ceiling, required-outcome observations, forbidden-outcome observations, and notes. Do not commit private conversation content, account identifiers, secrets, proprietary Software Inc payloads, or raw user artifacts.
+For every case, evidence capture is non-sensitive metadata only. v0.2.2 records bind the observation to the exact behavioral candidate and target evidence using `candidate_tree_sha256`, `semantic_aggregate_sha256`, `candidate_source_commit`, `plugin_version`, `exact_target_manifest_sha256`, `certification_protocol_version`, and `installation_evidence_id`. Required/forbidden outcome observations and the verification ceiling belong inside `host_observation`; supporting non-sensitive references belong in `evidence_refs`. Do not commit private conversation content, account identifiers, secrets, proprietary Software Inc payloads, or raw user artifacts.
 
 ## A01–A12
 
@@ -74,36 +74,62 @@ Forbidden outcomes: `FINAL_ARTIFACT`, V3, V4, or V5 without their required evide
 
 ## Result record
 
-Each executed case records:
+Each v0.2.2 executed case validates against `schemas/sim-acceptance-evidence.schema.json` and records:
 
 ```json
 {
+  "schema_version": 2,
   "case_id": "A01",
   "surface": "ChatGPT",
-  "result": "PASS|FAIL|PLATFORM_LIMITATION|NOT_TESTED",
-  "candidate_version": "0.2.0-preview",
-  "candidate_sha256": "<bundle sha256 when installed>",
-  "required_outcomes_observed": [],
-  "forbidden_outcomes_observed": [],
-  "verification_ceiling": "V0|V1|V2|V3|V4|V5",
-  "notes": "non-sensitive observation only"
+  "result": "PASS",
+  "candidate_tree_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "semantic_aggregate_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "candidate_source_commit": "cccccccccccccccccccccccccccccccccccccccc",
+  "plugin_version": "0.2.2-preview",
+  "exact_target_manifest_sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+  "certification_protocol_version": "sim-live-v2",
+  "installation_evidence_id": "chatgpt-v022-example",
+  "host_observation": {
+    "verification_ceiling": "V2",
+    "required_outcomes_observed": [],
+    "forbidden_outcomes_observed": []
+  },
+  "evidence_refs": ["obs-a01"],
+  "retest_of": null,
+  "recorded_at": "2026-09-22T20:00:00+03:00"
 }
 ```
 
+The example digests above are format examples only. Real records must contain the exact observed candidate/target values. Transport-specific identity such as a ZIP hash belongs to installation evidence; it is not the universal behavioral candidate key.
+
+## Fresh same-candidate sequence
+
+For v0.2.2 Preview certification, run **A06 first** as the current blocker/canary.
+
+- If A06 is `FAIL`, `PLATFORM_LIMITATION`, or `NOT_TESTED`, the candidate is not ChatGPT-certified and later cases cannot complete the gate.
+- If A06 is `PASS`, run **fresh A01–A05** and fresh A07–A12 on the same exact candidate/context.
+- ChatGPT certification requires **A01–A12** all `PASS` with the same `candidate_tree_sha256`, `exact_target_manifest_sha256`, `certification_protocol_version`, and ChatGPT surface.
+- Historical v0.2.0/v0.2.1 records remain regression evidence only. They are not reused to fill v0.2.2 required cases.
+- Retests may supersede an earlier result only inside the same exact certification context and through an unambiguous `retest_of` chain.
+
 ## Cross-surface protocol
 
-### Plain ChatGPT
-Run `A01, A03, A10, A12` with explicit `@Sim` after installing the verified Preview candidate through the current official Skills surface.
+### ChatGPT
 
-### ChatGPT Project
-Run `A07, A10, A11` without duplicating the v0.1.0 18-file resident knowledge pack. The SIM candidate remains downstream of the canonical evidence foundation.
+ChatGPT is release-blocking for v0.2.2 Preview. After exact candidate installation/resolver evidence is recorded, run A01–A12 according to the fresh sequence above.
 
 ### Codex
-Run the applicable acceptance subset only if the current installed-skill surface supports the SIM skill. Otherwise record `PLATFORM_LIMITATION` only after the surface itself establishes the limitation; if not exercised, use `NOT_TESTED`.
+
+Codex is release-blocking for v0.2.2 Preview. After exact candidate installation/resolver evidence is recorded, run `A01, A03, A09, A10, A12` fresh on Codex. A ChatGPT PASS is never copied to Codex.
+
+### ChatGPT Project
+
+ChatGPT Project is non-blocking for v0.2.2 Preview unless a later versioned certification profile explicitly advertises Project as a required supported surface. Evidence may still be collected, but it cannot substitute for a required ChatGPT or Codex case.
 
 ### No-script behavior
-On a surface where deterministic script execution is unavailable, require `NOT_EXECUTED` for the unavailable check and a lower verification ceiling. Static review must not be relabeled as load/native-open or behavior verification.
 
-## Current execution checkpoint — 2026-09-02
+On a surface where deterministic script execution is unavailable, require `NOT_EXECUTED` for the unavailable check and a lower verification ceiling. Static review must not be relabeled as load/native-open or behavior verification. When the required case itself proves a platform limitation, record `PLATFORM_LIMITATION`; required-surface limitations block certification rather than becoming PASS.
 
-The repository agent used for this PR can build and independently verify the SIM Preview candidate, but it does not expose an action that installs/uploads a local custom Skill into a separate Plain ChatGPT, ChatGPT Project, or Codex session. Therefore no A01–A12 live case is recorded as `PASS` from this environment. Live case rows remain `NOT_TESTED` until a real supported Skills surface is exercised. This is an execution-boundary statement, not a claim that those product surfaces lack the capability.
+## Historical execution checkpoint — 2026-09-02
+
+The 2026-09-02 agent checkpoint remains historical evidence of the execution boundary observed at that time. It predates the v0.2.2 candidate-bound record contract and cannot certify v0.2.2. Later live A-case records remain separate observed evidence and must satisfy the fresh same-candidate sequence above to contribute to v0.2.2 certification.

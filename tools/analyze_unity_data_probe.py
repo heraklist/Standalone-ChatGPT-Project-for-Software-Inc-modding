@@ -158,6 +158,7 @@ def analyze_records(records: list[dict], payloads: dict[str, bytes]) -> dict:
         'family_counts': {k:family_counts[k] for k in FAMILIES},
         'data_entries': sorted(data_entries,key=lambda e:(e['family'],str(e['canonical_path']).casefold())),
         'collision_index': {
+            'schema_version': 1,
             'namespaces': namespaces,
             'collisions': collisions,
             'total_identifier_count': sum(v['identifier_count'] for v in namespaces.values()),

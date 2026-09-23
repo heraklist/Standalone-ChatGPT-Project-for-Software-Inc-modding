@@ -64,18 +64,34 @@ def test_compatibility_matrix_uses_observation_status_vocabulary() -> None:
         assert set(capabilities.values()) <= allowed
 
 
-def test_cross_surface_section_requires_plain_project_codex_and_no_script_behavior() -> None:
+def test_cross_surface_section_matches_v022_certification_profile() -> None:
     text = DOC.read_text(encoding="utf-8")
     for phrase in (
-        "Plain ChatGPT",
-        "ChatGPT Project",
+        "ChatGPT",
+        "A01–A12",
         "Codex",
-        "A01, A03, A10, A12",
-        "A07, A10, A11",
+        "A01, A03, A09, A10, A12",
+        "ChatGPT Project",
+        "non-blocking",
         "NOT_EXECUTED",
         "lower verification ceiling",
     ):
         assert phrase in text
+
+
+def test_v022_protocol_documents_candidate_bound_fresh_sequence() -> None:
+    text = DOC.read_text(encoding="utf-8")
+    for phrase in (
+        "candidate_tree_sha256",
+        "exact_target_manifest_sha256",
+        "certification_protocol_version",
+        "installation_evidence_id",
+        "A06 first",
+        "fresh A01–A05",
+        "A01–A12",
+    ):
+        assert phrase in text
+    assert "candidate_sha256" not in text
 
 
 def test_agent_checkpoint_records_no_synthetic_live_passes() -> None:

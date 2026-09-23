@@ -17,7 +17,7 @@ def test_artifact_allows_adjacent_forward_and_noop_but_rejects_downgrade() -> No
 
     candidate = {"artifact": {"state": "CANDIDATE_ARTIFACT"}}
     assert can_advance_artifact("CANDIDATE_ARTIFACT", "ARTIFACT_UNBUILT", candidate) is False
-    assert can_advance_artifact("CANDIDATE_ARTIFACT", "FINAL_ARTIFACT", candidate) is True
+    assert can_advance_artifact("CANDIDATE_ARTIFACT", "FINAL_ARTIFACT", candidate) is False
 
 
 def test_artifact_rejects_session_state_mismatch() -> None:

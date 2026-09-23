@@ -42,7 +42,7 @@ REQUIRED_PATHS = (
 MANIFEST_IDENTITY = {
     "product": "SIM",
     "display_name": "Software Inc Modding",
-    "version": "0.2.0-preview",
+    "version": "0.2.2-preview",
     "channel": "PREVIEW",
     "canonical_game_target": "Beta 1.8.42",
     "evidence_grade": "GENERATION_GRADE",

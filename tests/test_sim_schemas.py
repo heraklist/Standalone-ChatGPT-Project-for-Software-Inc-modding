@@ -46,7 +46,7 @@ def minimal_session() -> dict[str, object]:
         "validation": {},
         "artifact": {
             "state": "ARTIFACT_UNBUILT",
-            "verification_level": "V0 DESIGN_READY",
+            "verification_level": "V0",
         },
         "risks": [],
         "history": [],
@@ -164,11 +164,11 @@ def release_manifest() -> dict[str, object]:
         },
         "security_results": ["security: PASS"],
         "artifact_fixture_results": ["fixture: PASS"],
-        "surface_acceptance": "NOT_RUN",
+        "surface_acceptance": "NOT_EVALUATED",
         "known_gaps": [],
         "bundle_sha256": "e" * 64,
         "files": {"SKILL.md": "f" * 64},
-        "release_status": "PREVIEW_CANDIDATE",
+        "release_status": "PREVIEW_VALIDATED",
     }
 
 
@@ -316,3 +316,33 @@ def test_release_manifest_requires_bundle_and_file_hashes() -> None:
         invalid_manifest = release_manifest()
         del invalid_manifest[field_name]
         assert_invalid("sim-release-manifest.schema.json", invalid_manifest)
+
+
+def test_v022_certification_profile_freezes_required_surface_cases() -> None:
+    profile = json.loads(
+        (ROOT / "production/sim/manifests/certification-profile.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert profile["schema_version"] == 1
+    assert profile["protocol_version"] == "sim-live-v2"
+    assert profile["surfaces"]["ChatGPT"]["required_cases"] == [
+        f"A{index:02d}" for index in range(1, 13)
+    ]
+    assert profile["surfaces"]["Codex"]["required_cases"] == [
+        "A01", "A03", "A09", "A10", "A12"
+    ]
+    assert profile["surfaces"]["ChatGPT Project"]["release_blocking"] is False
+
+
+def test_session_schema_accepts_finalization_metadata(
+    minimal_session: dict[str, object],
+) -> None:
+    session = copy.deepcopy(minimal_session)
+    session["architecture"] = {
+        "artifact_surface": "MOD_PACKAGE",
+        "delivery_mode": "INSTALLABLE_ZIP",
+    }
+    session["artifact"]["family"] = "DATA_TYD"
+    session["artifact"]["claim_class"] = "STATIC_DELIVERY"
+    validator("sim-session.schema.json").validate(session)

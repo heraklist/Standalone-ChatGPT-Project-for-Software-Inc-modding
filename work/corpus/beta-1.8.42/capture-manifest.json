@@ -32,10 +32,10 @@
     "complete": true,
     "entry_count": 61,
     "collision_count": 0,
-    "manifest_sha256": "7834f0838fbe0da111298e131eba97d787586cf7a89f17e9c6699fc6abdcedd9",
+    "manifest_sha256": "cfdb17f3c0f0c02c7af893f3e5ec00bfdba94cd8f435af6004abaaa9f94138bc",
     "source_sanitized_bundle_sha256": "dc35c7d07bce42d1ee9168bd3797fae7e4615cc980ca0f386b6faa75f4e63571"
   },
-  "identifiers_collision_index_sha256": "7834f0838fbe0da111298e131eba97d787586cf7a89f17e9c6699fc6abdcedd9",
+  "identifiers_collision_index_sha256": "cfdb17f3c0f0c02c7af893f3e5ec00bfdba94cd8f435af6004abaaa9f94138bc",
   "loader_root_snapshot_sha256": "423fbf2263bd75e10a7e9bf137ca103b04309da249b88a3ec2c70066596e4378",
   "localization_manifest_sha256": "4dadf996ed5576821fe11d3fb7ee8365e6b6d75b5932e34fd3781e5204fd2627",
   "managed_assemblies": [

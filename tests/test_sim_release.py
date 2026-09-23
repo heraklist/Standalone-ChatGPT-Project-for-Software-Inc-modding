@@ -19,31 +19,47 @@ def test_preview_builder_emits_canonical_identity_and_schema_valid_report(tmp_pa
 
     zip_path, report = build_sim_release(ROOT, channel="preview", out_dir=tmp_path)
 
-    assert zip_path.name == "sim-0.2.0-preview.zip"
-    assert report["sim_version"] == "0.2.0-preview"
+    assert zip_path.name == "sim-0.2.2-preview.zip"
+    assert report["sim_version"] == "0.2.2-preview"
     assert report["channel"] == "PREVIEW"
     assert report["target"] == "Beta 1.8.42"
     assert report["evidence_grade"] == "GENERATION_GRADE"
-    assert report["release_status"] == "PREVIEW_CANDIDATE"
+    assert report["release_status"] == "PREVIEW_VALIDATED"
     assert report["bundle_sha256"] == _sha256(zip_path)
 
     schema = json.loads((ROOT / "schemas/sim-release-manifest.schema.json").read_text(encoding="utf-8"))
     jsonschema.validate(report, schema)
 
-    report_path = tmp_path / "sim-0.2.0-preview.release-report.json"
+    report_path = tmp_path / "sim-0.2.2-preview.release-report.json"
     assert json.loads(report_path.read_text(encoding="utf-8")) == report
 
 
-def test_preview_report_reflects_recorded_live_acceptance_and_unexecuted_builder_checks(tmp_path: Path) -> None:
+def test_preview_report_keeps_repository_build_separate_from_live_acceptance(
+    tmp_path: Path,
+) -> None:
     from tools.build_sim_release import build_sim_release
 
     _, report = build_sim_release(ROOT, channel="preview", out_dir=tmp_path)
 
-    assert report["surface_acceptance"] == "FAIL"
-    assert any("A06" in gap and "FAIL" in gap for gap in report["known_gaps"])
-    assert any("A07" in gap and "NOT_TESTED" in gap for gap in report["known_gaps"])
+    assert report["surface_acceptance"] == "NOT_EVALUATED"
+    assert report["known_gaps"] == []
+    assert report["release_status"] == "PREVIEW_VALIDATED"
     assert report["security_results"] == ["NOT_EXECUTED_BY_RELEASE_BUILDER"]
     assert report["artifact_fixture_results"] == ["NOT_EXECUTED_BY_RELEASE_BUILDER"]
+
+
+def test_release_builder_never_marks_certified_without_complete_candidate_context(
+    tmp_path: Path,
+) -> None:
+    from tools.build_sim_release import build_sim_release
+
+    _, report = build_sim_release(ROOT, out_dir=tmp_path)
+    assert report["release_status"] != "PREVIEW_CERTIFIED"
+    assert report["surface_acceptance"] in {
+        "NOT_EVALUATED",
+        "INCOMPLETE",
+        "FAIL",
+    }
 
 
 def test_preview_bundle_contains_only_runtime_sim_payload(tmp_path: Path) -> None:

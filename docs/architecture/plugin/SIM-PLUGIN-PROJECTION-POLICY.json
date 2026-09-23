@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "plugin_identity": "sim",
+  "display_name": "SIM",
+  "runtime_source_path": "production/sim",
+  "projection_target_path": "skills/sim",
+  "public_skill_count": 1,
+  "root_skill_relation": "EXACT_BYTE_COPY",
+  "internal_skill_relation": "REMAP_EXACT_BYTE_COPY",
+  "internal_skill_targets": {
+    "domains": "references/internal/domains/{id}.md",
+    "lifecycle": "references/internal/lifecycle/{id}.md"
+  },
+  "portable_manifest_path": "plugin.json",
+  "compatibility_manifest_path": ".codex-plugin/plugin.json",
+  "runtime_provenance_path": "provenance/runtime_provenance.json",
+  "path_inventory_path": "provenance/path_inventory.json",
+  "file_hash_manifest_path": "provenance/file_hashes.json",
+  "plugin_provenance_path": "provenance/plugin_manifest.json",
+  "projection_relations": [
+    "EXACT_BYTE_COPY",
+    "REMAP_EXACT_BYTE_COPY",
+    "GENERATED_METADATA",
+    "GENERATED_PROVENANCE"
+  ],
+  "copy_other_runtime_files": true,
+  "forbidden_source_paths": [
+    "manifests/runtime-provenance.json"
+  ],
+  "tool_capabilities_source": "production/sim/manifests/tool-capabilities.json",
+  "tool_package_root": "skills/sim",
+  "tool_projection_relation": "EXACT_BYTE_COPY",
+  "forbidden_requirement_classes": [
+    "OPENAI_API_KEY",
+    "OPENAI_API_BILLING",
+    "MANDATORY_PAID_SERVICE",
+    "UNDECLARED_APP",
+    "UNDECLARED_MCP"
+  ],
+  "semantic_aggregate_exclusions": [
+    "provenance/runtime_provenance.json",
+    "provenance/path_inventory.json",
+    "provenance/file_hashes.json",
+    "provenance/plugin_manifest.json"
+  ]
+}

@@ -42,7 +42,17 @@ def verify_release_artifacts(zip_path: Path, report_path: Path, *, expected_vers
                 errors.append(f"corrupt ZIP member: {bad_member}")
                 return errors
 
-            names = set(zf.namelist())
+            name_list = zf.namelist()
+            names = set(name_list)
+            if len(name_list) != len(names):
+                seen: set[str] = set()
+                duplicates: set[str] = set()
+                for name in name_list:
+                    if name in seen:
+                        duplicates.add(name)
+                    seen.add(name)
+                for name in sorted(duplicates):
+                    errors.append(f"duplicate ZIP entry: {name}")
             if len(names) != 21:
                 errors.append(f"bundle must contain exactly 21 entries, found {len(names)}")
 
@@ -70,6 +80,36 @@ def verify_release_artifacts(zip_path: Path, report_path: Path, *, expected_vers
                     errors.append("packed knowledge manifest must enumerate exactly 18 knowledge files")
                 elif {f"knowledge/{name}" for name in mandatory} != set(knowledge_entries):
                     errors.append("packed knowledge manifest does not match ZIP knowledge entries")
+
+                file_hashes = kp.get("file_sha256")
+                if not isinstance(file_hashes, dict):
+                    errors.append("packed knowledge manifest file_sha256 must be an object")
+                else:
+                    manifest_entries = {
+                        "manifests/knowledge-pack-manifest.json",
+                        "manifests/release-manifest.json",
+                    }
+                    packed_payload = names - manifest_entries
+                    declared_payload = set(file_hashes)
+
+                    for name in sorted(packed_payload - declared_payload):
+                        errors.append(f"undeclared packed file: {name}")
+                    for name in sorted(declared_payload - names):
+                        errors.append(f"missing packed file: {name}")
+
+                    for name, expected_hash in sorted(file_hashes.items()):
+                        if name not in names:
+                            continue
+                        if (
+                            not isinstance(expected_hash, str)
+                            or len(expected_hash) != 64
+                            or any(ch not in "0123456789abcdef" for ch in expected_hash)
+                        ):
+                            errors.append(f"invalid packed file SHA-256 declaration: {name}")
+                            continue
+                        actual_hash = hashlib.sha256(zf.read(name)).hexdigest()
+                        if actual_hash != expected_hash:
+                            errors.append(f"packed file SHA-256 mismatch: {name}")
     except (BadZipFile, KeyError, json.JSONDecodeError) as exc:
         errors.append(f"invalid release ZIP metadata: {exc}")
 
