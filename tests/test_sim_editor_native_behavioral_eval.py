@@ -142,3 +142,17 @@ def test_runtime_contains_explicit_building_blueprint_package_hard_stop() -> Non
         assert "do not enumerate" in text
         assert "concrete install tree" in text
         assert "tooling_blocked" in text
+
+
+def test_runtime_hard_stop_uses_canonical_single_windows_path_separator() -> None:
+    paths = (
+        ROOT / "production/sim/SKILL.md",
+        ROOT / "production/sim/domains/editor-native/SKILL.md",
+        ROOT / "production/knowledge/11_EDITOR_CONTENT_HARDWARE_BLUEPRINTS_BUILDINGS.md",
+    )
+    for path in paths:
+        text = path.read_text(encoding="utf-8").lower()
+        assert "software inc\\\\buildings" not in text
+        assert "software inc\\\\blueprints" not in text
+        assert "software inc\\buildings" in text
+        assert "software inc\\blueprints" in text
