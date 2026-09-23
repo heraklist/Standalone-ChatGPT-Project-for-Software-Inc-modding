@@ -39,3 +39,37 @@ jobs:
         run: python tools/build_sim_release.py --channel preview
       - name: Verify SIM Preview release
         run: python tools/verify_sim_release.py dist/sim-0.2.2-preview.zip dist/sim-0.2.2-preview.release-report.json --expected-version 0.2.2-preview
+      - name: Build deterministic SIM plugin candidate twice
+        shell: bash
+        run: |
+          mkdir -p dist/sim-plugin-ci
+          python tools/build_sim_plugin.py build --repo-root . --source-sha "$GITHUB_SHA" --output dist/sim-plugin-a > dist/sim-plugin-ci/sim-plugin-a.identity.json
+          python tools/build_sim_plugin.py build --repo-root . --source-sha "$GITHUB_SHA" --output dist/sim-plugin-b > dist/sim-plugin-ci/sim-plugin-b.identity.json
+      - name: Independently validate deterministic SIM plugin candidates
+        shell: bash
+        run: |
+          python tools/validate_sim_plugin.py check --repo-root . --source-sha "$GITHUB_SHA" --candidate dist/sim-plugin-a
+          python tools/validate_sim_plugin.py check --repo-root . --source-sha "$GITHUB_SHA" --candidate dist/sim-plugin-b
+      - name: Compare SIM plugin candidate identities
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          a = json.loads(Path("dist/sim-plugin-ci/sim-plugin-a.identity.json").read_text(encoding="utf-8"))
+          b = json.loads(Path("dist/sim-plugin-ci/sim-plugin-b.identity.json").read_text(encoding="utf-8"))
+          assert a["source_commit"] == b["source_commit"]
+          assert a["semantic_aggregate_sha256"] == b["semantic_aggregate_sha256"]
+          assert a["candidate_tree_sha256"] == b["candidate_tree_sha256"]
+          print(f"SIM_PLUGIN_REPRODUCIBLE: {a['candidate_tree_sha256']}")
+          PY
+      - name: Upload deterministic SIM plugin candidate evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: sim-plugin-candidate-${{ github.sha }}
+          path: |
+            dist/sim-plugin-a
+            dist/sim-plugin-ci/sim-plugin-a.identity.json
+            dist/sim-plugin-ci/sim-plugin-b.identity.json
+          if-no-files-found: error
