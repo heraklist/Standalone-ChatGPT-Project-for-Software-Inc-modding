@@ -255,3 +255,59 @@ def test_installation_schema_accepts_platform_limitation_as_observation() -> Non
         "recorded_at": "2026-09-23T09:00:00Z",
     }
     jsonschema.Draft202012Validator(_installation_schema()).validate(record)
+
+
+def test_release_builder_accepts_certification_report_for_composition(
+    tmp_path: Path,
+) -> None:
+    from tools.build_sim_release import build_sim_release
+
+    certification = {
+        "schema_version": 1,
+        "plugin_version": "0.2.2-preview",
+        "candidate_tree_sha256": "a" * 64,
+        "semantic_aggregate_sha256": "b" * 64,
+        "source_commit": "c" * 40,
+        "exact_target_manifest_sha256": _target_digest(),
+        "certification_protocol_version": "sim-live-v2",
+        "surface_results": {
+            "ChatGPT": "PASS",
+            "Codex": "PASS",
+            "ChatGPT Project": "NOT_REQUIRED",
+        },
+        "known_gaps": [],
+        "release_blocking_complete": True,
+    }
+    report_path = tmp_path / "certification-report.json"
+    report_path.write_text(json.dumps(certification), encoding="utf-8")
+    _, report = build_sim_release(
+        ROOT,
+        out_dir=tmp_path / "release",
+        certification_report=report_path,
+    )
+    assert report["surface_acceptance"] == "PASS"
+    assert report["release_status"] == "PREVIEW_CERTIFIED"
+
+
+def test_release_verifier_accepts_global_certification_inputs(
+    tmp_path: Path,
+) -> None:
+    from tools.build_sim_plugin import build_candidate
+    from tools.build_sim_release import build_sim_release
+    from tools.verify_sim_release import verify_sim_release
+
+    source_sha = _head()
+    candidate = tmp_path / "candidate"
+    build_candidate(ROOT, source_sha, candidate)
+    zip_path, report = build_sim_release(ROOT, out_dir=tmp_path / "release")
+    report_path = tmp_path / "release" / f"sim-{report['sim_version']}.release-report.json"
+
+    errors = verify_sim_release(
+        zip_path,
+        report_path,
+        report["sim_version"],
+        candidate_root=candidate,
+        source_sha=source_sha,
+        evidence_root=tmp_path / "evidence",
+    )
+    assert isinstance(errors, list)
