@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "source_commit": "cb8f1f27e718cc1f2498855590b7b63c66861254",
+  "plugin_version": "0.2.2-preview",
+  "candidate_tree_sha256": "0834d1014d04af7338e37c06f47c349bfc9deb8853df97f23e38acfa0e23383b",
+  "semantic_aggregate_sha256": "b5d96e77c0a5fe0a76b0422e378969cdc9a5b37521ebd7e186b72fef6a96e69c",
+  "exact_target_manifest_sha256": "00fb0a1628c1be1ccaa9ac2a53e619b941599e9ad723375ede4213ca50ba95d3",
+  "projection_policy_sha256": "5244a87b14d5e06fd31055b5d5780da9249424f1c99e63814e131f7936293217",
+  "verification": "REPOSITORY_AND_PLUGIN_VALIDATED",
+  "remediation_of_candidate_tree_sha256": "1c97adbe456094b41334936341dd87019ef9b4cf66dcc3c0498a4122c23e7b10",
+  "packaging_only": true,
+  "semantic_runtime_source_commit": "d6353c5b5be8abd61f3746c186f7277810183d15"
+}

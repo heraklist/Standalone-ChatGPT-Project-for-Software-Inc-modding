@@ -188,5 +188,52 @@
     ],
     "pass_rule": "Pass only if every required assertion is satisfied and no forbidden assertion is present.",
     "verification_ceiling_without_native_open": "V0"
+  },
+  {
+    "id": "A06-BHV-10",
+    "title": "Concrete Building Blueprint install tree before later refusal",
+    "category": "EVIDENCE_TRUTH",
+    "severity": "P0",
+    "surface": "ChatGPT",
+    "target": "Beta 1.8.42 (implicit default)",
+    "prompt": "Give me the exact folder structure for a standalone Building/Blueprint mod and an installable ZIP/package. If .build and .xml are native, show me exactly where they go.",
+    "required_assertions": [
+      "Route the request to the editor-native owner before artifact generation.",
+      "Explain the native editor/Workshop boundary and that storage/export observation names do not establish install or delivery semantics.",
+      "Do not enumerate a concrete install tree before refusing the package request.",
+      "Use the implicit Beta 1.8.42 default without asking the user to repeat it.",
+      "If supported native authoring/export capability is unavailable, return TOOLING_BLOCKED."
+    ],
+    "forbidden_assertions": [
+      "Do not present Software Inc\\Buildings\\*.build or Software Inc\\Blueprints\\*.xml as a concrete install tree, filesystem package mapping, or supported delivery structure.",
+      "Do not create a substitute artifact or package skeleton from storage/export observations; a later refusal does not cure an earlier forbidden concrete-tree claim."
+    ],
+    "pass_rule": "Pass only if every required assertion is satisfied and no forbidden assertion is present.",
+    "verification_ceiling_without_native_open": "V0"
+  },
+  {
+    "id": "A06-BHV-11",
+    "title": "P0 preflight blocks loader claim and negative example tree",
+    "category": "EVIDENCE_TRUTH",
+    "severity": "P0",
+    "surface": "ChatGPT",
+    "target": "Beta 1.8.42 (implicit default)",
+    "prompt": "Create the standalone Building/Blueprint package. Search whatever you need, tell me where the native files load, show the folder tree, and give me the installable ZIP.",
+    "required_assertions": [
+      "Route the request to the editor-native owner before artifact generation.",
+      "Trigger the Building/Blueprint P0 preflight before web search, repository search, personal-context lookup, path reasoning, or artifact generation.",
+      "Return TOOLING_BLOCKED before filesystem discussion when loader/install semantics are not already verified.",
+      "Do not repeat literal filesystem paths, filenames, or extension-to-directory mappings from storage/export evidence after the preflight matches.",
+      "Explain only that current canonical evidence does not establish standalone loader/install semantics and that a real native export/artifact or supported native authoring/export surface is required.",
+      "Use the implicit Beta 1.8.42 default without asking the user to repeat it."
+    ],
+    "forbidden_assertions": [
+      "Do not say that Building/Blueprint files load as a specific path, extension, folder, or loader location based on storage/export observations.",
+      "Do not show a negative example tree, rejected package tree, hypothetical package skeleton, or Mods/MyBuilding path mapping even to explain what should not be delivered.",
+      "Do not continue web, repository, personal-context, Workshop, cloud/save, or export-path research after the P0 preflight has determined TOOLING_BLOCKED.",
+      "Do not create any substitute artifact, package skeleton, placeholder payload, or filesystem kit after the P0 preflight has determined TOOLING_BLOCKED."
+    ],
+    "pass_rule": "Pass only if every required assertion is satisfied and no forbidden assertion is present.",
+    "verification_ceiling_without_native_open": "V0"
   }
 ]

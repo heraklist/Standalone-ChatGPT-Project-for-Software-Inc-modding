@@ -242,3 +242,42 @@ def test_build_candidate_rejects_nonempty_output(tmp_path: Path) -> None:
     (output / "rogue.txt").write_text("occupied", encoding="utf-8")
     with pytest.raises(ValueError, match="output"):
         build_candidate(ROOT, source_sha, output)
+
+
+def test_build_candidate_emits_portable_agent_plugins_and_codex_manifests(
+    tmp_path: Path,
+) -> None:
+    import json
+
+    from tools.build_sim_plugin import build_candidate
+
+    source_sha = _current_head(ROOT)
+    output = tmp_path / "candidate"
+    build_candidate(ROOT, source_sha, output)
+
+    portable = json.loads((output / "plugin.json").read_text(encoding="utf-8"))
+    compatibility = json.loads(
+        (output / ".codex-plugin/plugin.json").read_text(encoding="utf-8")
+    )
+
+    assert portable["$schema"] == "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json"
+    assert portable["name"] == "sim"
+    assert portable["version"] == "0.2.2-preview"
+    assert isinstance(portable["description"], str) and portable["description"]
+    assert "schema_version" not in portable
+    assert "display_name" not in portable
+    assert "entrypoint" not in portable
+    assert "runtime_skill" not in portable
+    assert "public_skill_count" not in portable
+    assert "canonical_game_target" not in portable
+
+    assert compatibility["name"] == "sim"
+    assert compatibility["version"] == "0.2.2-preview"
+    assert isinstance(compatibility["description"], str) and compatibility["description"]
+    assert compatibility["skills"] == "./skills/"
+    assert compatibility["interface"]["displayName"] == "SIM"
+    assert "schema_version" not in compatibility
+    assert "displayName" not in compatibility
+    assert "entrypoint" not in compatibility
+    assert "skill" not in compatibility
+    assert "publicSkillCount" not in compatibility

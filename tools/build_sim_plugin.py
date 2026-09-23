@@ -168,24 +168,23 @@ def _generated_manifests(
     runtime: dict,
     sim_manifest: dict,
 ) -> tuple[dict, dict]:
+    target = runtime["canonical_game_target"]
+    description = f"SIM — Software Inc modding workflows for {target}."
     portable = {
-        "schema_version": 1,
+        "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
         "name": runtime["plugin_identity"],
-        "display_name": "SIM",
         "version": sim_manifest["version"],
-        "entrypoint": runtime["public_entrypoint"],
-        "runtime_skill": "skills/sim/SKILL.md",
-        "public_skill_count": runtime["public_skill_count"],
-        "canonical_game_target": runtime["canonical_game_target"],
+        "description": description,
     }
     compatibility = {
-        "schema_version": 1,
         "name": runtime["plugin_identity"],
-        "displayName": "SIM",
         "version": sim_manifest["version"],
-        "entrypoint": runtime["public_entrypoint"],
-        "skill": "skills/sim/SKILL.md",
-        "publicSkillCount": runtime["public_skill_count"],
+        "description": description,
+        "skills": "./skills/",
+        "interface": {
+            "displayName": "SIM",
+            "shortDescription": f"Software Inc modding for {target}.",
+        },
     }
     return portable, compatibility
 
