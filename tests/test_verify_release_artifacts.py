@@ -166,7 +166,9 @@ def test_verifier_rejects_duplicate_zip_member_even_when_bytes_match(
         for info in src.infolist():
             dst.writestr(info.filename, src.read(info.filename))
         duplicate_name = "knowledge/00_FILE.md"
-        dst.writestr(duplicate_name, b"fixture")
+        import pytest
+        with pytest.warns(UserWarning, match="Duplicate name"):
+            dst.writestr(duplicate_name, b"fixture")
 
     report = json.loads(report_path.read_text(encoding="utf-8"))
     report["bundle_sha256"] = hashlib.sha256(rewritten.read_bytes()).hexdigest()
