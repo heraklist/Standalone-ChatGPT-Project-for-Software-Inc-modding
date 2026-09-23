@@ -151,3 +151,28 @@ def test_verifier_rejects_missing_declared_packed_file(tmp_path: Path) -> None:
         rewritten, report_path, expected_version="0.1.0"
     )
     assert any("missing packed file" in error for error in errors)
+
+
+
+def test_verifier_rejects_duplicate_zip_member_even_when_bytes_match(
+    tmp_path: Path,
+) -> None:
+    zip_path, report_path = _make_bundle(tmp_path)
+
+    rewritten = zip_path.with_name("rewritten-duplicate.zip")
+    with ZipFile(zip_path) as src, ZipFile(
+        rewritten, "w", compression=ZIP_DEFLATED
+    ) as dst:
+        for info in src.infolist():
+            dst.writestr(info.filename, src.read(info.filename))
+        duplicate_name = "knowledge/00_FILE.md"
+        dst.writestr(duplicate_name, b"fixture")
+
+    report = json.loads(report_path.read_text(encoding="utf-8"))
+    report["bundle_sha256"] = hashlib.sha256(rewritten.read_bytes()).hexdigest()
+    report_path.write_text(json.dumps(report), encoding="utf-8")
+
+    errors = verify_release_artifacts(
+        rewritten, report_path, expected_version="0.1.0"
+    )
+    assert any("duplicate ZIP entry" in error for error in errors)
