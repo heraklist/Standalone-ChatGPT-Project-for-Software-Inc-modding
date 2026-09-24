@@ -314,3 +314,19 @@ def test_validator_rejects_legacy_custom_codex_manifest_shape(
     assert "SIM_PLUGIN_COMPATIBILITY_MANIFEST_INVALID" in _codes(
         validate_candidate(ROOT, candidate, source_sha)
     )
+
+
+def test_validator_rejects_official_schema_root_extension_drift(
+    tmp_path: Path,
+) -> None:
+    from tools.validate_sim_plugin import validate_candidate
+
+    candidate, source_sha, _ = _build(tmp_path)
+    path = candidate / "plugin.json"
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    payload["unexpected_root_field"] = True
+    path.write_text(json.dumps(payload, sort_keys=True), encoding="utf-8")
+
+    assert "SIM_PLUGIN_OFFICIAL_SCHEMA_INVALID" in _codes(
+        validate_candidate(ROOT, candidate, source_sha)
+    )
