@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://evochia.local/schemas/sim-personal-plugin-release-evidence.schema.json",
+  "title": "SIM Personal Plugin Release Evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "plugin_id",
+    "release_id",
+    "current_release_id",
+    "latest_release_id",
+    "scope",
+    "discoverability",
+    "candidate_tree_sha256",
+    "bundle_sha256",
+    "platform_release_tree_sha256",
+    "files",
+    "recorded_at"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "plugin_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "release_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "current_release_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "latest_release_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scope": {
+      "const": "USER"
+    },
+    "discoverability": {
+      "const": "PRIVATE"
+    },
+    "candidate_tree_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "bundle_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "platform_release_tree_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "files": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {
+        "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\\\\\).+$"
+      },
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{64}$"
+      }
+    },
+    "recorded_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}
