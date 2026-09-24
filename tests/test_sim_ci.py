@@ -12,11 +12,14 @@ def test_verify_workflow_runs_sim_preview_pipeline_and_preserves_project_release
         "python tools/validate_sim_references.py",
         "python tools/validate_sim_evals.py production/evals/sim",
         "python tools/build_sim_release.py --channel preview",
-        "python tools/verify_sim_release.py dist/sim-0.2.2-preview.zip dist/sim-0.2.2-preview.release-report.json --expected-version 0.2.2-preview",
+        'python tools/verify_sim_release.py "dist/sim-$SIM_VERSION.zip" "dist/sim-$SIM_VERSION.release-report.json" --expected-version "$SIM_VERSION"',
         "python tools/build_release.py --generation-grade",
     )
     for command in required:
         assert command in text
+
+    assert "Resolve SIM version" in text
+    assert "SIM_VERSION=" in text
 
 
 def test_sim_preview_steps_follow_exact_target_and_project_release_gates() -> None:
