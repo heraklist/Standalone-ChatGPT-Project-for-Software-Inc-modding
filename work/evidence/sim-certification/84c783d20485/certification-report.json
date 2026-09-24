@@ -20,10 +20,20 @@
     "LOCAL_MARKETPLACE": "NOT_REQUIRED"
   },
   "known_gaps": [
+    "A01 CHATGPT_WEB_NORMAL_CHAT acceptance NOT_TESTED",
+    "A02 CHATGPT_WEB_NORMAL_CHAT acceptance NOT_TESTED",
+    "A03 CHATGPT_WEB_NORMAL_CHAT acceptance NOT_TESTED",
+    "A04 CHATGPT_WEB_NORMAL_CHAT acceptance NOT_TESTED",
+    "A05 CHATGPT_WEB_NORMAL_CHAT acceptance NOT_TESTED",
+    "A07 CHATGPT_WEB_NORMAL_CHAT acceptance NOT_TESTED",
+    "A08 CHATGPT_WEB_NORMAL_CHAT acceptance NOT_TESTED",
+    "A09 CHATGPT_WEB_NORMAL_CHAT acceptance NOT_TESTED",
+    "A10 CHATGPT_WEB_NORMAL_CHAT acceptance NOT_TESTED",
+    "A11 CHATGPT_WEB_NORMAL_CHAT acceptance NOT_TESTED",
+    "A12 CHATGPT_WEB_NORMAL_CHAT acceptance NOT_TESTED",
     "CHATGPT_DESKTOP_NORMAL_CHAT installation evidence missing",
-    "CHATGPT_WEB_NORMAL_CHAT installation evidence missing",
     "CODEX installation evidence missing"
   ],
   "release_blocking_complete": false,
-  "release_state": "PERSONAL_PLUGIN_BYTES_VERIFIED"
+  "release_state": "PRIVATE_PLUGIN_LIVE_INCOMPLETE"
 }
