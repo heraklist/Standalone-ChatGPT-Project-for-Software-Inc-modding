@@ -211,6 +211,18 @@ def _make_minimal_projection_repo(tmp_path: Path) -> tuple[Path, str]:
         "production/sim/manifests/tool-capabilities.json": json.dumps(
             {"schema_version": 1, "tools": {}}
         ).encode(),
+        "production/sim/manifests/plugin-interface.json": json.dumps(
+            {
+                "schema_version": 1,
+                "displayName": "SIM",
+                "shortDescription": "Software Inc modding for Beta 1.8.42.",
+                "longDescription": "Create and verify Software Inc mods.",
+                "developerName": "Heraklis",
+                "category": "Developer Tools",
+                "capabilities": ["Create Software Inc mods"],
+                "defaultPrompt": ["Create a Software Inc mod for Beta 1.8.42."]
+            }
+        ).encode(),
         "production/sim/references/example.md": b"reference\n",
     }
     for relative, data in files.items():
