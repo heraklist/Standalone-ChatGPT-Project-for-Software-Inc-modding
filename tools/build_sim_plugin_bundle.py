@@ -4,7 +4,12 @@ import argparse
 import hashlib
 import json
 import stat
+import sys
 from pathlib import Path
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
 from zipfile import ZIP_DEFLATED, ZipFile, ZipInfo
 
 from tools.safe_artifacts import safe_source_files
