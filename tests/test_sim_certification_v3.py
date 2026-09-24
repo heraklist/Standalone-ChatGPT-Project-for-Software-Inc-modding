@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import json
+
+import jsonschema
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -167,3 +169,55 @@ def test_personal_release_binding_rejects_bundle_mismatch() -> None:
     }
     errors = _verify_personal_evidence_binding(installation, release)
     assert errors == ["personal plugin bundle mismatch"]
+
+
+def test_personal_installation_contract_carries_normalized_platform_tree() -> None:
+    schema = json.loads(
+        (ROOT / "schemas/sim-installation-evidence.schema.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    record = {
+        "schema_version": 2,
+        "installation_evidence_id": "web-personal-install-normalized",
+        "surface": "CHATGPT_WEB_NORMAL_CHAT",
+        "result": "PASS",
+        "candidate_tree_sha256": "a" * 64,
+        "semantic_aggregate_sha256": "b" * 64,
+        "source_commit": "c" * 40,
+        "plugin_version": "0.2.3-preview",
+        "exact_target_manifest_sha256": "d" * 64,
+        "certification_protocol_version": "sim-live-v3",
+        "transport": "OPENAI_PERSONAL_PLUGIN",
+        "plugin_id": "plugins~Plugin_sim",
+        "release_id": "release_exact",
+        "current_release_id": "release_exact",
+        "latest_release_id": "release_exact",
+        "scope": "USER",
+        "discoverability": "PRIVATE",
+        "bundle_sha256": "e" * 64,
+        "platform_release_tree_sha256": "f" * 64,
+        "normalized_platform_tree_sha256": "a" * 64,
+        "observed_public_skill_count": 1,
+        "observed_public_skill_names": ["SIM"],
+        "recorded_at": "2026-09-24T10:00:00Z",
+    }
+    jsonschema.Draft202012Validator(schema).validate(record)
+
+
+def test_personal_release_binding_rejects_normalized_tree_mismatch() -> None:
+    from tools.verify_sim_certification import _verify_personal_evidence_binding
+
+    installation = {
+        "plugin_id": "plugins~Plugin_sim",
+        "release_id": "release_exact",
+        "bundle_sha256": "a" * 64,
+        "platform_release_tree_sha256": "b" * 64,
+        "normalized_platform_tree_sha256": "c" * 64,
+    }
+    release = dict(installation)
+    release["normalized_platform_tree_sha256"] = "d" * 64
+
+    assert _verify_personal_evidence_binding(installation, release) == [
+        "personal plugin normalized platform tree mismatch"
+    ]
