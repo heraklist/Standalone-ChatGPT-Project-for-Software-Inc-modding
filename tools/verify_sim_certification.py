@@ -331,7 +331,10 @@ def _evaluate(
         release
         for release in personal_release_records
         if release.get("candidate_tree_sha256") == identity["candidate_tree_sha256"]
-        and release.get("normalized_platform_tree_sha256") == identity["candidate_tree_sha256"]
+        and release.get(
+            "normalized_platform_tree_sha256",
+            release.get("platform_release_tree_sha256"),
+        ) == identity["candidate_tree_sha256"]
         and not verify_personal_release(candidate, release)
     ]
     if len(matching_personal_releases) == 1:
