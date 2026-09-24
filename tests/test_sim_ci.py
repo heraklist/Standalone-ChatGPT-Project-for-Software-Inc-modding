@@ -65,3 +65,44 @@ def test_sim_plugin_ci_does_not_publish_marketplace_or_materialize_plugins_tree(
     text = WORKFLOW.read_text(encoding="utf-8")
     assert ".agents/plugins/marketplace.json" not in text
     assert "--output plugins/sim" not in text
+
+
+def test_sim_ci_names_head_reproducibility_without_implying_certification() -> None:
+    text = WORKFLOW.read_text(encoding="utf-8")
+
+    assert "- name: Verify SIM HEAD reproducibility" in text
+    assert "- name: Validate SIM HEAD portable manifest" in text
+    assert "- name: Build deterministic SIM personal-plugin bundle" in text
+    assert "- name: Verify deterministic SIM personal-plugin bundle" in text
+    assert "HEAD certified" not in text
+    assert "Certify SIM HEAD" not in text
+
+
+def test_compatibility_matrix_is_observational_per_surface_and_transport() -> None:
+    import json
+
+    matrix = json.loads(
+        (ROOT / "production/sim/manifests/compatibility-matrix.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert matrix["schema_version"] == 2
+    records = matrix["records"]
+    web_personal = next(
+        record
+        for record in records
+        if record["surface"] == "CHATGPT_WEB_NORMAL_CHAT"
+        and record["transport"] == "OPENAI_PERSONAL_PLUGIN"
+    )
+    assert web_personal["resolver_activation"] == "NOT_TESTED"
+    assert web_personal["last_verified_release_id"] is None
+    assert web_personal["status"] == "NOT_VERIFIED"
+
+    web_local = next(
+        record
+        for record in records
+        if record["surface"] == "CHATGPT_WEB_NORMAL_CHAT"
+        and record["transport"] == "MARKETPLACE_GIT_SUBDIR"
+    )
+    assert web_local["discovery"] == "PASS"
+    assert web_local["resolver_activation"] == "BLOCKED"
