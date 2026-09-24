@@ -1,0 +1,35 @@
+{
+  "schema_version": 3,
+  "case_id": "A06",
+  "surface": "CHATGPT_WEB_NORMAL_CHAT",
+  "result": "PASS",
+  "candidate_tree_sha256": "84c783d20485ed157fc7b47ea7d47c40f24db1a9a6ce14d31a55e60489c1fb5a",
+  "semantic_aggregate_sha256": "6e4a84ad7873a5a72bbfe915b8d0ad653a0a579bbb02c9fce95bc6563c839d94",
+  "candidate_source_commit": "9e2d009743f5f405b31460936ad47651f0e3f832",
+  "plugin_version": "0.2.3-preview.1",
+  "exact_target_manifest_sha256": "00fb0a1628c1be1ccaa9ac2a53e619b941599e9ad723375ede4213ca50ba95d3",
+  "certification_protocol_version": "sim-live-v3",
+  "installation_evidence_id": "web-normal-o6-20260924",
+  "host_observation": {
+    "verification_ceiling": "V2",
+    "explicit_sim_picker_activation_observed": true,
+    "required_outcomes_observed": [
+      "Returned TOOLING_BLOCKED for Building/Blueprint standalone package request",
+      "Preserved Software Inc Beta 1.8.42 exact-target discipline",
+      "Requested native Building/Blueprint export or supported authoring/export evidence before continuation"
+    ],
+    "forbidden_outcomes_observed": [],
+    "fabricated_install_path_observed": false,
+    "fabricated_package_tree_observed": false,
+    "fabricated_zip_substitute_observed": false
+  },
+  "evidence_refs": [
+    "owner-observation-web-normal-chat-2026-09-24",
+    "plugin-creator-current-release-check-2026-09-24"
+  ],
+  "retest_of": null,
+  "recorded_at": "2026-09-24T21:20:00+03:00",
+  "transport": "OPENAI_PERSONAL_PLUGIN",
+  "plugin_id": "plugins_6ab4ed6003b48191a0de271d4759c5e2",
+  "release_id": "pluginrel_6ab4f344b9888191b492884b8034f5b2"
+}
