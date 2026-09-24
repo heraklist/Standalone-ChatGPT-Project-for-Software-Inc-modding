@@ -16,6 +16,7 @@ SCHEMA_NAMES = (
     "sim-release-manifest.schema.json",
     "sim-installation-evidence.schema.json",
     "sim-certification-report.schema.json",
+    "sim-plugin-interface.schema.json",
     "sim-eval.schema.json",
 )
 
@@ -348,3 +349,12 @@ def test_session_schema_accepts_finalization_metadata(
     session["artifact"]["family"] = "DATA_TYD"
     session["artifact"]["claim_class"] = "STATIC_DELIVERY"
     validator("sim-session.schema.json").validate(session)
+
+
+def test_plugin_interface_manifest_is_schema_valid() -> None:
+    payload = json.loads(
+        (ROOT / "production/sim/manifests/plugin-interface.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    validator("sim-plugin-interface.schema.json").validate(payload)
