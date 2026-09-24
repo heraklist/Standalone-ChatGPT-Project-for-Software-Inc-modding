@@ -210,6 +210,11 @@ def _verify_personal_evidence_binding(
         != release.get("platform_release_tree_sha256")
     ):
         errors.append("personal plugin platform tree mismatch")
+    if (
+        installation.get("normalized_platform_tree_sha256")
+        != release.get("normalized_platform_tree_sha256")
+    ):
+        errors.append("personal plugin normalized platform tree mismatch")
     return sorted(set(errors))
 
 
@@ -311,6 +316,7 @@ def _evaluate(
     personal_identity: tuple[str, str] | None = None
     bundle_sha256: str | None = None
     platform_tree_sha256: str | None = None
+    normalized_platform_tree_sha256: str | None = None
 
     for surface, surface_profile in profile["surfaces"].items():
         if not surface_profile["release_blocking"]:
@@ -381,9 +387,9 @@ def _evaluate(
             known_gaps.append(gap)
             errors.append(gap)
             continue
-        if installation.get("platform_release_tree_sha256") != identity["candidate_tree_sha256"]:
+        if installation.get("normalized_platform_tree_sha256") != identity["candidate_tree_sha256"]:
             surface_results[surface] = "FAIL"
-            gap = f"{surface} platform release tree mismatch"
+            gap = f"{surface} normalized platform release tree mismatch"
             known_gaps.append(gap)
             errors.append(gap)
             continue
@@ -429,6 +435,9 @@ def _evaluate(
             platform_tree_sha256 = release_evidence.get(
                 "platform_release_tree_sha256"
             )
+            normalized_platform_tree_sha256 = release_evidence.get(
+                "normalized_platform_tree_sha256"
+            )
         elif personal_identity != current_identity:
             surface_results[surface] = "FAIL"
             gap = f"{surface} references a different personal plugin release"
@@ -439,6 +448,8 @@ def _evaluate(
             bundle_sha256 != release_evidence.get("bundle_sha256")
             or platform_tree_sha256
             != release_evidence.get("platform_release_tree_sha256")
+            or normalized_platform_tree_sha256
+            != release_evidence.get("normalized_platform_tree_sha256")
         ):
             surface_results[surface] = "FAIL"
             gap = f"{surface} personal plugin release identity metadata mismatch"
@@ -540,6 +551,7 @@ def _evaluate(
         "release_id": release_id,
         "distribution_bundle_sha256": bundle_sha256,
         "platform_release_tree_sha256": platform_tree_sha256,
+        "normalized_platform_tree_sha256": normalized_platform_tree_sha256,
         "surface_results": surface_results,
         "known_gaps": sorted(set(known_gaps)),
         "release_blocking_complete": release_blocking_complete,

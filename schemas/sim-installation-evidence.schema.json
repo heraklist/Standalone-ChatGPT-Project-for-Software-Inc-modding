@@ -240,6 +240,10 @@
         "platform_release_tree_sha256": {
           "type": "string",
           "pattern": "^[a-f0-9]{64}$"
+        },
+        "normalized_platform_tree_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
         }
       },
       "allOf": [
@@ -263,7 +267,8 @@
               "scope",
               "discoverability",
               "bundle_sha256",
-              "platform_release_tree_sha256"
+              "platform_release_tree_sha256",
+              "normalized_platform_tree_sha256"
             ]
           }
         },
