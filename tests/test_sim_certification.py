@@ -117,6 +117,40 @@ def test_certification_report_schema_requires_all_surface_states() -> None:
     assert list(validator.iter_errors(invalid))
 
 
+def _write_personal_release(
+    evidence_root: Path,
+    *,
+    candidate_root: Path,
+    candidate_tree_sha256: str,
+) -> None:
+    from tools.safe_artifacts import safe_source_files
+
+    cert_dir = evidence_root / "sim-certification" / candidate_tree_sha256[:12]
+    cert_dir.mkdir(parents=True, exist_ok=True)
+    root = candidate_root.resolve()
+    files = {
+        path.relative_to(root).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
+        for path in safe_source_files(root)
+    }
+    record = {
+        "schema_version": 1,
+        "plugin_id": PLUGIN_ID,
+        "release_id": RELEASE_ID,
+        "current_release_id": RELEASE_ID,
+        "latest_release_id": RELEASE_ID,
+        "scope": "USER",
+        "discoverability": "PRIVATE",
+        "candidate_tree_sha256": candidate_tree_sha256,
+        "bundle_sha256": BUNDLE_SHA,
+        "platform_release_tree_sha256": candidate_tree_sha256,
+        "files": files,
+        "recorded_at": "2026-09-24T09:00:00Z",
+    }
+    (cert_dir / "personal-plugin-release.json").write_text(
+        json.dumps(record), encoding="utf-8"
+    )
+
+
 def _write_installation(
     evidence_root: Path,
     *,
@@ -212,6 +246,11 @@ def test_certification_blocks_when_required_codex_evidence_is_absent(
         source_commit=built.source_commit,
         target_digest=target,
     )
+    _write_personal_release(
+        evidence,
+        candidate_root=candidate,
+        candidate_tree_sha256=built.candidate_tree_sha256,
+    )
 
     errors = verify_certification(ROOT, candidate, source_sha, evidence)
     report = build_certification_report(ROOT, candidate, source_sha, evidence)
@@ -256,6 +295,11 @@ def test_certification_passes_only_same_candidate_across_required_surfaces(
             source_commit=built.source_commit,
             target_digest=target,
         )
+    _write_personal_release(
+        evidence,
+        candidate_root=candidate,
+        candidate_tree_sha256=built.candidate_tree_sha256,
+    )
 
     assert verify_certification(ROOT, candidate, source_sha, evidence) == []
 
