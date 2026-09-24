@@ -94,7 +94,11 @@ def build_chatgpt_upload(root: Path, out_dir: Path | None = None) -> tuple[Path,
 
     chatgpt_tools: dict[str, dict] = {}
     for tool_name, tool in sorted(capabilities.get("tools", {}).items()):
-        surface = tool.get("surfaces", {}).get("ChatGPT", {})
+        surfaces = tool.get("surfaces", {})
+        surface = surfaces.get(
+            "CHATGPT_WEB_NORMAL_CHAT",
+            surfaces.get("ChatGPT", {}),
+        )
         if not surface.get("bundled", False):
             continue
         repository_source = root / tool["repository_source"]
