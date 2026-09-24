@@ -228,22 +228,61 @@ def test_personal_release_binding_rejects_normalized_tree_mismatch() -> None:
 def test_certification_surfaces_verified_personal_release_before_installation(
     tmp_path: Path,
 ) -> None:
+    import hashlib
+    import subprocess
+
     from tools.build_sim_plugin import build_candidate
+    from tools.sim_candidate_identity import hash_tree
     from tools.verify_sim_certification import build_certification_report
 
-    source_sha = "9e2d009743f5f405b31460936ad47651f0e3f832"
+    source_sha = subprocess.check_output(
+        ["git", "rev-parse", "HEAD"], cwd=ROOT, text=True
+    ).strip()
     candidate = tmp_path / "candidate"
     build_candidate(ROOT, source_sha, candidate)
+
+    candidate_files = {
+        path.relative_to(candidate).as_posix(): hashlib.sha256(
+            path.read_bytes()
+        ).hexdigest()
+        for path in sorted(candidate.rglob("*"))
+        if path.is_file()
+    }
+    tree = hash_tree(candidate)
+    plugin_version = json.loads(
+        (candidate / "plugin.json").read_text(encoding="utf-8")
+    )["version"]
+
+    evidence_root = tmp_path / "evidence"
+    release_dir = evidence_root / "sim-certification" / tree[:12]
+    release_dir.mkdir(parents=True)
+    release = {
+        "schema_version": 1,
+        "plugin_id": "plugins_6ab4ed6003b48191a0de271d4759c5e2",
+        "release_id": "pluginrel_exact",
+        "current_release_id": "pluginrel_exact",
+        "latest_release_id": "pluginrel_exact",
+        "scope": "USER",
+        "discoverability": "PRIVATE",
+        "candidate_tree_sha256": tree,
+        "bundle_sha256": "e" * 64,
+        "platform_release_tree_sha256": tree,
+        "files": candidate_files,
+        "recorded_at": "2026-09-24T10:00:00Z",
+    }
+    (release_dir / "personal-plugin-release.json").write_text(
+        json.dumps(release), encoding="utf-8"
+    )
 
     report = build_certification_report(
         ROOT,
         candidate,
         source_sha,
-        ROOT / "work/evidence",
+        evidence_root,
     )
 
     assert report["plugin_id"] == "plugins_6ab4ed6003b48191a0de271d4759c5e2"
-    assert report["release_id"] == "pluginrel_6ab4f344b9888191b492884b8034f5b2"
+    assert report["release_id"] == "pluginrel_exact"
     assert report["release_state"] == "PERSONAL_PLUGIN_BYTES_VERIFIED"
     assert report["surface_results"]["CHATGPT_WEB_NORMAL_CHAT"] == "INCOMPLETE"
     assert report["release_blocking_complete"] is False
