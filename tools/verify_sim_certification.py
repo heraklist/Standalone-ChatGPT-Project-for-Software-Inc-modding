@@ -49,7 +49,7 @@ def _candidate_identity(
             "candidate_tree_sha256": "0" * 64,
             "semantic_aggregate_sha256": "0" * 64,
             "source_commit": "0" * 40,
-            "plugin_version": "0.2.2-preview",
+            "plugin_version": "0.2.3-preview",
         }, [f"source commit invalid: {exc}"]
 
     findings = validate_candidate(repo_root, candidate_root, full_source)
@@ -69,7 +69,7 @@ def _candidate_identity(
         errors.append(f"candidate identity unreadable: {exc}")
         candidate_hash = "0" * 64
         semantic = "0" * 64
-        plugin_version = "0.2.2-preview"
+        plugin_version = "0.2.3-preview"
 
     return {
         "candidate_tree_sha256": candidate_hash,
@@ -122,7 +122,54 @@ def _same_context(record: dict, context: CertificationContext) -> bool:
         and record.get("certification_protocol_version")
         == context.protocol_version
         and record.get("surface") == context.surface
+        and (
+            context.protocol_version != "sim-live-v3"
+            or (
+                record.get("transport") == context.transport
+                and record.get("plugin_id") == context.plugin_id
+                and record.get("release_id") == context.release_id
+            )
+        )
     )
+
+
+def _matching_installations(
+    records: list[dict],
+    *,
+    surface: str,
+    identity: dict,
+    target_digest: str,
+    protocol: str,
+    transport: str,
+) -> list[dict]:
+    return [
+        record
+        for record in records
+        if record.get("schema_version") == 2
+        and record.get("surface") == surface
+        and record.get("candidate_tree_sha256") == identity["candidate_tree_sha256"]
+        and record.get("semantic_aggregate_sha256")
+        == identity["semantic_aggregate_sha256"]
+        and record.get("source_commit") == identity["source_commit"]
+        and record.get("plugin_version") == identity["plugin_version"]
+        and record.get("exact_target_manifest_sha256") == target_digest
+        and record.get("certification_protocol_version") == protocol
+        and record.get("transport") == transport
+    ]
+
+
+def _release_state(
+    surface_results: dict[str, str],
+    release_blocking_complete: bool,
+    plugin_id: str | None,
+) -> str:
+    if release_blocking_complete:
+        return "PRIVATE_PLUGIN_CERTIFIED"
+    if any(value == "FAIL" for value in surface_results.values()):
+        return "PRIVATE_PLUGIN_LIVE_FAILED"
+    if plugin_id is not None:
+        return "PRIVATE_PLUGIN_LIVE_INCOMPLETE"
+    return "PLUGIN_CANDIDATE_VALIDATED"
 
 
 def _evaluate(
@@ -141,6 +188,7 @@ def _evaluate(
         repo / "work/corpus/beta-1.8.42/capture-manifest.json"
     )
     protocol = profile["protocol_version"]
+    production_transport = profile.get("production_transport", "OPENAI_PERSONAL_PLUGIN")
     install_records, install_errors = _installation_records(evidence)
     errors.extend(install_errors)
 
@@ -153,32 +201,23 @@ def _evaluate(
         all_acceptance = []
         errors.append(str(exc))
 
+    personal_identity: tuple[str, str] | None = None
+    bundle_sha256: str | None = None
+    platform_tree_sha256: str | None = None
+
     for surface, surface_profile in profile["surfaces"].items():
         if not surface_profile["release_blocking"]:
             surface_results[surface] = "NOT_REQUIRED"
             continue
 
-        context = CertificationContext(
-            candidate_tree_sha256=identity["candidate_tree_sha256"],
-            semantic_aggregate_sha256=identity["semantic_aggregate_sha256"],
-            source_commit=identity["source_commit"],
-            plugin_version=identity["plugin_version"],
-            exact_target_manifest_sha256=target_digest,
-            protocol_version=protocol,
+        matching_install = _matching_installations(
+            install_records,
             surface=surface,
+            identity=identity,
+            target_digest=target_digest,
+            protocol=protocol,
+            transport=production_transport,
         )
-        matching_install = [
-            record
-            for record in install_records
-            if record.get("surface") == surface
-            and record.get("candidate_tree_sha256")
-            == identity["candidate_tree_sha256"]
-            and record.get("semantic_aggregate_sha256")
-            == identity["semantic_aggregate_sha256"]
-            and record.get("source_commit") == identity["source_commit"]
-            and record.get("plugin_version") == identity["plugin_version"]
-            and record.get("exact_target_manifest_sha256") == target_digest
-        ]
         if len(matching_install) != 1:
             state = "INCOMPLETE"
             gap = (
@@ -215,6 +254,67 @@ def _evaluate(
             errors.append(gap)
             continue
 
+        plugin_id = installation.get("plugin_id")
+        release_id = installation.get("release_id")
+        if not isinstance(plugin_id, str) or not isinstance(release_id, str):
+            surface_results[surface] = "FAIL"
+            gap = f"{surface} personal plugin identity missing"
+            known_gaps.append(gap)
+            errors.append(gap)
+            continue
+        if installation.get("current_release_id") != release_id:
+            surface_results[surface] = "FAIL"
+            gap = f"{surface} personal plugin release is not current"
+            known_gaps.append(gap)
+            errors.append(gap)
+            continue
+        if installation.get("scope") != "USER" or installation.get("discoverability") != "PRIVATE":
+            surface_results[surface] = "FAIL"
+            gap = f"{surface} personal plugin scope/discoverability mismatch"
+            known_gaps.append(gap)
+            errors.append(gap)
+            continue
+        if installation.get("platform_release_tree_sha256") != identity["candidate_tree_sha256"]:
+            surface_results[surface] = "FAIL"
+            gap = f"{surface} platform release tree mismatch"
+            known_gaps.append(gap)
+            errors.append(gap)
+            continue
+
+        current_identity = (plugin_id, release_id)
+        if personal_identity is None:
+            personal_identity = current_identity
+            bundle_sha256 = installation.get("bundle_sha256")
+            platform_tree_sha256 = installation.get("platform_release_tree_sha256")
+        elif personal_identity != current_identity:
+            surface_results[surface] = "FAIL"
+            gap = f"{surface} references a different personal plugin release"
+            known_gaps.append(gap)
+            errors.append(gap)
+            continue
+        elif (
+            bundle_sha256 != installation.get("bundle_sha256")
+            or platform_tree_sha256 != installation.get("platform_release_tree_sha256")
+        ):
+            surface_results[surface] = "FAIL"
+            gap = f"{surface} personal plugin release identity metadata mismatch"
+            known_gaps.append(gap)
+            errors.append(gap)
+            continue
+
+        context = CertificationContext(
+            candidate_tree_sha256=identity["candidate_tree_sha256"],
+            semantic_aggregate_sha256=identity["semantic_aggregate_sha256"],
+            source_commit=identity["source_commit"],
+            plugin_version=identity["plugin_version"],
+            exact_target_manifest_sha256=target_digest,
+            protocol_version=protocol,
+            surface=surface,
+            transport=production_transport,
+            plugin_id=plugin_id,
+            release_id=release_id,
+        )
+
         matched_acceptance = [
             record
             for record in all_acceptance
@@ -249,44 +349,67 @@ def _evaluate(
             errors.append(gap)
             continue
 
+        if "A06" in surface_profile["required_cases"] and summary.case_results.get("A06") != "PASS":
+            if summary.case_results.get("A06") == "FAIL":
+                surface_results[surface] = "FAIL"
+            elif summary.case_results.get("A06") == "PLATFORM_LIMITATION":
+                surface_results[surface] = "BLOCKED"
+            else:
+                surface_results[surface] = "INCOMPLETE"
+            gap = f"{surface} A06 canary {summary.case_results.get('A06', 'NOT_TESTED')}"
+            known_gaps.append(gap)
+            errors.append(gap)
+            continue
+
         if summary.status == "PASS":
             surface_results[surface] = "PASS"
         elif summary.status == "FAIL":
             surface_results[surface] = "FAIL"
         elif any(
-            result == "PLATFORM_LIMITATION"
-            for result in summary.case_results.values()
+            case_result == "PLATFORM_LIMITATION"
+            for case_result in summary.case_results.values()
         ):
             surface_results[surface] = "BLOCKED"
         else:
             surface_results[surface] = "INCOMPLETE"
         known_gaps.extend(summary.known_gaps)
         if surface_results[surface] != "PASS":
-            errors.append(
-                f"{surface} certification {surface_results[surface]}"
-            )
+            errors.append(f"{surface} certification {surface_results[surface]}")
 
     release_blocking_complete = all(
         surface_results[name] == "PASS"
         for name, spec in profile["surfaces"].items()
         if spec["release_blocking"]
     )
+    plugin_id = personal_identity[0] if personal_identity else None
+    release_id = personal_identity[1] if personal_identity else None
     report = {
-        "schema_version": 1,
+        "schema_version": 2,
         "plugin_version": identity["plugin_version"],
         "candidate_tree_sha256": identity["candidate_tree_sha256"],
         "semantic_aggregate_sha256": identity["semantic_aggregate_sha256"],
         "source_commit": identity["source_commit"],
         "exact_target_manifest_sha256": target_digest,
         "certification_protocol_version": protocol,
+        "transport": production_transport,
+        "plugin_id": plugin_id,
+        "release_id": release_id,
+        "distribution_bundle_sha256": bundle_sha256,
+        "platform_release_tree_sha256": platform_tree_sha256,
         "surface_results": surface_results,
         "known_gaps": sorted(set(known_gaps)),
         "release_blocking_complete": release_blocking_complete,
+        "release_state": _release_state(
+            surface_results, release_blocking_complete, plugin_id
+        ),
     }
     schema = _load_json(repo / "schemas/sim-certification-report.schema.json")
     schema_errors = list(jsonschema.Draft202012Validator(schema).iter_errors(report))
     if schema_errors:
-        errors.append("derived certification report violates schema")
+        errors.append(
+            "derived certification report violates schema: "
+            + schema_errors[0].message
+        )
     return report, errors
 
 
