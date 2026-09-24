@@ -288,8 +288,7 @@ def build_candidate(
             raise ValueError(f"invalid tool surfaces: {tool_name}")
         bundled = any(
             isinstance(surface, dict) and surface.get("bundled") is True
-            for surface_name, surface in surfaces.items()
-            if surface_name in {"ChatGPT", "Codex"}
+            for surface in surfaces.values()
         )
         if not bundled:
             continue
