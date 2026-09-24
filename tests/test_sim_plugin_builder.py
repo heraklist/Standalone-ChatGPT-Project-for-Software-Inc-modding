@@ -138,6 +138,9 @@ def test_build_candidate_projects_one_public_skill_and_internal_modules(
     assert (output / "skills/sim/tools/validate_code_profile.py").read_bytes() == (
         source.read_bytes("tools/validate_code_profile.py")
     )
+    assert (output / "skills/sim/tools/inspect_archive.py").read_bytes() == (
+        source.read_bytes("tools/inspect_archive.py")
+    )
     assert len(result.semantic_aggregate_sha256) == 64
     assert len(result.candidate_tree_sha256) == 64
 
