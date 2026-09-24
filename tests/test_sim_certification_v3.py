@@ -64,3 +64,106 @@ def test_acceptance_context_isolates_transport_and_exact_personal_release() -> N
     record["transport"] = "OPENAI_PERSONAL_PLUGIN"
     record["release_id"] = "release_other"
     assert _matches_context(record, context) is False
+
+
+def _git(repo: Path, *args: str) -> str:
+    import subprocess
+
+    return subprocess.check_output(
+        ["git", "-C", str(repo), *args],
+        text=True,
+    ).strip()
+
+
+def _commit_all(repo: Path, message: str) -> str:
+    import subprocess
+
+    subprocess.check_call(["git", "-C", str(repo), "add", "."])
+    subprocess.check_call(
+        [
+            "git",
+            "-C",
+            str(repo),
+            "-c",
+            "user.name=SIM Test",
+            "-c",
+            "user.email=sim-test@example.invalid",
+            "commit",
+            "-m",
+            message,
+        ],
+        stdout=subprocess.DEVNULL,
+    )
+    return _git(repo, "rev-parse", "HEAD")
+
+
+def test_marketplace_chain_rejects_projection_pin_mismatch(tmp_path: Path) -> None:
+    import subprocess
+
+    from tools.verify_sim_certification import _verify_marketplace_chain
+
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    subprocess.check_call(["git", "-C", str(repo), "init", "-q"])
+
+    (repo / "source.txt").write_text("semantic source", encoding="utf-8")
+    source_sha = _commit_all(repo, "source")
+
+    provenance = repo / "plugins/sim/provenance"
+    provenance.mkdir(parents=True)
+    (provenance / "plugin_manifest.json").write_text(
+        json.dumps({"source_commit": source_sha}),
+        encoding="utf-8",
+    )
+    projection_sha = _commit_all(repo, "projection")
+
+    marketplace = repo / ".agents/plugins"
+    marketplace.mkdir(parents=True)
+    (marketplace / "marketplace.json").write_text(
+        json.dumps(
+            {
+                "name": "sim-certification",
+                "plugins": [
+                    {
+                        "name": "sim",
+                        "source": {
+                            "source": "git-subdir",
+                            "path": "./plugins/sim",
+                            "sha": projection_sha,
+                        },
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    marketplace_sha = _commit_all(repo, "marketplace")
+
+    record = {
+        "source_commit": source_sha,
+        "projection_commit": "f" * 40,
+        "marketplace_commit": marketplace_sha,
+        "marketplace_name": "sim-certification",
+        "plugin_locator": "./plugins/sim",
+    }
+    errors = _verify_marketplace_chain(repo, record)
+    assert any("marketplace projection mismatch" in error for error in errors)
+
+
+def test_personal_release_binding_rejects_bundle_mismatch() -> None:
+    from tools.verify_sim_certification import _verify_personal_evidence_binding
+
+    installation = {
+        "plugin_id": "plugins~Plugin_sim",
+        "release_id": "release_exact",
+        "bundle_sha256": "a" * 64,
+        "platform_release_tree_sha256": "b" * 64,
+    }
+    release = {
+        "plugin_id": "plugins~Plugin_sim",
+        "release_id": "release_exact",
+        "bundle_sha256": "c" * 64,
+        "platform_release_tree_sha256": "b" * 64,
+    }
+    errors = _verify_personal_evidence_binding(installation, release)
+    assert errors == ["personal plugin bundle mismatch"]
