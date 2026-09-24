@@ -1,22 +1,77 @@
 {
-  "surfaces": {
-    "ChatGPT": {
-      "explicit_invocation": "SUPPORTED",
+  "schema_version": 2,
+  "records": [
+    {
+      "surface": "CHATGPT_WEB_NORMAL_CHAT",
+      "transport": "OPENAI_PERSONAL_PLUGIN",
+      "discovery": "NOT_TESTED",
+      "installation": "NOT_TESTED",
+      "resolver_activation": "NOT_TESTED",
       "thread_persistence": "NOT_TESTED",
       "script_execution": "CAPABILITY_DEPENDENT",
-      "artifact_creation": "CAPABILITY_DEPENDENT"
+      "artifact_creation": "CAPABILITY_DEPENDENT",
+      "last_verified_release_id": null,
+      "status": "NOT_VERIFIED"
     },
-    "ChatGPT Project": {
-      "explicit_invocation": "NOT_TESTED",
+    {
+      "surface": "CHATGPT_DESKTOP_NORMAL_CHAT",
+      "transport": "OPENAI_PERSONAL_PLUGIN",
+      "discovery": "NOT_TESTED",
+      "installation": "NOT_TESTED",
+      "resolver_activation": "NOT_TESTED",
       "thread_persistence": "NOT_TESTED",
       "script_execution": "CAPABILITY_DEPENDENT",
-      "artifact_creation": "CAPABILITY_DEPENDENT"
+      "artifact_creation": "CAPABILITY_DEPENDENT",
+      "last_verified_release_id": null,
+      "status": "NOT_VERIFIED"
     },
-    "Codex": {
-      "explicit_invocation": "NOT_TESTED",
+    {
+      "surface": "CODEX",
+      "transport": "OPENAI_PERSONAL_PLUGIN",
+      "discovery": "NOT_TESTED",
+      "installation": "NOT_TESTED",
+      "resolver_activation": "NOT_TESTED",
       "thread_persistence": "NOT_TESTED",
       "script_execution": "CAPABILITY_DEPENDENT",
-      "artifact_creation": "CAPABILITY_DEPENDENT"
+      "artifact_creation": "CAPABILITY_DEPENDENT",
+      "last_verified_release_id": null,
+      "status": "NOT_VERIFIED"
+    },
+    {
+      "surface": "CHATGPT_WORK",
+      "transport": "OPENAI_PERSONAL_PLUGIN",
+      "discovery": "NOT_TESTED",
+      "installation": "NOT_TESTED",
+      "resolver_activation": "NOT_TESTED",
+      "thread_persistence": "NOT_TESTED",
+      "script_execution": "CAPABILITY_DEPENDENT",
+      "artifact_creation": "CAPABILITY_DEPENDENT",
+      "last_verified_release_id": null,
+      "status": "NOT_VERIFIED"
+    },
+    {
+      "surface": "CHATGPT_WEB_NORMAL_CHAT",
+      "transport": "MARKETPLACE_GIT_SUBDIR",
+      "discovery": "PASS",
+      "installation": "NOT_VERIFIED",
+      "resolver_activation": "BLOCKED",
+      "thread_persistence": "NOT_TESTED",
+      "script_execution": "CAPABILITY_DEPENDENT",
+      "artifact_creation": "CAPABILITY_DEPENDENT",
+      "last_verified_release_id": null,
+      "status": "BLOCKED"
+    },
+    {
+      "surface": "LOCAL_MARKETPLACE",
+      "transport": "LOCAL_MARKETPLACE",
+      "discovery": "NOT_TESTED",
+      "installation": "NOT_TESTED",
+      "resolver_activation": "NOT_TESTED",
+      "thread_persistence": "NOT_TESTED",
+      "script_execution": "CAPABILITY_DEPENDENT",
+      "artifact_creation": "CAPABILITY_DEPENDENT",
+      "last_verified_release_id": null,
+      "status": "NOT_VERIFIED"
     }
-  }
+  ]
 }
