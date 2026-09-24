@@ -254,3 +254,61 @@ def test_live_failed_release_rejects_manually_cleared_known_gaps(tmp_path: Path)
         evidence_dir=evidence_dir,
     )
     assert any("known_gaps" in error for error in errors)
+
+
+def test_source_release_verifier_rejects_v3_private_plugin_certification_inheritance(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    from tools.verify_sim_release import verify_sim_release
+    import tools.verify_sim_certification as certification
+
+    zip_path, report = build_sim_release(ROOT, out_dir=tmp_path)
+    report["release_status"] = "PREVIEW_CERTIFIED"
+    report["surface_acceptance"] = "PASS"
+    report["known_gaps"] = []
+    report_path = _report_path(tmp_path)
+    report_path.write_text(json.dumps(report), encoding="utf-8")
+
+    monkeypatch.setattr(certification, "verify_certification", lambda *args, **kwargs: [])
+    monkeypatch.setattr(
+        certification,
+        "build_certification_report",
+        lambda *args, **kwargs: {
+            "schema_version": 2,
+            "plugin_version": "0.2.3-preview",
+            "candidate_tree_sha256": "a" * 64,
+            "semantic_aggregate_sha256": "b" * 64,
+            "source_commit": "c" * 40,
+            "exact_target_manifest_sha256": "d" * 64,
+            "certification_protocol_version": "sim-live-v3",
+            "transport": "OPENAI_PERSONAL_PLUGIN",
+            "plugin_id": "plugins~Plugin_test",
+            "release_id": "release_test",
+            "distribution_bundle_sha256": "e" * 64,
+            "platform_release_tree_sha256": "a" * 64,
+            "surface_results": {
+                "CHATGPT_WEB_NORMAL_CHAT": "PASS",
+                "CHATGPT_DESKTOP_NORMAL_CHAT": "PASS",
+                "CODEX": "PASS",
+                "CHATGPT_WORK": "NOT_REQUIRED",
+                "LOCAL_MARKETPLACE": "NOT_REQUIRED",
+            },
+            "known_gaps": [],
+            "release_blocking_complete": True,
+            "release_state": "PRIVATE_PLUGIN_CERTIFIED",
+        },
+    )
+
+    errors = verify_sim_release(
+        zip_path,
+        report_path,
+        report["sim_version"],
+        candidate_root=tmp_path / "candidate",
+        source_sha="c" * 40,
+        evidence_root=tmp_path / "evidence",
+    )
+    assert any(
+        "source release cannot inherit personal plugin certification" in error
+        for error in errors
+    )
