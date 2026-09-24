@@ -48,7 +48,7 @@ def test_installation_schema_requires_candidate_tree_identity() -> None:
         "semantic_aggregate_sha256": "b" * 64,
         "source_commit": "c" * 40,
         "projection_commit": "d" * 40,
-        "plugin_version": "0.2.2-preview",
+        "plugin_version": "0.2.3-preview",
         "exact_target_manifest_sha256": "e" * 64,
         "transport": "MARKETPLACE_GIT_SUBDIR",
         "observed_public_skill_count": 1,
@@ -65,7 +65,7 @@ def test_installation_schema_requires_candidate_tree_identity() -> None:
 def test_certification_report_schema_requires_all_surface_states() -> None:
     report = {
         "schema_version": 1,
-        "plugin_version": "0.2.2-preview",
+        "plugin_version": "0.2.3-preview",
         "candidate_tree_sha256": "a" * 64,
         "semantic_aggregate_sha256": "b" * 64,
         "source_commit": "c" * 40,
@@ -107,7 +107,7 @@ def _write_installation(
         "semantic_aggregate_sha256": semantic_aggregate_sha256,
         "source_commit": source_commit,
         "projection_commit": "d" * 40,
-        "plugin_version": "0.2.2-preview",
+        "plugin_version": "0.2.3-preview",
         "exact_target_manifest_sha256": target_digest,
         "transport": "MARKETPLACE_GIT_SUBDIR",
         "observed_public_skill_count": 1,
@@ -141,7 +141,7 @@ def _write_acceptance(
             "candidate_tree_sha256": candidate_tree_sha256,
             "semantic_aggregate_sha256": semantic_aggregate_sha256,
             "candidate_source_commit": source_commit,
-            "plugin_version": "0.2.2-preview",
+            "plugin_version": "0.2.3-preview",
             "exact_target_manifest_sha256": target_digest,
             "certification_protocol_version": "sim-live-v2",
             "installation_evidence_id": install_id,
@@ -247,7 +247,7 @@ def test_installation_schema_accepts_platform_limitation_as_observation() -> Non
         "semantic_aggregate_sha256": "b" * 64,
         "source_commit": "c" * 40,
         "projection_commit": "d" * 40,
-        "plugin_version": "0.2.2-preview",
+        "plugin_version": "0.2.3-preview",
         "exact_target_manifest_sha256": "e" * 64,
         "transport": "UNAVAILABLE",
         "observed_public_skill_count": 0,
@@ -264,7 +264,7 @@ def test_release_builder_accepts_certification_report_for_composition(
 
     certification = {
         "schema_version": 1,
-        "plugin_version": "0.2.2-preview",
+        "plugin_version": "0.2.3-preview",
         "candidate_tree_sha256": "a" * 64,
         "semantic_aggregate_sha256": "b" * 64,
         "source_commit": "c" * 40,
