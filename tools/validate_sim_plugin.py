@@ -14,6 +14,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from tools.safe_artifacts import normalize_archive_member
+from tools.validate_agent_plugin_schema import validate_plugin_manifest
 from tools.sim_candidate_identity import aggregate_file_hashes, hash_tree
 from tools.sim_git_source import GitSource
 
@@ -392,8 +393,10 @@ def validate_candidate(
     source_sha: str,
 ) -> list[Finding]:
     findings: list[Finding] = []
+    repo = Path(repo_root).resolve()
+    candidate = Path(candidate_root).resolve()
     try:
-        source = GitSource(repo_root, source_sha)
+        source = GitSource(repo, source_sha)
     except ValueError as exc:
         text = str(exc)
         code = (
@@ -413,8 +416,22 @@ def validate_candidate(
             )
         ]
 
-    actual, tree_findings = _actual_tree(Path(candidate_root))
+    actual, tree_findings = _actual_tree(candidate)
     findings.extend(tree_findings)
+
+    official_schema_errors = validate_plugin_manifest(
+        candidate / "plugin.json",
+        repo / "schemas/vendor/agent-plugins/1.0.0/plugin.schema.json",
+        repo / "schemas/vendor/agent-plugins/1.0.0/SHA256SUM",
+    )
+    if official_schema_errors:
+        findings.append(
+            _finding(
+                "SIM_PLUGIN_OFFICIAL_SCHEMA_INVALID",
+                "; ".join(official_schema_errors),
+                "plugin.json",
+            )
+        )
     expected_paths = set(expected)
     actual_paths = set(actual)
 
