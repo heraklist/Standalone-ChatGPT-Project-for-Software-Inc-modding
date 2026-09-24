@@ -1,16 +1,56 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "tools": {
     "validate_code_profile": {
       "repository_source": "tools/validate_code_profile.py",
       "package_path": "tools/validate_code_profile.py",
       "purpose": "Conservative lexical validation for SIM Code compiler/distribution profiles.",
       "surfaces": {
-        "ChatGPT": {
+        "CHATGPT_WEB_NORMAL_CHAT": {
           "bundled": true,
           "execution": "CAPABILITY_DEPENDENT"
         },
-        "Repository": {
+        "CHATGPT_DESKTOP_NORMAL_CHAT": {
+          "bundled": true,
+          "execution": "CAPABILITY_DEPENDENT"
+        },
+        "CHATGPT_WORK": {
+          "bundled": true,
+          "execution": "CAPABILITY_DEPENDENT"
+        },
+        "CODEX": {
+          "bundled": true,
+          "execution": "CAPABILITY_DEPENDENT"
+        },
+        "REPOSITORY_CI": {
+          "bundled": false,
+          "execution": "SUPPORTED"
+        }
+      },
+      "unavailable_result": "NOT_EXECUTED"
+    },
+    "inspect_archive": {
+      "repository_source": "tools/inspect_archive.py",
+      "package_path": "tools/inspect_archive.py",
+      "purpose": "Bounded static archive intake and safety inspection before extraction.",
+      "surfaces": {
+        "CHATGPT_WEB_NORMAL_CHAT": {
+          "bundled": true,
+          "execution": "CAPABILITY_DEPENDENT"
+        },
+        "CHATGPT_DESKTOP_NORMAL_CHAT": {
+          "bundled": true,
+          "execution": "CAPABILITY_DEPENDENT"
+        },
+        "CHATGPT_WORK": {
+          "bundled": true,
+          "execution": "CAPABILITY_DEPENDENT"
+        },
+        "CODEX": {
+          "bundled": true,
+          "execution": "CAPABILITY_DEPENDENT"
+        },
+        "REPOSITORY_CI": {
           "bundled": false,
           "execution": "SUPPORTED"
         }

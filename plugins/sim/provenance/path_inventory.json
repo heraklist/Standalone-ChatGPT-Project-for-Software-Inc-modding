@@ -19,6 +19,7 @@
     "skills/sim/manifests/certification-profile.json",
     "skills/sim/manifests/compatibility-matrix.json",
     "skills/sim/manifests/finalization-policy.json",
+    "skills/sim/manifests/plugin-interface.json",
     "skills/sim/manifests/reference-source-map.json",
     "skills/sim/manifests/sim-manifest.json",
     "skills/sim/manifests/tool-capabilities.json",
@@ -51,6 +52,7 @@
     "skills/sim/references/state-vocabulary.md",
     "skills/sim/references/tyd.md",
     "skills/sim/references/verification.md",
+    "skills/sim/tools/inspect_archive.py",
     "skills/sim/tools/validate_code_profile.py"
   ],
   "schema_version": 1

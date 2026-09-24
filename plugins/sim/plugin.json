@@ -1,6 +1,27 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "description": "SIM — Software Inc modding workflows for Beta 1.8.42.",
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "capabilities": [
+          "Create Software Inc mods",
+          "Inspect and repair existing mods",
+          "Validate packaging and compatibility"
+        ],
+        "category": "Developer Tools",
+        "defaultPrompt": [
+          "Create a Software Inc mod for Beta 1.8.42 from this concept.",
+          "Inspect and repair this existing Software Inc mod.",
+          "Diagnose why this Software Inc mod does not load or behave correctly."
+        ],
+        "developerName": "Heraklis",
+        "displayName": "SIM",
+        "longDescription": "Create, inspect, repair, and verify Software Inc mods with evidence-bound workflows for Beta 1.8.42.",
+        "shortDescription": "Software Inc modding for Beta 1.8.42."
+      }
+    }
+  },
   "name": "sim",
-  "version": "0.2.2-preview"
+  "version": "0.2.3-preview.1"
 }

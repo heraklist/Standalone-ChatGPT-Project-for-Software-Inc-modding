@@ -9,10 +9,10 @@
     },
     {
       "package_path": "skills/sim/SKILL.md",
-      "package_sha256": "83f7aeb938d2a31e16ca74ff9deb7513490ed8792ab434a6133a5e8ac4c0edac",
+      "package_sha256": "2aa69c45212f6a64c341f56383b0a12eb49720d3ff826f81cab33de79c92a4ef",
       "relation": "EXACT_BYTE_COPY",
       "source_path": "production/sim/SKILL.md",
-      "source_sha256": "83f7aeb938d2a31e16ca74ff9deb7513490ed8792ab434a6133a5e8ac4c0edac"
+      "source_sha256": "2aa69c45212f6a64c341f56383b0a12eb49720d3ff826f81cab33de79c92a4ef"
     },
     {
       "package_path": "skills/sim/examples/README.md",
@@ -72,17 +72,17 @@
     },
     {
       "package_path": "skills/sim/manifests/certification-profile.json",
-      "package_sha256": "65f111eeb2ccd43401218eb58e6d3cf884e03e7143f5cfcc2b07dfe7455f57c0",
+      "package_sha256": "3c03c12acf8fe3ad8e5561bdc01e35e31602fdcefc356c9388a1bf95a391481c",
       "relation": "EXACT_BYTE_COPY",
       "source_path": "production/sim/manifests/certification-profile.json",
-      "source_sha256": "65f111eeb2ccd43401218eb58e6d3cf884e03e7143f5cfcc2b07dfe7455f57c0"
+      "source_sha256": "3c03c12acf8fe3ad8e5561bdc01e35e31602fdcefc356c9388a1bf95a391481c"
     },
     {
       "package_path": "skills/sim/manifests/compatibility-matrix.json",
-      "package_sha256": "7af4cc1466fbb0968571e8826e93124673b4dd27ca2cc083dc0fa989bf5e7e35",
+      "package_sha256": "1992fff4e185316df5e7a2297c32d13e6f7f8d5d49367c4dc02856f4959455b6",
       "relation": "EXACT_BYTE_COPY",
       "source_path": "production/sim/manifests/compatibility-matrix.json",
-      "source_sha256": "7af4cc1466fbb0968571e8826e93124673b4dd27ca2cc083dc0fa989bf5e7e35"
+      "source_sha256": "1992fff4e185316df5e7a2297c32d13e6f7f8d5d49367c4dc02856f4959455b6"
     },
     {
       "package_path": "skills/sim/manifests/finalization-policy.json",
@@ -90,6 +90,13 @@
       "relation": "EXACT_BYTE_COPY",
       "source_path": "production/sim/manifests/finalization-policy.json",
       "source_sha256": "987de4b1a0bc4b7b42424603942bf28bca6c7cdf9e15981d878c2f6af92a5040"
+    },
+    {
+      "package_path": "skills/sim/manifests/plugin-interface.json",
+      "package_sha256": "e46d24449a7e8c731ce5e253e418bff817a90bc054fac8c21007d6b035059e5d",
+      "relation": "EXACT_BYTE_COPY",
+      "source_path": "production/sim/manifests/plugin-interface.json",
+      "source_sha256": "e46d24449a7e8c731ce5e253e418bff817a90bc054fac8c21007d6b035059e5d"
     },
     {
       "package_path": "skills/sim/manifests/reference-source-map.json",
@@ -100,17 +107,17 @@
     },
     {
       "package_path": "skills/sim/manifests/sim-manifest.json",
-      "package_sha256": "56cfc521008a9f56200600c52818967128d85a55820ba8cc0a5d54233be0f245",
+      "package_sha256": "d5d5b6ba2d50582a5c56b0f40c6bffb2a2d94b3cddd0ed4df5104c25c5d6d78d",
       "relation": "EXACT_BYTE_COPY",
       "source_path": "production/sim/manifests/sim-manifest.json",
-      "source_sha256": "56cfc521008a9f56200600c52818967128d85a55820ba8cc0a5d54233be0f245"
+      "source_sha256": "d5d5b6ba2d50582a5c56b0f40c6bffb2a2d94b3cddd0ed4df5104c25c5d6d78d"
     },
     {
       "package_path": "skills/sim/manifests/tool-capabilities.json",
-      "package_sha256": "1db28a0bbbff60317e9f56f594558548cd357ee8f6cef9df5d98e342d89ac584",
+      "package_sha256": "3654c502fbb4c4a4f210f848c06586fb26233dabedf3663a73e7b4023946872e",
       "relation": "EXACT_BYTE_COPY",
       "source_path": "production/sim/manifests/tool-capabilities.json",
-      "source_sha256": "1db28a0bbbff60317e9f56f594558548cd357ee8f6cef9df5d98e342d89ac584"
+      "source_sha256": "3654c502fbb4c4a4f210f848c06586fb26233dabedf3663a73e7b4023946872e"
     },
     {
       "package_path": "skills/sim/references/code-core.md",
@@ -316,6 +323,13 @@
       "source_sha256": "af3e69c1d2f07e7fd4400aad36eca5e4a919d72a0e9c3ce9aadd60522fc13561"
     },
     {
+      "package_path": "skills/sim/tools/inspect_archive.py",
+      "package_sha256": "5b9ce316b3e909a78d4b5d6ce91da6f0d12959049453bceb5eeb2c02ecdd9fbe",
+      "relation": "EXACT_BYTE_COPY",
+      "source_path": "tools/inspect_archive.py",
+      "source_sha256": "5b9ce316b3e909a78d4b5d6ce91da6f0d12959049453bceb5eeb2c02ecdd9fbe"
+    },
+    {
       "package_path": "skills/sim/tools/validate_code_profile.py",
       "package_sha256": "b54c8aad33e430297482a4711819a39be0f42138638877ede7fe1be714cc61c0",
       "relation": "EXACT_BYTE_COPY",
@@ -324,5 +338,5 @@
     }
   ],
   "schema_version": 1,
-  "source_commit": "cb8f1f27e718cc1f2498855590b7b63c66861254"
+  "source_commit": "9e2d009743f5f405b31460936ad47651f0e3f832"
 }
