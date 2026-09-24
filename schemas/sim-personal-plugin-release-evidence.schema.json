@@ -2,74 +2,165 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://evochia.local/schemas/sim-personal-plugin-release-evidence.schema.json",
   "title": "SIM Personal Plugin Release Evidence",
-  "type": "object",
-  "additionalProperties": false,
-  "required": [
-    "schema_version",
-    "plugin_id",
-    "release_id",
-    "current_release_id",
-    "latest_release_id",
-    "scope",
-    "discoverability",
-    "candidate_tree_sha256",
-    "bundle_sha256",
-    "platform_release_tree_sha256",
-    "files",
-    "recorded_at"
-  ],
-  "properties": {
-    "schema_version": {
-      "const": 1
-    },
-    "plugin_id": {
-      "type": "string",
-      "minLength": 1
-    },
-    "release_id": {
-      "type": "string",
-      "minLength": 1
-    },
-    "current_release_id": {
-      "type": "string",
-      "minLength": 1
-    },
-    "latest_release_id": {
-      "type": "string",
-      "minLength": 1
-    },
-    "scope": {
-      "const": "USER"
-    },
-    "discoverability": {
-      "const": "PRIVATE"
-    },
-    "candidate_tree_sha256": {
-      "type": "string",
-      "pattern": "^[a-f0-9]{64}$"
-    },
-    "bundle_sha256": {
-      "type": "string",
-      "pattern": "^[a-f0-9]{64}$"
-    },
-    "platform_release_tree_sha256": {
-      "type": "string",
-      "pattern": "^[a-f0-9]{64}$"
-    },
-    "files": {
+  "$defs": {
+    "common": {
       "type": "object",
-      "minProperties": 1,
-      "propertyNames": {
-        "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\\\\\).+$"
-      },
-      "additionalProperties": {
-        "type": "string",
-        "pattern": "^[a-f0-9]{64}$"
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "plugin_id",
+        "release_id",
+        "current_release_id",
+        "latest_release_id",
+        "scope",
+        "discoverability",
+        "candidate_tree_sha256",
+        "bundle_sha256",
+        "platform_release_tree_sha256",
+        "files",
+        "recorded_at"
+      ],
+      "properties": {
+        "schema_version": {
+          "type": "integer"
+        },
+        "plugin_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "release_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "current_release_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "latest_release_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scope": {
+          "const": "USER"
+        },
+        "discoverability": {
+          "const": "PRIVATE"
+        },
+        "candidate_tree_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "bundle_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "platform_release_tree_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "normalized_platform_tree_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "files": {
+          "type": "object",
+          "minProperties": 1,
+          "propertyNames": {
+            "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\\\\\).+$"
+          },
+          "additionalProperties": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        },
+        "platform_normalizations": {
+          "type": "array",
+          "maxItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "path",
+              "normalization_class",
+              "candidate_sha256",
+              "platform_sha256",
+              "platform_content"
+            ],
+            "properties": {
+              "path": {
+                "const": ".codex-plugin/plugin.json"
+              },
+              "normalization_class": {
+                "const": "OPENAI_COMPATIBILITY_MANIFEST"
+              },
+              "candidate_sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "platform_sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "platform_content": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "recorded_at": {
+          "type": "string",
+          "format": "date-time"
+        }
       }
-    },
-    "recorded_at": {
-      "type": "string",
-      "format": "date-time"
     }
-  }
+  },
+  "oneOf": [
+    {
+      "allOf": [
+        {
+          "$ref": "#/$defs/common"
+        },
+        {
+          "properties": {
+            "schema_version": {
+              "const": 1
+            }
+          },
+          "not": {
+            "anyOf": [
+              {
+                "required": [
+                  "normalized_platform_tree_sha256"
+                ]
+              },
+              {
+                "required": [
+                  "platform_normalizations"
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "$ref": "#/$defs/common"
+        },
+        {
+          "properties": {
+            "schema_version": {
+              "const": 2
+            }
+          },
+          "required": [
+            "normalized_platform_tree_sha256",
+            "platform_normalizations"
+          ]
+        }
+      ]
+    }
+  ]
 }
