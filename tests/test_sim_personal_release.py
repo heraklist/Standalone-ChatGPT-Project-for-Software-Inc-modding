@@ -30,7 +30,7 @@ def test_installation_schema_accepts_personal_transport_without_marketplace_fiel
         "candidate_tree_sha256": "a" * 64,
         "semantic_aggregate_sha256": "b" * 64,
         "source_commit": "c" * 40,
-        "plugin_version": "0.2.3-preview",
+        "plugin_version": "0.2.3-preview.1",
         "exact_target_manifest_sha256": "d" * 64,
         "certification_protocol_version": "sim-live-v3",
         "transport": "OPENAI_PERSONAL_PLUGIN",
@@ -60,7 +60,7 @@ def test_installation_schema_requires_marketplace_chain_for_marketplace_transpor
         "candidate_tree_sha256": "a" * 64,
         "semantic_aggregate_sha256": "b" * 64,
         "source_commit": "c" * 40,
-        "plugin_version": "0.2.3-preview",
+        "plugin_version": "0.2.3-preview.1",
         "exact_target_manifest_sha256": "d" * 64,
         "certification_protocol_version": "sim-live-v3",
         "transport": "MARKETPLACE_GIT_SUBDIR",
@@ -125,7 +125,7 @@ def test_personal_release_accepts_only_verified_openai_compatibility_normalizati
         json.dumps(
             {
                 "name": "sim",
-                "version": "0.2.3-preview",
+                "version": "0.2.3-preview.1",
                 "extensions": {
                     "com.openai": {
                         "interface": {
@@ -146,7 +146,7 @@ def test_personal_release_accepts_only_verified_openai_compatibility_normalizati
         json.dumps(
             {
                 "name": "sim",
-                "version": "0.2.3-preview",
+                "version": "0.2.3-preview.1",
                 "skills": "./skills/",
                 "interface": {
                     "displayName": "SIM",
@@ -166,7 +166,7 @@ def test_personal_release_accepts_only_verified_openai_compatibility_normalizati
     platform_compat = json.dumps(
         {
             "name": "sim",
-            "version": "0.2.3-preview",
+            "version": "0.2.3-preview.1",
             "skills": "./skills",
             "interface": {
                 "displayName": "SIM",

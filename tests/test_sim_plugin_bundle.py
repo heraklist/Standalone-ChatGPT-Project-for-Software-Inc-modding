@@ -65,7 +65,7 @@ def test_plugin_bundle_cli_is_deterministic_rooted_and_independently_verified(
         assert "plugin.json" in names
         assert "skills/sim/SKILL.md" in names
         assert not any(name.startswith("sim/") for name in names)
-        assert not any(name.startswith("0.2.3-preview/") for name in names)
+        assert not any(name.startswith("0.2.3-preview.1/") for name in names)
         assert all(info.date_time == (1980, 1, 1, 0, 0, 0) for info in archive.infolist())
 
     verify = subprocess.run(
