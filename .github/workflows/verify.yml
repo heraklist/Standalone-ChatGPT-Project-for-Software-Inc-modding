@@ -64,6 +64,8 @@ jobs:
           mkdir -p dist/sim-plugin-ci
           python tools/build_sim_plugin.py build --repo-root . --source-sha "$SIM_SOURCE_SHA" --output dist/sim-plugin-a > dist/sim-plugin-ci/sim-plugin-a.identity.json
           python tools/build_sim_plugin.py build --repo-root . --source-sha "$SIM_SOURCE_SHA" --output dist/sim-plugin-b > dist/sim-plugin-ci/sim-plugin-b.identity.json
+      - name: Validate SIM HEAD portable manifest
+        run: python tools/validate_agent_plugin_schema.py dist/sim-plugin-a/plugin.json
       - name: Independently validate deterministic SIM plugin candidates
         shell: bash
         run: |
