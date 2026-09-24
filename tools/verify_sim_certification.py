@@ -20,6 +20,7 @@ from tools.sim_acceptance import (
 from tools.sim_candidate_identity import hash_tree
 from tools.sim_git_source import GitSource
 from tools.validate_sim_plugin import validate_candidate
+from tools.verify_sim_personal_release import verify_personal_release
 
 POLICY_PATH = "docs/architecture/plugin/SIM-PLUGIN-PROJECTION-POLICY.json"
 
@@ -77,6 +78,40 @@ def _candidate_identity(
         "source_commit": full_source,
         "plugin_version": plugin_version,
     }, errors
+
+
+def _personal_release_records(
+    evidence_root: Path,
+) -> tuple[list[dict], list[str]]:
+    records: list[dict] = []
+    errors: list[str] = []
+    directory = evidence_root / "sim-certification"
+    if not directory.is_dir():
+        return records, errors
+
+    schema = _load_json(
+        ROOT / "schemas/sim-personal-plugin-release-evidence.schema.json"
+    )
+    validator = jsonschema.Draft202012Validator(schema)
+    for path in sorted(directory.rglob("*.json")):
+        try:
+            value = _load_json(path)
+        except (OSError, UnicodeError, json.JSONDecodeError, ValueError):
+            continue
+        if not {"plugin_id", "release_id", "files"}.issubset(value):
+            continue
+        schema_errors = sorted(
+            validator.iter_errors(value),
+            key=lambda error: tuple(str(part) for part in error.absolute_path),
+        )
+        if schema_errors:
+            errors.append(
+                f"personal release evidence schema violation in {path.name}: "
+                + schema_errors[0].message
+            )
+            continue
+        records.append(value)
+    return records, errors
 
 
 def _installation_records(evidence_root: Path) -> tuple[list[dict], list[str]]:
@@ -259,6 +294,10 @@ def _evaluate(
     production_transport = profile.get("production_transport", "OPENAI_PERSONAL_PLUGIN")
     install_records, install_errors = _installation_records(evidence)
     errors.extend(install_errors)
+    personal_release_records, personal_release_errors = _personal_release_records(
+        evidence
+    )
+    errors.extend(personal_release_errors)
 
     surface_results: dict[str, str] = {}
     known_gaps: list[str] = []
@@ -349,11 +388,47 @@ def _evaluate(
             errors.append(gap)
             continue
 
+        matching_releases = [
+            release
+            for release in personal_release_records
+            if release.get("plugin_id") == plugin_id
+            and release.get("release_id") == release_id
+            and release.get("candidate_tree_sha256")
+            == identity["candidate_tree_sha256"]
+        ]
+        if len(matching_releases) != 1:
+            surface_results[surface] = (
+                "INCOMPLETE" if not matching_releases else "FAIL"
+            )
+            gap = (
+                f"{surface} personal release evidence missing"
+                if not matching_releases
+                else f"{surface} personal release evidence ambiguous"
+            )
+            known_gaps.append(gap)
+            errors.append(gap)
+            continue
+
+        release_evidence = matching_releases[0]
+        binding_errors = _verify_personal_evidence_binding(
+            installation, release_evidence
+        )
+        release_errors = verify_personal_release(candidate, release_evidence)
+        if binding_errors or release_errors:
+            surface_results[surface] = "FAIL"
+            for detail in binding_errors + release_errors:
+                gap = f"{surface} {detail}"
+                known_gaps.append(gap)
+                errors.append(gap)
+            continue
+
         current_identity = (plugin_id, release_id)
         if personal_identity is None:
             personal_identity = current_identity
-            bundle_sha256 = installation.get("bundle_sha256")
-            platform_tree_sha256 = installation.get("platform_release_tree_sha256")
+            bundle_sha256 = release_evidence.get("bundle_sha256")
+            platform_tree_sha256 = release_evidence.get(
+                "platform_release_tree_sha256"
+            )
         elif personal_identity != current_identity:
             surface_results[surface] = "FAIL"
             gap = f"{surface} references a different personal plugin release"
@@ -361,8 +436,9 @@ def _evaluate(
             errors.append(gap)
             continue
         elif (
-            bundle_sha256 != installation.get("bundle_sha256")
-            or platform_tree_sha256 != installation.get("platform_release_tree_sha256")
+            bundle_sha256 != release_evidence.get("bundle_sha256")
+            or platform_tree_sha256
+            != release_evidence.get("platform_release_tree_sha256")
         ):
             surface_results[surface] = "FAIL"
             gap = f"{surface} personal plugin release identity metadata mismatch"
