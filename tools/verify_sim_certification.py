@@ -274,13 +274,17 @@ def _release_state(
     surface_results: dict[str, str],
     release_blocking_complete: bool,
     plugin_id: str | None,
+    *,
+    live_surface_observed: bool,
 ) -> str:
     if release_blocking_complete:
         return "PRIVATE_PLUGIN_CERTIFIED"
     if any(value == "FAIL" for value in surface_results.values()):
         return "PRIVATE_PLUGIN_LIVE_FAILED"
-    if plugin_id is not None:
+    if plugin_id is not None and live_surface_observed:
         return "PRIVATE_PLUGIN_LIVE_INCOMPLETE"
+    if plugin_id is not None:
+        return "PERSONAL_PLUGIN_BYTES_VERIFIED"
     return "PLUGIN_CANDIDATE_VALIDATED"
 
 
@@ -321,6 +325,26 @@ def _evaluate(
     bundle_sha256: str | None = None
     platform_tree_sha256: str | None = None
     normalized_platform_tree_sha256: str | None = None
+    live_surface_observed = False
+
+    matching_personal_releases = [
+        release
+        for release in personal_release_records
+        if release.get("candidate_tree_sha256") == identity["candidate_tree_sha256"]
+        and release.get("normalized_platform_tree_sha256") == identity["candidate_tree_sha256"]
+        and not verify_personal_release(candidate, release)
+    ]
+    if len(matching_personal_releases) == 1:
+        release = matching_personal_releases[0]
+        personal_identity = (release["plugin_id"], release["release_id"])
+        bundle_sha256 = release.get("bundle_sha256")
+        platform_tree_sha256 = release.get("platform_release_tree_sha256")
+        normalized_platform_tree_sha256 = release.get(
+            "normalized_platform_tree_sha256",
+            release.get("platform_release_tree_sha256"),
+        )
+    elif len(matching_personal_releases) > 1:
+        errors.append("personal release evidence ambiguous for candidate")
 
     for surface, surface_profile in profile["surfaces"].items():
         if not surface_profile["release_blocking"]:
@@ -348,6 +372,7 @@ def _evaluate(
             continue
 
         installation = matching_install[0]
+        live_surface_observed = True
         result = installation["result"]
         if result == "PLATFORM_LIMITATION":
             surface_results[surface] = "BLOCKED"
@@ -564,7 +589,10 @@ def _evaluate(
         "known_gaps": sorted(set(known_gaps)),
         "release_blocking_complete": release_blocking_complete,
         "release_state": _release_state(
-            surface_results, release_blocking_complete, plugin_id
+            surface_results,
+            release_blocking_complete,
+            plugin_id,
+            live_surface_observed=live_surface_observed,
         ),
     }
     schema = _load_json(repo / "schemas/sim-certification-report.schema.json")
