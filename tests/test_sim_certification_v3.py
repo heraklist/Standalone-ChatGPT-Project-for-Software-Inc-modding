@@ -160,12 +160,14 @@ def test_personal_release_binding_rejects_bundle_mismatch() -> None:
         "release_id": "release_exact",
         "bundle_sha256": "a" * 64,
         "platform_release_tree_sha256": "b" * 64,
+        "normalized_platform_tree_sha256": "d" * 64,
     }
     release = {
         "plugin_id": "plugins~Plugin_sim",
         "release_id": "release_exact",
         "bundle_sha256": "c" * 64,
         "platform_release_tree_sha256": "b" * 64,
+        "normalized_platform_tree_sha256": "d" * 64,
     }
     errors = _verify_personal_evidence_binding(installation, release)
     assert errors == ["personal plugin bundle mismatch"]
