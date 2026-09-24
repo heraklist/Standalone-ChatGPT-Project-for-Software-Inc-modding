@@ -154,7 +154,7 @@ def reference_map() -> dict[str, object]:
 
 def release_manifest() -> dict[str, object]:
     return {
-        "sim_version": "0.2.0-preview",
+        "sim_version": "0.2.3-preview",
         "channel": "PREVIEW",
         "target": "Beta 1.8.42",
         "evidence_grade": "GENERATION_GRADE",
