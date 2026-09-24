@@ -281,3 +281,37 @@ def test_build_candidate_emits_portable_agent_plugins_and_codex_manifests(
     assert "entrypoint" not in compatibility
     assert "skill" not in compatibility
     assert "publicSkillCount" not in compatibility
+
+
+def test_build_candidate_emits_canonical_openai_interface_metadata(
+    tmp_path: Path,
+) -> None:
+    import json
+
+    from tools.build_sim_plugin import build_candidate
+
+    source_sha = _current_head(ROOT)
+    output = tmp_path / "candidate"
+    build_candidate(ROOT, source_sha, output)
+
+    portable = json.loads((output / "plugin.json").read_text(encoding="utf-8"))
+    compatibility = json.loads(
+        (output / ".codex-plugin/plugin.json").read_text(encoding="utf-8")
+    )
+
+    assert "extensions" in portable
+    assert "com.openai" in portable["extensions"]
+    interface = portable["extensions"]["com.openai"]["interface"]
+
+    assert interface["displayName"] == "SIM"
+    assert interface["developerName"] == "Heraklis"
+    assert interface["category"] == "Developer Tools"
+    assert len(interface["defaultPrompt"]) == 3
+    assert all(
+        isinstance(prompt, str)
+        and prompt
+        and "\n" not in prompt
+        and len(prompt) <= 128
+        for prompt in interface["defaultPrompt"]
+    )
+    assert compatibility["interface"] == interface
