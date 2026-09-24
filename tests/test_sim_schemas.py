@@ -15,6 +15,7 @@ SCHEMA_NAMES = (
     "sim-reference-map.schema.json",
     "sim-release-manifest.schema.json",
     "sim-installation-evidence.schema.json",
+    "sim-personal-plugin-release-evidence.schema.json",
     "sim-certification-report.schema.json",
     "sim-plugin-interface.schema.json",
     "sim-eval.schema.json",
