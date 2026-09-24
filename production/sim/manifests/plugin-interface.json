@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "displayName": "SIM",
+  "shortDescription": "Software Inc modding for Beta 1.8.42.",
+  "longDescription": "Create, inspect, repair, and verify Software Inc mods with evidence-bound workflows for Beta 1.8.42.",
+  "developerName": "Heraklis",
+  "category": "Developer Tools",
+  "capabilities": [
+    "Create Software Inc mods",
+    "Inspect and repair existing mods",
+    "Validate packaging and compatibility"
+  ],
+  "defaultPrompt": [
+    "Create a Software Inc mod for Beta 1.8.42 from this concept.",
+    "Inspect and repair this existing Software Inc mod.",
+    "Diagnose why this Software Inc mod does not load or behave correctly."
+  ]
+}
