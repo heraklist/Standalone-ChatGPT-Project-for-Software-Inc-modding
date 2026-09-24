@@ -71,7 +71,7 @@ jobs:
         run: |
           python tools/validate_sim_plugin.py check --repo-root . --source-sha "$SIM_SOURCE_SHA" --candidate dist/sim-plugin-a
           python tools/validate_sim_plugin.py check --repo-root . --source-sha "$SIM_SOURCE_SHA" --candidate dist/sim-plugin-b
-      - name: Compare SIM plugin candidate identities
+      - name: Verify SIM HEAD reproducibility
         shell: bash
         run: |
           python - <<'PY'
