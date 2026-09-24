@@ -202,7 +202,7 @@ def _make_minimal_projection_repo(tmp_path: Path) -> tuple[Path, str]:
             {
                 "product": "SIM",
                 "display_name": "Software Inc Modding",
-                "version": "0.2.2-preview",
+                "version": "0.2.3-preview",
                 "channel": "PREVIEW",
                 "canonical_game_target": "Beta 1.8.42",
                 "evidence_grade": "GENERATION_GRADE",
@@ -262,7 +262,7 @@ def test_build_candidate_emits_portable_agent_plugins_and_codex_manifests(
 
     assert portable["$schema"] == "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json"
     assert portable["name"] == "sim"
-    assert portable["version"] == "0.2.2-preview"
+    assert portable["version"] == "0.2.3-preview"
     assert isinstance(portable["description"], str) and portable["description"]
     assert "schema_version" not in portable
     assert "display_name" not in portable
@@ -272,7 +272,7 @@ def test_build_candidate_emits_portable_agent_plugins_and_codex_manifests(
     assert "canonical_game_target" not in portable
 
     assert compatibility["name"] == "sim"
-    assert compatibility["version"] == "0.2.2-preview"
+    assert compatibility["version"] == "0.2.3-preview"
     assert isinstance(compatibility["description"], str) and compatibility["description"]
     assert compatibility["skills"] == "./skills/"
     assert compatibility["interface"]["displayName"] == "SIM"
