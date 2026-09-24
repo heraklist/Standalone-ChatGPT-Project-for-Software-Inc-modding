@@ -8,6 +8,9 @@ from pathlib import Path
 import jsonschema
 
 ROOT = Path(__file__).resolve().parents[1]
+PLUGIN_ID = "plugins~Plugin_sim_test"
+RELEASE_ID = "release_sim_test"
+BUNDLE_SHA = "f" * 64
 
 
 def _head() -> str:
@@ -38,23 +41,43 @@ def _certification_schema() -> dict:
     )
 
 
-def test_installation_schema_requires_candidate_tree_identity() -> None:
-    record = {
-        "schema_version": 1,
-        "installation_evidence_id": "chatgpt-install-a",
-        "surface": "ChatGPT",
-        "result": "PASS",
-        "candidate_tree_sha256": "a" * 64,
-        "semantic_aggregate_sha256": "b" * 64,
-        "source_commit": "c" * 40,
-        "projection_commit": "d" * 40,
+def _personal_install_record(
+    *,
+    surface: str = "CHATGPT_WEB_NORMAL_CHAT",
+    result: str = "PASS",
+    candidate_tree_sha256: str = "a" * 64,
+    semantic_aggregate_sha256: str = "b" * 64,
+    source_commit: str = "c" * 40,
+    target_digest: str = "e" * 64,
+) -> dict:
+    return {
+        "schema_version": 2,
+        "installation_evidence_id": f"{surface.lower()}-install-a",
+        "surface": surface,
+        "result": result,
+        "candidate_tree_sha256": candidate_tree_sha256,
+        "semantic_aggregate_sha256": semantic_aggregate_sha256,
+        "source_commit": source_commit,
         "plugin_version": "0.2.3-preview",
-        "exact_target_manifest_sha256": "e" * 64,
-        "transport": "MARKETPLACE_GIT_SUBDIR",
+        "exact_target_manifest_sha256": target_digest,
+        "certification_protocol_version": "sim-live-v3",
+        "transport": "OPENAI_PERSONAL_PLUGIN",
+        "plugin_id": PLUGIN_ID,
+        "release_id": RELEASE_ID,
+        "current_release_id": RELEASE_ID,
+        "latest_release_id": RELEASE_ID,
+        "scope": "USER",
+        "discoverability": "PRIVATE",
+        "bundle_sha256": BUNDLE_SHA,
+        "platform_release_tree_sha256": candidate_tree_sha256,
         "observed_public_skill_count": 1,
         "observed_public_skill_names": ["SIM"],
-        "recorded_at": "2026-09-23T09:00:00Z",
+        "recorded_at": "2026-09-24T09:00:00Z",
     }
+
+
+def test_installation_schema_requires_candidate_tree_identity() -> None:
+    record = _personal_install_record()
     validator = jsonschema.Draft202012Validator(_installation_schema())
     validator.validate(record)
     invalid = dict(record)
@@ -64,25 +87,33 @@ def test_installation_schema_requires_candidate_tree_identity() -> None:
 
 def test_certification_report_schema_requires_all_surface_states() -> None:
     report = {
-        "schema_version": 1,
+        "schema_version": 2,
         "plugin_version": "0.2.3-preview",
         "candidate_tree_sha256": "a" * 64,
         "semantic_aggregate_sha256": "b" * 64,
         "source_commit": "c" * 40,
         "exact_target_manifest_sha256": "d" * 64,
-        "certification_protocol_version": "sim-live-v2",
+        "certification_protocol_version": "sim-live-v3",
+        "transport": "OPENAI_PERSONAL_PLUGIN",
+        "plugin_id": PLUGIN_ID,
+        "release_id": RELEASE_ID,
+        "distribution_bundle_sha256": BUNDLE_SHA,
+        "platform_release_tree_sha256": "a" * 64,
         "surface_results": {
-            "ChatGPT": "PASS",
-            "Codex": "PASS",
-            "ChatGPT Project": "NOT_REQUIRED",
+            "CHATGPT_WEB_NORMAL_CHAT": "PASS",
+            "CHATGPT_DESKTOP_NORMAL_CHAT": "PASS",
+            "CODEX": "PASS",
+            "CHATGPT_WORK": "NOT_REQUIRED",
+            "LOCAL_MARKETPLACE": "NOT_REQUIRED",
         },
         "known_gaps": [],
         "release_blocking_complete": True,
+        "release_state": "PRIVATE_PLUGIN_CERTIFIED",
     }
     validator = jsonschema.Draft202012Validator(_certification_schema())
     validator.validate(report)
     invalid = json.loads(json.dumps(report))
-    del invalid["surface_results"]["Codex"]
+    del invalid["surface_results"]["CODEX"]
     assert list(validator.iter_errors(invalid))
 
 
@@ -98,23 +129,15 @@ def _write_installation(
 ) -> None:
     cert_dir = evidence_root / "sim-certification" / candidate_tree_sha256[:12]
     cert_dir.mkdir(parents=True, exist_ok=True)
-    record = {
-        "schema_version": 1,
-        "installation_evidence_id": f"{surface.lower().replace(' ', '-')}-install-a",
-        "surface": surface,
-        "result": result,
-        "candidate_tree_sha256": candidate_tree_sha256,
-        "semantic_aggregate_sha256": semantic_aggregate_sha256,
-        "source_commit": source_commit,
-        "projection_commit": "d" * 40,
-        "plugin_version": "0.2.3-preview",
-        "exact_target_manifest_sha256": target_digest,
-        "transport": "MARKETPLACE_GIT_SUBDIR",
-        "observed_public_skill_count": 1,
-        "observed_public_skill_names": ["SIM"],
-        "recorded_at": "2026-09-23T09:00:00Z",
-    }
-    (cert_dir / f"{surface.lower().replace(' ', '-')}-installation.json").write_text(
+    record = _personal_install_record(
+        surface=surface,
+        result=result,
+        candidate_tree_sha256=candidate_tree_sha256,
+        semantic_aggregate_sha256=semantic_aggregate_sha256,
+        source_commit=source_commit,
+        target_digest=target_digest,
+    )
+    (cert_dir / f"{surface.lower()}-installation.json").write_text(
         json.dumps(record), encoding="utf-8"
     )
 
@@ -131,10 +154,10 @@ def _write_acceptance(
 ) -> None:
     acceptance = evidence_root / "sim-acceptance"
     acceptance.mkdir(parents=True, exist_ok=True)
-    install_id = f"{surface.lower().replace(' ', '-')}-install-a"
+    install_id = f"{surface.lower()}-install-a"
     for case_id in cases:
         record = {
-            "schema_version": 2,
+            "schema_version": 3,
             "case_id": case_id,
             "surface": surface,
             "result": "PASS",
@@ -143,14 +166,17 @@ def _write_acceptance(
             "candidate_source_commit": source_commit,
             "plugin_version": "0.2.3-preview",
             "exact_target_manifest_sha256": target_digest,
-            "certification_protocol_version": "sim-live-v2",
+            "certification_protocol_version": "sim-live-v3",
+            "transport": "OPENAI_PERSONAL_PLUGIN",
+            "plugin_id": PLUGIN_ID,
+            "release_id": RELEASE_ID,
             "installation_evidence_id": install_id,
             "host_observation": {"synthetic": True},
             "evidence_refs": [f"synthetic-{surface}-{case_id}"],
             "retest_of": None,
-            "recorded_at": "2026-09-23T09:01:00Z",
+            "recorded_at": "2026-09-24T09:01:00Z",
         }
-        path = acceptance / f"{surface.lower().replace(' ', '-')}-{case_id}.json"
+        path = acceptance / f"{surface.lower()}-{case_id}.json"
         path.write_text(json.dumps(record), encoding="utf-8")
 
 
@@ -171,7 +197,7 @@ def test_certification_blocks_when_required_codex_evidence_is_absent(
 
     _write_installation(
         evidence,
-        surface="ChatGPT",
+        surface="CHATGPT_WEB_NORMAL_CHAT",
         candidate_tree_sha256=built.candidate_tree_sha256,
         semantic_aggregate_sha256=built.semantic_aggregate_sha256,
         source_commit=built.source_commit,
@@ -179,7 +205,7 @@ def test_certification_blocks_when_required_codex_evidence_is_absent(
     )
     _write_acceptance(
         evidence,
-        surface="ChatGPT",
+        surface="CHATGPT_WEB_NORMAL_CHAT",
         cases=tuple(f"A{i:02d}" for i in range(1, 13)),
         candidate_tree_sha256=built.candidate_tree_sha256,
         semantic_aggregate_sha256=built.semantic_aggregate_sha256,
@@ -187,15 +213,11 @@ def test_certification_blocks_when_required_codex_evidence_is_absent(
         target_digest=target,
     )
 
-    errors = verify_certification(
-        ROOT, candidate, source_sha, evidence
-    )
-    report = build_certification_report(
-        ROOT, candidate, source_sha, evidence
-    )
-    assert any("Codex" in error for error in errors)
-    assert report["surface_results"]["ChatGPT"] == "PASS"
-    assert report["surface_results"]["Codex"] in {"BLOCKED", "INCOMPLETE"}
+    errors = verify_certification(ROOT, candidate, source_sha, evidence)
+    report = build_certification_report(ROOT, candidate, source_sha, evidence)
+    assert any("CODEX" in error for error in errors)
+    assert report["surface_results"]["CHATGPT_WEB_NORMAL_CHAT"] == "PASS"
+    assert report["surface_results"]["CODEX"] == "INCOMPLETE"
     assert report["release_blocking_complete"] is False
 
 
@@ -212,8 +234,9 @@ def test_certification_passes_only_same_candidate_across_required_surfaces(
     evidence = tmp_path / "evidence"
 
     requirements = {
-        "ChatGPT": tuple(f"A{i:02d}" for i in range(1, 13)),
-        "Codex": ("A01", "A03", "A09", "A10", "A12"),
+        "CHATGPT_WEB_NORMAL_CHAT": tuple(f"A{i:02d}" for i in range(1, 13)),
+        "CHATGPT_DESKTOP_NORMAL_CHAT": ("A01", "A03", "A06", "A09", "A10", "A12"),
+        "CODEX": ("A01", "A03", "A09", "A10", "A12"),
     }
     for surface, cases in requirements.items():
         _write_installation(
@@ -238,26 +261,14 @@ def test_certification_passes_only_same_candidate_across_required_surfaces(
 
 
 def test_installation_schema_accepts_platform_limitation_as_observation() -> None:
-    record = {
-        "schema_version": 1,
-        "installation_evidence_id": "codex-install-blocked",
-        "surface": "Codex",
-        "result": "PLATFORM_LIMITATION",
-        "candidate_tree_sha256": "a" * 64,
-        "semantic_aggregate_sha256": "b" * 64,
-        "source_commit": "c" * 40,
-        "projection_commit": "d" * 40,
-        "plugin_version": "0.2.3-preview",
-        "exact_target_manifest_sha256": "e" * 64,
-        "transport": "UNAVAILABLE",
-        "observed_public_skill_count": 0,
-        "observed_public_skill_names": [],
-        "recorded_at": "2026-09-23T09:00:00Z",
-    }
+    record = _personal_install_record(
+        surface="CODEX",
+        result="PLATFORM_LIMITATION",
+    )
     jsonschema.Draft202012Validator(_installation_schema()).validate(record)
 
 
-def test_release_builder_accepts_certification_report_for_composition(
+def test_release_builder_accepts_legacy_certification_report_for_composition(
     tmp_path: Path,
 ) -> None:
     from tools.build_sim_release import build_sim_release
