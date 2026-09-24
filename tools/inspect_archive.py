@@ -96,12 +96,17 @@ def _inspect_zip(
                 folded_seen.add(folded)
 
         mode = info.external_attr >> 16
-        if mode and stat.S_ISLNK(mode):
+        file_type = stat.S_IFMT(mode)
+        if file_type == stat.S_IFLNK:
             state["findings"].append(
                 _finding("ARCHIVE_SYMLINK", display, "symlink entries are not allowed")
             )
             continue
-        if mode and not is_dir and not stat.S_ISREG(mode):
+        if (
+            file_type
+            and not is_dir
+            and file_type not in {stat.S_IFREG, stat.S_IFDIR}
+        ):
             state["findings"].append(
                 _finding(
                     "ARCHIVE_SPECIAL_FILE",
