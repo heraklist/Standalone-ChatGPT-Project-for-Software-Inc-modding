@@ -85,6 +85,14 @@ jobs:
           assert a["candidate_tree_sha256"] == b["candidate_tree_sha256"]
           print(f"SIM_PLUGIN_REPRODUCIBLE: {a['candidate_tree_sha256']}")
           PY
+      - name: Build deterministic SIM personal-plugin bundle
+        shell: bash
+        run: |
+          python tools/build_sim_plugin_bundle.py --candidate dist/sim-plugin-a --output "dist/sim-$SIM_VERSION.plugin.zip" --report-out "dist/sim-$SIM_VERSION.plugin-report.json"
+      - name: Verify deterministic SIM personal-plugin bundle
+        shell: bash
+        run: |
+          python tools/verify_sim_plugin_bundle.py --candidate dist/sim-plugin-a --zip "dist/sim-$SIM_VERSION.plugin.zip" --report "dist/sim-$SIM_VERSION.plugin-report.json"
       - name: Upload deterministic SIM plugin candidate evidence
         uses: actions/upload-artifact@v4
         with:
@@ -93,4 +101,6 @@ jobs:
             dist/sim-plugin-a
             dist/sim-plugin-ci/sim-plugin-a.identity.json
             dist/sim-plugin-ci/sim-plugin-b.identity.json
+            dist/sim-${{ env.SIM_VERSION }}.plugin.zip
+            dist/sim-${{ env.SIM_VERSION }}.plugin-report.json
           if-no-files-found: error
