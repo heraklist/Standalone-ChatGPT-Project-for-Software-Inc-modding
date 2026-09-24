@@ -50,7 +50,7 @@ def _candidate_identity(
             "candidate_tree_sha256": "0" * 64,
             "semantic_aggregate_sha256": "0" * 64,
             "source_commit": "0" * 40,
-            "plugin_version": "0.2.3-preview",
+            "plugin_version": "0.2.3-preview.1",
         }, [f"source commit invalid: {exc}"]
 
     findings = validate_candidate(repo_root, candidate_root, full_source)
@@ -70,7 +70,7 @@ def _candidate_identity(
         errors.append(f"candidate identity unreadable: {exc}")
         candidate_hash = "0" * 64
         semantic = "0" * 64
-        plugin_version = "0.2.3-preview"
+        plugin_version = "0.2.3-preview.1"
 
     return {
         "candidate_tree_sha256": candidate_hash,

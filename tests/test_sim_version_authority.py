@@ -22,7 +22,7 @@ def _manifest_version() -> str:
 
 
 def test_sim_manifest_is_only_handwritten_version_authority() -> None:
-    assert _manifest_version() == "0.2.3-preview.1"
+    assert _manifest_version() == "0.2.3-preview.1.1"
 
     frontmatter = (
         (ROOT / "production/sim/SKILL.md")
