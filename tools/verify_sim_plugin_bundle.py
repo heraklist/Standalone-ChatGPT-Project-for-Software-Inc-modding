@@ -4,6 +4,7 @@ import argparse
 import hashlib
 import json
 import stat
+import sys
 from pathlib import Path
 from zipfile import BadZipFile, ZipFile
 
