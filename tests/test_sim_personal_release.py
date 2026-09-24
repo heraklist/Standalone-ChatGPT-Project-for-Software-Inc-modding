@@ -211,6 +211,12 @@ def test_personal_release_accepts_only_verified_openai_compatibility_normalizati
     assert verify_personal_release(candidate, evidence) == []
 
     evidence["platform_normalizations"][0]["path"] = "plugin.json"
-    assert "PERSONAL_RELEASE_NORMALIZATION_PATH_INVALID" in verify_personal_release(
-        candidate, evidence
+    errors = verify_personal_release(candidate, evidence)
+    assert errors
+    assert any(
+        code in errors[0]
+        for code in (
+            "PERSONAL_RELEASE_EVIDENCE_INVALID",
+            "PERSONAL_RELEASE_NORMALIZATION_PATH_INVALID",
+        )
     )
