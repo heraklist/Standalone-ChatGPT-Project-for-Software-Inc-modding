@@ -274,6 +274,9 @@ def test_certification_surfaces_verified_personal_release_before_installation(
         json.dumps(release), encoding="utf-8"
     )
 
+    from tools.verify_sim_personal_release import verify_personal_release
+    assert verify_personal_release(candidate, release) == []
+
     report = build_certification_report(
         ROOT,
         candidate,
