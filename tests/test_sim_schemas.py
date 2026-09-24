@@ -322,21 +322,26 @@ def test_release_manifest_requires_bundle_and_file_hashes() -> None:
         assert_invalid("sim-release-manifest.schema.json", invalid_manifest)
 
 
-def test_v022_certification_profile_freezes_required_surface_cases() -> None:
+def test_v023_certification_profile_freezes_required_surface_cases() -> None:
     profile = json.loads(
         (ROOT / "production/sim/manifests/certification-profile.json").read_text(
             encoding="utf-8"
         )
     )
-    assert profile["schema_version"] == 1
-    assert profile["protocol_version"] == "sim-live-v2"
-    assert profile["surfaces"]["ChatGPT"]["required_cases"] == [
+    assert profile["schema_version"] == 2
+    assert profile["protocol_version"] == "sim-live-v3"
+    assert profile["production_transport"] == "OPENAI_PERSONAL_PLUGIN"
+    assert profile["surfaces"]["CHATGPT_WEB_NORMAL_CHAT"]["required_cases"] == [
         f"A{index:02d}" for index in range(1, 13)
     ]
-    assert profile["surfaces"]["Codex"]["required_cases"] == [
+    assert profile["surfaces"]["CHATGPT_DESKTOP_NORMAL_CHAT"]["required_cases"] == [
+        "A01", "A03", "A06", "A09", "A10", "A12"
+    ]
+    assert profile["surfaces"]["CODEX"]["required_cases"] == [
         "A01", "A03", "A09", "A10", "A12"
     ]
-    assert profile["surfaces"]["ChatGPT Project"]["release_blocking"] is False
+    assert profile["surfaces"]["CHATGPT_WORK"]["release_blocking"] is False
+    assert profile["surfaces"]["LOCAL_MARKETPLACE"]["release_blocking"] is False
 
 
 def test_session_schema_accepts_finalization_metadata(
