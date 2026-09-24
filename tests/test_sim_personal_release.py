@@ -42,6 +42,7 @@ def test_installation_schema_accepts_personal_transport_without_marketplace_fiel
         "discoverability": "PRIVATE",
         "bundle_sha256": "e" * 64,
         "platform_release_tree_sha256": "a" * 64,
+        "normalized_platform_tree_sha256": "a" * 64,
         "observed_public_skill_count": 1,
         "observed_public_skill_names": ["SIM"],
         "recorded_at": "2026-09-24T07:00:00Z"

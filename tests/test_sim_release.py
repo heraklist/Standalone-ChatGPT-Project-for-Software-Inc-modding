@@ -111,6 +111,7 @@ def test_source_release_cannot_inherit_private_plugin_certification(
         "release_id": "release_test",
         "distribution_bundle_sha256": "e" * 64,
         "platform_release_tree_sha256": "a" * 64,
+        "normalized_platform_tree_sha256": "a" * 64,
         "surface_results": {
             "CHATGPT_WEB_NORMAL_CHAT": "PASS",
             "CHATGPT_DESKTOP_NORMAL_CHAT": "PASS",

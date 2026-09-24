@@ -70,6 +70,7 @@ def _personal_install_record(
         "discoverability": "PRIVATE",
         "bundle_sha256": BUNDLE_SHA,
         "platform_release_tree_sha256": candidate_tree_sha256,
+        "normalized_platform_tree_sha256": candidate_tree_sha256,
         "observed_public_skill_count": 1,
         "observed_public_skill_names": ["SIM"],
         "recorded_at": "2026-09-24T09:00:00Z",
@@ -99,6 +100,7 @@ def test_certification_report_schema_requires_all_surface_states() -> None:
         "release_id": RELEASE_ID,
         "distribution_bundle_sha256": BUNDLE_SHA,
         "platform_release_tree_sha256": "a" * 64,
+        "normalized_platform_tree_sha256": "a" * 64,
         "surface_results": {
             "CHATGPT_WEB_NORMAL_CHAT": "PASS",
             "CHATGPT_DESKTOP_NORMAL_CHAT": "PASS",

@@ -210,9 +210,13 @@ def _verify_personal_evidence_binding(
         != release.get("platform_release_tree_sha256")
     ):
         errors.append("personal plugin platform tree mismatch")
+    release_normalized_tree = release.get(
+        "normalized_platform_tree_sha256",
+        release.get("platform_release_tree_sha256"),
+    )
     if (
         installation.get("normalized_platform_tree_sha256")
-        != release.get("normalized_platform_tree_sha256")
+        != release_normalized_tree
     ):
         errors.append("personal plugin normalized platform tree mismatch")
     return sorted(set(errors))
@@ -436,7 +440,8 @@ def _evaluate(
                 "platform_release_tree_sha256"
             )
             normalized_platform_tree_sha256 = release_evidence.get(
-                "normalized_platform_tree_sha256"
+                "normalized_platform_tree_sha256",
+                release_evidence.get("platform_release_tree_sha256"),
             )
         elif personal_identity != current_identity:
             surface_results[surface] = "FAIL"
@@ -449,7 +454,10 @@ def _evaluate(
             or platform_tree_sha256
             != release_evidence.get("platform_release_tree_sha256")
             or normalized_platform_tree_sha256
-            != release_evidence.get("normalized_platform_tree_sha256")
+            != release_evidence.get(
+                "normalized_platform_tree_sha256",
+                release_evidence.get("platform_release_tree_sha256"),
+            )
         ):
             surface_results[surface] = "FAIL"
             gap = f"{surface} personal plugin release identity metadata mismatch"
