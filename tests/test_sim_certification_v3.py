@@ -225,13 +225,19 @@ def test_personal_release_binding_rejects_normalized_tree_mismatch() -> None:
     ]
 
 
-def test_certification_surfaces_verified_personal_release_before_installation() -> None:
+def test_certification_surfaces_verified_personal_release_before_installation(
+    tmp_path: Path,
+) -> None:
+    from tools.build_sim_plugin import build_candidate
     from tools.verify_sim_certification import build_certification_report
 
     source_sha = "9e2d009743f5f405b31460936ad47651f0e3f832"
+    candidate = tmp_path / "candidate"
+    build_candidate(ROOT, source_sha, candidate)
+
     report = build_certification_report(
         ROOT,
-        ROOT / "plugins/sim",
+        candidate,
         source_sha,
         ROOT / "work/evidence",
     )
