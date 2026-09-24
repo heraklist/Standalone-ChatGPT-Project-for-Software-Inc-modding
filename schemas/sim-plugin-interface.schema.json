@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://evochia.local/schemas/sim-plugin-interface.schema.json",
+  "title": "SIM Plugin Interface Metadata",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "displayName",
+    "shortDescription",
+    "longDescription",
+    "developerName",
+    "category",
+    "capabilities",
+    "defaultPrompt"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "displayName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "shortDescription": {
+      "type": "string",
+      "minLength": 1
+    },
+    "longDescription": {
+      "type": "string",
+      "minLength": 1
+    },
+    "developerName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "category": {
+      "type": "string",
+      "minLength": 1
+    },
+    "capabilities": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "defaultPrompt": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 3,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 128,
+        "pattern": "^[^\\r\\n]+$"
+      }
+    }
+  }
+}
