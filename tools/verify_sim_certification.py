@@ -110,6 +110,74 @@ def _installation_records(evidence_root: Path) -> tuple[list[dict], list[str]]:
     return records, errors
 
 
+def _verify_marketplace_chain(repo_root: Path, record: dict) -> list[str]:
+    errors: list[str] = []
+    try:
+        marketplace_source = GitSource(repo_root, record["marketplace_commit"])
+        marketplace = json.loads(
+            marketplace_source.read_bytes(".agents/plugins/marketplace.json").decode(
+                "utf-8"
+            )
+        )
+    except (KeyError, ValueError, UnicodeError, json.JSONDecodeError) as exc:
+        return [f"marketplace evidence unreadable: {exc}"]
+
+    if marketplace.get("name") != record.get("marketplace_name"):
+        errors.append("marketplace name mismatch")
+
+    plugin = next(
+        (
+            item
+            for item in marketplace.get("plugins", [])
+            if isinstance(item, dict) and item.get("name") == "sim"
+        ),
+        None,
+    )
+    if plugin is None:
+        errors.append("marketplace SIM entry missing")
+        return errors
+
+    source = plugin.get("source") if isinstance(plugin.get("source"), dict) else {}
+    if source.get("sha") != record.get("projection_commit"):
+        errors.append("marketplace projection mismatch")
+    if source.get("path") != record.get("plugin_locator"):
+        errors.append("marketplace plugin locator mismatch")
+
+    try:
+        projection_source = GitSource(repo_root, record["projection_commit"])
+        provenance = json.loads(
+            projection_source.read_bytes(
+                "plugins/sim/provenance/plugin_manifest.json"
+            ).decode("utf-8")
+        )
+    except (KeyError, ValueError, UnicodeError, json.JSONDecodeError) as exc:
+        errors.append(f"projection provenance unreadable: {exc}")
+        return errors
+
+    if provenance.get("source_commit") != record.get("source_commit"):
+        errors.append("projection source mismatch")
+    return sorted(set(errors))
+
+
+def _verify_personal_evidence_binding(
+    installation: dict,
+    release: dict,
+) -> list[str]:
+    errors: list[str] = []
+    if installation.get("plugin_id") != release.get("plugin_id"):
+        errors.append("personal plugin id mismatch")
+    if installation.get("release_id") != release.get("release_id"):
+        errors.append("personal plugin release mismatch")
+    if installation.get("bundle_sha256") != release.get("bundle_sha256"):
+        errors.append("personal plugin bundle mismatch")
+    if (
+        installation.get("platform_release_tree_sha256")
+        != release.get("platform_release_tree_sha256")
+    ):
+        errors.append("personal plugin platform tree mismatch")
+    return sorted(set(errors))
+
+
 def _same_context(record: dict, context: CertificationContext) -> bool:
     return (
         record.get("candidate_tree_sha256") == context.candidate_tree_sha256
