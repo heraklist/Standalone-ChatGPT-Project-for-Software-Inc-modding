@@ -16,8 +16,11 @@ def test_tool_capability_manifest_distinguishes_bundle_from_execution() -> None:
 
     assert tool["repository_source"] == "tools/validate_code_profile.py"
     assert tool["package_path"] == "tools/validate_code_profile.py"
-    assert tool["surfaces"]["ChatGPT"]["bundled"] is True
-    assert tool["surfaces"]["ChatGPT"]["execution"] == "CAPABILITY_DEPENDENT"
+    assert tool["surfaces"]["CHATGPT_WEB_NORMAL_CHAT"]["bundled"] is True
+    assert (
+        tool["surfaces"]["CHATGPT_WEB_NORMAL_CHAT"]["execution"]
+        == "CAPABILITY_DEPENDENT"
+    )
     assert tool["unavailable_result"] == "NOT_EXECUTED"
 
 
