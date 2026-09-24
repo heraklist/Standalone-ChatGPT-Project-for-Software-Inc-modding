@@ -223,3 +223,21 @@ def test_personal_release_binding_rejects_normalized_tree_mismatch() -> None:
     assert _verify_personal_evidence_binding(installation, release) == [
         "personal plugin normalized platform tree mismatch"
     ]
+
+
+def test_certification_surfaces_verified_personal_release_before_installation() -> None:
+    from tools.verify_sim_certification import build_certification_report
+
+    source_sha = "9e2d009743f5f405b31460936ad47651f0e3f832"
+    report = build_certification_report(
+        ROOT,
+        ROOT / "plugins/sim",
+        source_sha,
+        ROOT / "work/evidence",
+    )
+
+    assert report["plugin_id"] == "plugins_6ab4ed6003b48191a0de271d4759c5e2"
+    assert report["release_id"] == "pluginrel_6ab4f344b9888191b492884b8034f5b2"
+    assert report["release_state"] == "PERSONAL_PLUGIN_BYTES_VERIFIED"
+    assert report["surface_results"]["CHATGPT_WEB_NORMAL_CHAT"] == "INCOMPLETE"
+    assert report["release_blocking_complete"] is False
