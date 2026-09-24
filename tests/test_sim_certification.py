@@ -322,3 +322,43 @@ def test_release_verifier_accepts_global_certification_inputs(
         evidence_root=tmp_path / "evidence",
     )
     assert isinstance(errors, list)
+
+
+def test_certification_requires_exact_personal_release_evidence(
+    tmp_path: Path,
+) -> None:
+    from tools.build_sim_plugin import build_candidate
+    from tools.verify_sim_certification import verify_certification
+
+    source_sha = _head()
+    candidate = tmp_path / "candidate"
+    built = build_candidate(ROOT, source_sha, candidate)
+    target = _target_digest()
+    evidence = tmp_path / "evidence"
+
+    requirements = {
+        "CHATGPT_WEB_NORMAL_CHAT": tuple(f"A{i:02d}" for i in range(1, 13)),
+        "CHATGPT_DESKTOP_NORMAL_CHAT": ("A01", "A03", "A06", "A09", "A10", "A12"),
+        "CODEX": ("A01", "A03", "A09", "A10", "A12"),
+    }
+    for surface, cases in requirements.items():
+        _write_installation(
+            evidence,
+            surface=surface,
+            candidate_tree_sha256=built.candidate_tree_sha256,
+            semantic_aggregate_sha256=built.semantic_aggregate_sha256,
+            source_commit=built.source_commit,
+            target_digest=target,
+        )
+        _write_acceptance(
+            evidence,
+            surface=surface,
+            cases=cases,
+            candidate_tree_sha256=built.candidate_tree_sha256,
+            semantic_aggregate_sha256=built.semantic_aggregate_sha256,
+            source_commit=built.source_commit,
+            target_digest=target,
+        )
+
+    errors = verify_certification(ROOT, candidate, source_sha, evidence)
+    assert any("personal release evidence missing" in error for error in errors)
