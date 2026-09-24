@@ -115,7 +115,16 @@ def verify_sim_release(
                     f"global certification: {error}"
                     for error in certification_errors
                 )
-                if derived["release_blocking_complete"]:
+                if (
+                    derived.get("certification_protocol_version") == "sim-live-v3"
+                    and release_status in live_states
+                ):
+                    errors.append(
+                        "source release cannot inherit personal plugin certification"
+                    )
+                    expected_state = "PREVIEW_VALIDATED"
+                    expected_acceptance = "NOT_EVALUATED"
+                elif derived["release_blocking_complete"]:
                     expected_state = "PREVIEW_CERTIFIED"
                     expected_acceptance = "PASS"
                 elif any(
