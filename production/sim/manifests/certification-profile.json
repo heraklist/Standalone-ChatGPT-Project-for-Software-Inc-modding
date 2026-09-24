@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "protocol_version": "sim-live-v3",
-  "plugin_version": "0.2.3-preview",
+  "plugin_version": "0.2.3-preview.1",
   "production_transport": "OPENAI_PERSONAL_PLUGIN",
   "surfaces": {
     "CHATGPT_WEB_NORMAL_CHAT": {

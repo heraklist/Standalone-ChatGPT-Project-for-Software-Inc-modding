@@ -58,7 +58,7 @@ def _personal_install_record(
         "candidate_tree_sha256": candidate_tree_sha256,
         "semantic_aggregate_sha256": semantic_aggregate_sha256,
         "source_commit": source_commit,
-        "plugin_version": "0.2.3-preview",
+        "plugin_version": "0.2.3-preview.1",
         "exact_target_manifest_sha256": target_digest,
         "certification_protocol_version": "sim-live-v3",
         "transport": "OPENAI_PERSONAL_PLUGIN",
@@ -89,7 +89,7 @@ def test_installation_schema_requires_candidate_tree_identity() -> None:
 def test_certification_report_schema_requires_all_surface_states() -> None:
     report = {
         "schema_version": 2,
-        "plugin_version": "0.2.3-preview",
+        "plugin_version": "0.2.3-preview.1",
         "candidate_tree_sha256": "a" * 64,
         "semantic_aggregate_sha256": "b" * 64,
         "source_commit": "c" * 40,
@@ -200,7 +200,7 @@ def _write_acceptance(
             "candidate_tree_sha256": candidate_tree_sha256,
             "semantic_aggregate_sha256": semantic_aggregate_sha256,
             "candidate_source_commit": source_commit,
-            "plugin_version": "0.2.3-preview",
+            "plugin_version": "0.2.3-preview.1",
             "exact_target_manifest_sha256": target_digest,
             "certification_protocol_version": "sim-live-v3",
             "transport": "OPENAI_PERSONAL_PLUGIN",
@@ -321,7 +321,7 @@ def test_release_builder_accepts_legacy_certification_report_for_composition(
 
     certification = {
         "schema_version": 1,
-        "plugin_version": "0.2.3-preview",
+        "plugin_version": "0.2.3-preview.1",
         "candidate_tree_sha256": "a" * 64,
         "semantic_aggregate_sha256": "b" * 64,
         "source_commit": "c" * 40,

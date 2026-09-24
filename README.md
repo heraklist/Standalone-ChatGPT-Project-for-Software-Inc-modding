@@ -44,9 +44,9 @@ python tools/build_release.py --generation-grade
 
 The release bundle contains Project Instructions, the exact 18 knowledge files, and generated manifests. Repository evals, migration work, research archives, and raw/private evidence are not part of the ChatGPT Project upload bundle.
 
-## SIM v0.2.3-preview development status
+## SIM v0.2.3-preview.1 development status
 
-The released foundation remains **Software Inc Mod Studio v0.1.0**. The active SIM line is **v0.2.3-preview**, under development as a **USER-scoped, PRIVATE, skills-only OpenAI personal plugin**.
+The released foundation remains **Software Inc Mod Studio v0.1.0**. The active SIM line is **v0.2.3-preview.1**, under development as a **USER-scoped, PRIVATE, skills-only OpenAI personal plugin**.
 
 GitHub is the canonical engineering source. The deterministic plugin candidate and one-plugin bundle are development artifacts until they are deployed through Plugin Creator and the exact private release is verified against the candidate bytes.
 

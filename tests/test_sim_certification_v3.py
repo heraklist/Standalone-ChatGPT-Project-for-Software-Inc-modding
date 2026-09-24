@@ -13,7 +13,7 @@ def test_v3_profile_freezes_required_surfaces_and_cases() -> None:
     profile = json.loads(PROFILE.read_text(encoding="utf-8"))
 
     assert profile["protocol_version"] == "sim-live-v3"
-    assert profile["plugin_version"] == "0.2.3-preview"
+    assert profile["plugin_version"] == "0.2.3-preview.1"
     assert profile["production_transport"] == "OPENAI_PERSONAL_PLUGIN"
 
     assert profile["surfaces"]["CHATGPT_WEB_NORMAL_CHAT"]["required_cases"] == [
@@ -36,7 +36,7 @@ def test_acceptance_context_isolates_transport_and_exact_personal_release() -> N
         candidate_tree_sha256="a" * 64,
         semantic_aggregate_sha256="b" * 64,
         source_commit="c" * 40,
-        plugin_version="0.2.3-preview",
+        plugin_version="0.2.3-preview.1",
         exact_target_manifest_sha256="d" * 64,
         protocol_version="sim-live-v3",
         surface="CHATGPT_WEB_NORMAL_CHAT",
@@ -48,7 +48,7 @@ def test_acceptance_context_isolates_transport_and_exact_personal_release() -> N
         "candidate_tree_sha256": "a" * 64,
         "semantic_aggregate_sha256": "b" * 64,
         "candidate_source_commit": "c" * 40,
-        "plugin_version": "0.2.3-preview",
+        "plugin_version": "0.2.3-preview.1",
         "exact_target_manifest_sha256": "d" * 64,
         "certification_protocol_version": "sim-live-v3",
         "surface": "CHATGPT_WEB_NORMAL_CHAT",
@@ -187,7 +187,7 @@ def test_personal_installation_contract_carries_normalized_platform_tree() -> No
         "candidate_tree_sha256": "a" * 64,
         "semantic_aggregate_sha256": "b" * 64,
         "source_commit": "c" * 40,
-        "plugin_version": "0.2.3-preview",
+        "plugin_version": "0.2.3-preview.1",
         "exact_target_manifest_sha256": "d" * 64,
         "certification_protocol_version": "sim-live-v3",
         "transport": "OPENAI_PERSONAL_PLUGIN",
