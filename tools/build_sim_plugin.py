@@ -141,8 +141,6 @@ def _validate_runtime_policy(runtime: dict, policy: dict, sim_manifest: dict) ->
         raise ValueError("root skill projection must be exact-byte copy")
     if policy.get("internal_skill_relation") != "REMAP_EXACT_BYTE_COPY":
         raise ValueError("internal skill projection must be exact-byte remap")
-    if sim_manifest.get("version") != "0.2.2-preview":
-        raise ValueError("SIM plugin builder requires version 0.2.2-preview")
     if (
         runtime.get("canonical_game_target")
         != sim_manifest.get("canonical_game_target")
