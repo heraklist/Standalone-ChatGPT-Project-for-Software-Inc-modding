@@ -110,17 +110,26 @@ def build_sim_release(
             raise RuntimeError(
                 "invalid certification report: " + errors[0].message
             )
-        surface_results = certification["surface_results"]
-        report["known_gaps"] = list(certification["known_gaps"])
-        if certification["release_blocking_complete"] is True:
-            report["surface_acceptance"] = "PASS"
-            report["release_status"] = "PREVIEW_CERTIFIED"
-        elif any(value == "FAIL" for value in surface_results.values()):
-            report["surface_acceptance"] = "FAIL"
-            report["release_status"] = "PREVIEW_LIVE_FAILED"
+        if certification.get("certification_protocol_version") == "sim-live-v3":
+            # v3 certifies the distinct OpenAI personal-plugin artifact (P5/B5/O5),
+            # never this production/sim source ZIP.
+            report["surface_acceptance"] = "NOT_EVALUATED"
+            report["known_gaps"] = []
+            report["release_status"] = "PREVIEW_VALIDATED"
         else:
-            report["surface_acceptance"] = "INCOMPLETE"
-            report["release_status"] = "PREVIEW_LIVE_INCOMPLETE"
+            # Historical v2 composition remains readable for immutable legacy
+            # evidence. New v3 code must not create these states for source ZIPs.
+            surface_results = certification["surface_results"]
+            report["known_gaps"] = list(certification["known_gaps"])
+            if certification["release_blocking_complete"] is True:
+                report["surface_acceptance"] = "PASS"
+                report["release_status"] = "PREVIEW_CERTIFIED"
+            elif any(value == "FAIL" for value in surface_results.values()):
+                report["surface_acceptance"] = "FAIL"
+                report["release_status"] = "PREVIEW_LIVE_FAILED"
+            else:
+                report["surface_acceptance"] = "INCOMPLETE"
+                report["release_status"] = "PREVIEW_LIVE_INCOMPLETE"
 
     output = out_dir or (root / "dist")
     output.mkdir(parents=True, exist_ok=True)
