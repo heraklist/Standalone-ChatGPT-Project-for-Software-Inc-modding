@@ -109,3 +109,108 @@ def test_personal_plugin_overlay_update_rejects_required_path_deletion() -> None
 
     assert update_is_overlay_safe({"plugin.json", "old.txt"}, {"plugin.json"}) is False
     assert update_is_overlay_safe({"plugin.json"}, {"plugin.json", "new.txt"}) is True
+
+
+def test_personal_release_accepts_only_verified_openai_compatibility_normalization(
+    tmp_path: Path,
+) -> None:
+    from tools.sim_candidate_identity import aggregate_file_hashes
+    from tools.verify_sim_personal_release import verify_personal_release
+
+    candidate = tmp_path / "candidate"
+    candidate.mkdir()
+    root_manifest = candidate / "plugin.json"
+    root_manifest.write_text(
+        json.dumps(
+            {
+                "name": "sim",
+                "version": "0.2.3-preview",
+                "extensions": {
+                    "com.openai": {
+                        "interface": {
+                            "displayName": "SIM",
+                            "shortDescription": "Software Inc modding.",
+                        }
+                    }
+                },
+            },
+            sort_keys=True,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    compat = candidate / ".codex-plugin/plugin.json"
+    compat.parent.mkdir(parents=True)
+    compat.write_text(
+        json.dumps(
+            {
+                "name": "sim",
+                "version": "0.2.3-preview",
+                "skills": "./skills/",
+                "interface": {
+                    "displayName": "SIM",
+                    "shortDescription": "Software Inc modding.",
+                },
+            },
+            sort_keys=True,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    skill = candidate / "skills/sim/SKILL.md"
+    skill.parent.mkdir(parents=True)
+    skill.write_text("---\nname: sim\n---\n", encoding="utf-8")
+
+    candidate_files = _file_hashes(candidate)
+    platform_compat = json.dumps(
+        {
+            "name": "sim",
+            "version": "0.2.3-preview",
+            "skills": "./skills",
+            "interface": {
+                "displayName": "SIM",
+                "shortDescription": "Software Inc modding.",
+            },
+            "description": "SIM compatibility manifest",
+            "author": {"name": "Workspace upload"},
+            "keywords": [],
+        },
+        sort_keys=True,
+    ) + "\n"
+    platform_files = dict(candidate_files)
+    platform_files[".codex-plugin/plugin.json"] = hashlib.sha256(
+        platform_compat.encode("utf-8")
+    ).hexdigest()
+
+    tree = hash_tree(candidate)
+    evidence = {
+        "schema_version": 2,
+        "plugin_id": "plugins~Plugin_example",
+        "release_id": "release_exact",
+        "current_release_id": "release_exact",
+        "latest_release_id": "release_exact",
+        "scope": "USER",
+        "discoverability": "PRIVATE",
+        "candidate_tree_sha256": tree,
+        "bundle_sha256": "e" * 64,
+        "platform_release_tree_sha256": aggregate_file_hashes(platform_files),
+        "normalized_platform_tree_sha256": tree,
+        "files": platform_files,
+        "platform_normalizations": [
+            {
+                "path": ".codex-plugin/plugin.json",
+                "normalization_class": "OPENAI_COMPATIBILITY_MANIFEST",
+                "candidate_sha256": candidate_files[".codex-plugin/plugin.json"],
+                "platform_sha256": platform_files[".codex-plugin/plugin.json"],
+                "platform_content": platform_compat,
+            }
+        ],
+        "recorded_at": "2026-09-24T10:00:00Z",
+    }
+
+    assert verify_personal_release(candidate, evidence) == []
+
+    evidence["platform_normalizations"][0]["path"] = "plugin.json"
+    assert "PERSONAL_RELEASE_NORMALIZATION_PATH_INVALID" in verify_personal_release(
+        candidate, evidence
+    )
