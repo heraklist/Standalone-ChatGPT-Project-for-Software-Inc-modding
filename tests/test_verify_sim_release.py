@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def _report_path(root: Path) -> Path:
-    return root / "sim-0.2.2-preview.release-report.json"
+    return root / "sim-0.2.3-preview.release-report.json"
 
 
 def _rewrite_zip(source: Path, destination: Path, *, drop: set[str] | None = None, add: dict[str, bytes] | None = None) -> None:
@@ -28,7 +28,7 @@ def test_independent_verifier_accepts_valid_preview_build(tmp_path: Path) -> Non
     from tools.verify_sim_release import verify_sim_release
 
     zip_path, _ = build_sim_release(ROOT, out_dir=tmp_path)
-    assert verify_sim_release(zip_path, _report_path(tmp_path), "0.2.2-preview") == []
+    assert verify_sim_release(zip_path, _report_path(tmp_path), "0.2.3-preview") == []
 
 
 def test_verifier_rejects_bundle_digest_mismatch(tmp_path: Path) -> None:
@@ -39,7 +39,7 @@ def test_verifier_rejects_bundle_digest_mismatch(tmp_path: Path) -> None:
     report = json.loads(report_path.read_text(encoding="utf-8"))
     report["bundle_sha256"] = "0" * 64
     report_path.write_text(json.dumps(report), encoding="utf-8")
-    assert any("bundle SHA-256 mismatch" in error for error in verify_sim_release(zip_path, report_path, "0.2.2-preview"))
+    assert any("bundle SHA-256 mismatch" in error for error in verify_sim_release(zip_path, report_path, "0.2.3-preview"))
 
 
 def test_verifier_rejects_missing_required_runtime_entries(tmp_path: Path) -> None:
@@ -49,7 +49,7 @@ def test_verifier_rejects_missing_required_runtime_entries(tmp_path: Path) -> No
     for missing in ("production/sim/SKILL.md", "production/sim/manifests/reference-source-map.json"):
         altered = tmp_path / (Path(missing).name + ".zip")
         _rewrite_zip(zip_path, altered, drop={missing})
-        errors = verify_sim_release(altered, _report_path(tmp_path), "0.2.2-preview")
+        errors = verify_sim_release(altered, _report_path(tmp_path), "0.2.3-preview")
         assert any("missing required SIM bundle entry" in error for error in errors)
 
 
@@ -59,7 +59,7 @@ def test_verifier_rejects_forbidden_raw_evidence_path(tmp_path: Path) -> None:
     zip_path, _ = build_sim_release(ROOT, out_dir=tmp_path)
     altered = tmp_path / "forbidden.zip"
     _rewrite_zip(zip_path, altered, add={"work/corpus/private.bin": b"fixture"})
-    errors = verify_sim_release(altered, _report_path(tmp_path), "0.2.2-preview")
+    errors = verify_sim_release(altered, _report_path(tmp_path), "0.2.3-preview")
     assert any("forbidden bundle path" in error for error in errors)
 
 
@@ -69,7 +69,7 @@ def test_verifier_rejects_reported_file_hash_mismatch(tmp_path: Path) -> None:
     zip_path, _ = build_sim_release(ROOT, out_dir=tmp_path)
     altered = tmp_path / "tampered.zip"
     _rewrite_zip(zip_path, altered, add={"production/sim/SKILL.md": b"tampered"}, drop={"production/sim/SKILL.md"})
-    errors = verify_sim_release(altered, _report_path(tmp_path), "0.2.2-preview")
+    errors = verify_sim_release(altered, _report_path(tmp_path), "0.2.3-preview")
     assert any("file SHA-256 mismatch" in error or "bundle SHA-256 mismatch" in error for error in errors)
 
 
@@ -98,7 +98,7 @@ def _certification_context(*, candidate: str = "a" * 64, target: str, protocol: 
         candidate_tree_sha256=candidate,
         semantic_aggregate_sha256="b" * 64,
         source_commit="c" * 40,
-        plugin_version="0.2.2-preview",
+        plugin_version="0.2.3-preview",
         exact_target_manifest_sha256=target,
         protocol_version=protocol,
         surface="ChatGPT",
@@ -124,7 +124,7 @@ def _write_acceptance_records(
             "candidate_tree_sha256": candidate,
             "semantic_aggregate_sha256": "b" * 64,
             "candidate_source_commit": "c" * 40,
-            "plugin_version": "0.2.2-preview",
+            "plugin_version": "0.2.3-preview",
             "exact_target_manifest_sha256": target,
             "certification_protocol_version": protocol,
             "installation_evidence_id": "install-a",
