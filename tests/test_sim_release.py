@@ -19,8 +19,8 @@ def test_preview_builder_emits_canonical_identity_and_schema_valid_report(tmp_pa
 
     zip_path, report = build_sim_release(ROOT, channel="preview", out_dir=tmp_path)
 
-    assert zip_path.name == "sim-0.2.2-preview.zip"
-    assert report["sim_version"] == "0.2.2-preview"
+    assert zip_path.name == "sim-0.2.3-preview.zip"
+    assert report["sim_version"] == "0.2.3-preview"
     assert report["channel"] == "PREVIEW"
     assert report["target"] == "Beta 1.8.42"
     assert report["evidence_grade"] == "GENERATION_GRADE"
@@ -30,7 +30,7 @@ def test_preview_builder_emits_canonical_identity_and_schema_valid_report(tmp_pa
     schema = json.loads((ROOT / "schemas/sim-release-manifest.schema.json").read_text(encoding="utf-8"))
     jsonschema.validate(report, schema)
 
-    report_path = tmp_path / "sim-0.2.2-preview.release-report.json"
+    report_path = tmp_path / "sim-0.2.3-preview.release-report.json"
     assert json.loads(report_path.read_text(encoding="utf-8")) == report
 
 
