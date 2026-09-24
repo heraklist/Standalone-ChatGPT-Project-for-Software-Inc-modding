@@ -61,24 +61,35 @@ def _load_object(source: GitSource, path: str) -> tuple[dict, bytes]:
     return value, raw
 
 
-def _metadata(runtime: dict, sim_manifest: dict) -> tuple[dict, dict]:
+def _metadata(
+    runtime: dict,
+    sim_manifest: dict,
+    plugin_interface: dict,
+) -> tuple[dict, dict]:
     target = runtime["canonical_game_target"]
     description = f"SIM — Software Inc modding workflows for {target}."
+    interface = {
+        key: value
+        for key, value in plugin_interface.items()
+        if key != "schema_version"
+    }
     portable = {
         "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
         "name": runtime["plugin_identity"],
         "version": sim_manifest["version"],
         "description": description,
+        "extensions": {
+            "com.openai": {
+                "interface": interface,
+            }
+        },
     }
     compatibility = {
         "name": runtime["plugin_identity"],
         "version": sim_manifest["version"],
         "description": description,
         "skills": "./skills/",
-        "interface": {
-            "displayName": "SIM",
-            "shortDescription": f"Software Inc modding for {target}.",
-        },
+        "interface": interface,
     }
     return portable, compatibility
 
@@ -113,6 +124,10 @@ def _expected_candidate(
     policy, policy_raw = _load_object(source, POLICY_PATH)
     runtime, runtime_raw = _load_object(source, RUNTIME_PATH)
     sim_manifest, _ = _load_object(source, SIM_MANIFEST_PATH)
+    plugin_interface_path = policy.get("plugin_interface_source")
+    if plugin_interface_path != "production/sim/manifests/plugin-interface.json":
+        raise ValueError("plugin interface source is invalid")
+    plugin_interface, _ = _load_object(source, plugin_interface_path)
 
     if runtime.get("plugin_identity") != "sim":
         raise ValueError("runtime plugin identity is not sim")
@@ -211,7 +226,7 @@ def _expected_candidate(
         )
         expected_tools[tool_name] = destination
 
-    portable, compatibility = _metadata(runtime, sim_manifest)
+    portable, compatibility = _metadata(runtime, sim_manifest, plugin_interface)
     portable_path = normalize_archive_member(policy["portable_manifest_path"])
     compatibility_path = normalize_archive_member(
         policy["compatibility_manifest_path"]
