@@ -42,7 +42,6 @@ REQUIRED_PATHS = (
 MANIFEST_IDENTITY = {
     "product": "SIM",
     "display_name": "Software Inc Modding",
-    "version": "0.2.2-preview",
     "channel": "PREVIEW",
     "canonical_game_target": "Beta 1.8.42",
     "evidence_grade": "GENERATION_GRADE",
@@ -102,6 +101,9 @@ def verify_sim_layout(root: Path) -> list[str]:
     for key, expected in MANIFEST_IDENTITY.items():
         if manifest.get(key) != expected:
             errors.append(f"SIM manifest identity mismatch: {key}")
+    version = manifest.get("version")
+    if not isinstance(version, str) or not version:
+        errors.append("SIM manifest version must be a non-empty string")
 
     skill_path = root / "production/sim/SKILL.md"
     if skill_path.is_file():
