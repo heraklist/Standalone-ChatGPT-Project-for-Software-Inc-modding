@@ -4,10 +4,6 @@ description: >-
   Software Inc Modding runtime for explicitly invoked @Sim sessions that research,
   brainstorm, design, create, edit, repair, migrate, validate, package, and verify
   Software Inc mods using governed evidence and internal specialist workflows.
-metadata:
-  product: software-inc-mod-studio
-  version: 0.2.0-preview
-  game-target: Beta 1.8.42
 ---
 
 # SIM — Software Inc Modding
