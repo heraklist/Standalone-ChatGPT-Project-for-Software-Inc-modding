@@ -1,0 +1,50 @@
+{
+  "schema_version": 3,
+  "case_id": "A05",
+  "surface": "CHATGPT_WEB_NORMAL_CHAT",
+  "result": "PASS",
+  "candidate_tree_sha256": "84c783d20485ed157fc7b47ea7d47c40f24db1a9a6ce14d31a55e60489c1fb5a",
+  "semantic_aggregate_sha256": "6e4a84ad7873a5a72bbfe915b8d0ad653a0a579bbb02c9fce95bc6563c839d94",
+  "candidate_source_commit": "9e2d009743f5f405b31460936ad47651f0e3f832",
+  "plugin_version": "0.2.3-preview.1",
+  "exact_target_manifest_sha256": "00fb0a1628c1be1ccaa9ac2a53e619b941599e9ad723375ede4213ca50ba95d3",
+  "certification_protocol_version": "sim-live-v3",
+  "installation_evidence_id": "web-normal-o6-20260924",
+  "host_observation": {
+    "verification_ceiling": "V2",
+    "explicit_sim_activation": true,
+    "furniture_transformparent_order_scoped_to_hierarchy": true,
+    "universal_tyd_ordering_claimed": false,
+    "materials_table_name_identity_preserved": true,
+    "materials_collision_replacement_semantics_preserved": true,
+    "materials_base_bump_extra_channels_preserved": true,
+    "mandatory_texture_filenames_invented": false,
+    "universal_atlas_limit_invented": false,
+    "proprietary_payload_reproduced": false,
+    "fresh_placement_boundary_preserved": true,
+    "material_restart_boundary_preserved": true,
+    "runtime_verification_claimed": false,
+    "required_outcomes_observed": [
+      "TransformParent ordering was scoped only to the Furniture hierarchy dependency and corrected by placing the referenced parent before the dependent child",
+      "No universal TyD field-order rule was inferred",
+      "Material table name was identified as serialization identity",
+      "Same-name material definition was classified as replacement/collision semantics rather than SoftwareType Override semantics",
+      "Base, Bump, and Extra channel semantics matched the governed Materials reference",
+      "Texture path fields were not converted into mandatory filenames",
+      "The 256-material example was not promoted to a universal atlas hard limit",
+      "Fresh placement was required for Furniture verification and restart was preserved for newly introduced Material sets where applicable",
+      "No V3/V4 runtime verification was claimed"
+    ],
+    "forbidden_outcomes_observed": []
+  },
+  "evidence_refs": [
+    "owner-observation-web-normal-chat-a05-2026-09-25",
+    "plugin-creator-current-release-check-2026-09-25",
+    "sim-furniture-materials-canonical-rule-check-2026-09-25"
+  ],
+  "retest_of": null,
+  "recorded_at": "2026-09-25T06:25:00+03:00",
+  "transport": "OPENAI_PERSONAL_PLUGIN",
+  "plugin_id": "plugins_6ab4ed6003b48191a0de271d4759c5e2",
+  "release_id": "pluginrel_6ab4f344b9888191b492884b8034f5b2"
+}
