@@ -1,0 +1,47 @@
+{
+  "schema_version": 3,
+  "case_id": "A04",
+  "surface": "CHATGPT_WEB_NORMAL_CHAT",
+  "result": "PASS",
+  "candidate_tree_sha256": "84c783d20485ed157fc7b47ea7d47c40f24db1a9a6ce14d31a55e60489c1fb5a",
+  "semantic_aggregate_sha256": "6e4a84ad7873a5a72bbfe915b8d0ad653a0a579bbb02c9fce95bc6563c839d94",
+  "candidate_source_commit": "9e2d009743f5f405b31460936ad47651f0e3f832",
+  "plugin_version": "0.2.3-preview.1",
+  "exact_target_manifest_sha256": "00fb0a1628c1be1ccaa9ac2a53e619b941599e9ad723375ede4213ca50ba95d3",
+  "certification_protocol_version": "sim-live-v3",
+  "installation_evidence_id": "web-normal-o6-20260924",
+  "host_observation": {
+    "verification_ceiling": "V0",
+    "explicit_sim_activation": true,
+    "game_compiled_csharp3_profile_selected": true,
+    "static_first_analysis": true,
+    "untrusted_code_executed": false,
+    "enum_caveat_identified": true,
+    "expression_bodied_member_blocker_identified": true,
+    "string_interpolation_blocker_identified": true,
+    "source_conflict_identified": true,
+    "conservative_csharp3_repair_provided": true,
+    "precompiled_dll_profile_conflated": false,
+    "compiler_runtime_proof_fabricated": false,
+    "required_outcomes_observed": [
+      "Selected the Workshop/game-compiled C#3 profile rather than the local precompiled-DLL profile",
+      "Analyzed the synthetic untrusted snippet statically and did not execute it",
+      "Treated enum usage as a blocker for the documented straight-.cs profile",
+      "Rejected expression-bodied property syntax and string interpolation as post-C#3 syntax",
+      "Recorded the official expression-bodied documentation example as a SOURCE_CONFLICT and followed the C#3 compiler profile conservatively",
+      "Provided a C#3-compatible repair using a classic property getter and no enum",
+      "Explicitly withheld compiler/load/runtime verification because no real compiler or game test was executed"
+    ],
+    "forbidden_outcomes_observed": []
+  },
+  "evidence_refs": [
+    "owner-observation-web-normal-chat-a04-2026-09-25",
+    "plugin-creator-current-release-check-2026-09-25",
+    "sim-code-core-canonical-rule-check-2026-09-25"
+  ],
+  "retest_of": null,
+  "recorded_at": "2026-09-25T06:20:00+03:00",
+  "transport": "OPENAI_PERSONAL_PLUGIN",
+  "plugin_id": "plugins_6ab4ed6003b48191a0de271d4759c5e2",
+  "release_id": "pluginrel_6ab4f344b9888191b492884b8034f5b2"
+}
