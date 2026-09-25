@@ -22,6 +22,9 @@ class CertificationContext:
     exact_target_manifest_sha256: str
     protocol_version: str
     surface: str
+    transport: str | None = None
+    plugin_id: str | None = None
+    release_id: str | None = None
 
 
 @dataclass(frozen=True)
@@ -59,6 +62,14 @@ def _matches_context(record: dict, context: CertificationContext) -> bool:
         == context.exact_target_manifest_sha256
         and record.get("certification_protocol_version") == context.protocol_version
         and record.get("surface") == context.surface
+        and (
+            context.protocol_version != "sim-live-v3"
+            or (
+                record.get("transport") == context.transport
+                and record.get("plugin_id") == context.plugin_id
+                and record.get("release_id") == context.release_id
+            )
+        )
     )
 
 

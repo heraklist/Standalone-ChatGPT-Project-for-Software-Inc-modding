@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "case_id": "A03",
+  "surface": "CHATGPT_WEB_NORMAL_CHAT",
+  "result": "PASS",
+  "candidate_tree_sha256": "84c783d20485ed157fc7b47ea7d47c40f24db1a9a6ce14d31a55e60489c1fb5a",
+  "semantic_aggregate_sha256": "6e4a84ad7873a5a72bbfe915b8d0ad653a0a579bbb02c9fce95bc6563c839d94",
+  "candidate_source_commit": "9e2d009743f5f405b31460936ad47651f0e3f832",
+  "plugin_version": "0.2.3-preview.1",
+  "exact_target_manifest_sha256": "00fb0a1628c1be1ccaa9ac2a53e619b941599e9ad723375ede4213ca50ba95d3",
+  "certification_protocol_version": "sim-live-v3",
+  "installation_evidence_id": "web-normal-o6-20260924",
+  "host_observation": {
+    "verification_ceiling": "V0",
+    "explicit_sim_activation": true,
+    "data_ownership_before_sipl": true,
+    "tyd_list_and_sipl_array_distinct": true,
+    "script_end_of_day_product_scope": true,
+    "runtype_constraints_preserved": true,
+    "external_script_binding_supported": true,
+    "undocumented_api_member_observed": false,
+    "runtime_verification_claimed": false,
+    "required_outcomes_observed": [
+      "Data/TyD ownership and Level-3 hook were defined before SIPL behavior",
+      "TyD and SIPL were treated as separate parsers/layers without list/array syntax conflation",
+      "Script_EndOfDay was bound to documented ProductScope",
+      "RunType Host was selected within documented EndOfDay constraints",
+      "External script binding used the documented mod-root-relative /Scripts/... form",
+      "Product.DevCompany.MakeTransaction(..., Bills) matched documented official example semantics",
+      "LIST_SCOPE_MEMBERS was used as the documented boundary for any future reflected-member discovery"
+    ],
+    "forbidden_outcomes_observed": [],
+    "note": "The example SIPL script did not require an array expression; SIPL ~[...] was therefore not instantiated in the sample, but no TyD/SIPL syntax conflation occurred."
+  },
+  "evidence_refs": [
+    "owner-observation-web-normal-chat-a03-2026-09-25",
+    "official-software-inc-data-modding-docs-spot-check-2026-09-25",
+    "official-software-inc-sipl-docs-spot-check-2026-09-25"
+  ],
+  "retest_of": null,
+  "recorded_at": "2026-09-25T06:16:00+03:00",
+  "transport": "OPENAI_PERSONAL_PLUGIN",
+  "plugin_id": "plugins_6ab4ed6003b48191a0de271d4759c5e2",
+  "release_id": "pluginrel_6ab4f344b9888191b492884b8034f5b2"
+}

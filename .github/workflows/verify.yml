@@ -8,8 +8,12 @@ on:
 jobs:
   verify:
     runs-on: ubuntu-latest
+    env:
+      SIM_SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
@@ -35,22 +39,39 @@ jobs:
         run: python tools/validate_sim_references.py
       - name: Validate SIM evals
         run: python tools/validate_sim_evals.py production/evals/sim
+      - name: Resolve SIM version
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          version = json.loads(
+              Path("production/sim/manifests/sim-manifest.json").read_text(encoding="utf-8")
+          )["version"]
+          with open(os.environ["GITHUB_ENV"], "a", encoding="utf-8") as handle:
+              handle.write(f"SIM_VERSION={version}\n")
+          PY
       - name: Build SIM Preview release
         run: python tools/build_sim_release.py --channel preview
       - name: Verify SIM Preview release
-        run: python tools/verify_sim_release.py dist/sim-0.2.2-preview.zip dist/sim-0.2.2-preview.release-report.json --expected-version 0.2.2-preview
+        shell: bash
+        run: python tools/verify_sim_release.py "dist/sim-$SIM_VERSION.zip" "dist/sim-$SIM_VERSION.release-report.json" --expected-version "$SIM_VERSION"
       - name: Build deterministic SIM plugin candidate twice
         shell: bash
         run: |
           mkdir -p dist/sim-plugin-ci
-          python tools/build_sim_plugin.py build --repo-root . --source-sha "$GITHUB_SHA" --output dist/sim-plugin-a > dist/sim-plugin-ci/sim-plugin-a.identity.json
-          python tools/build_sim_plugin.py build --repo-root . --source-sha "$GITHUB_SHA" --output dist/sim-plugin-b > dist/sim-plugin-ci/sim-plugin-b.identity.json
+          python tools/build_sim_plugin.py build --repo-root . --source-sha "$SIM_SOURCE_SHA" --output dist/sim-plugin-a > dist/sim-plugin-ci/sim-plugin-a.identity.json
+          python tools/build_sim_plugin.py build --repo-root . --source-sha "$SIM_SOURCE_SHA" --output dist/sim-plugin-b > dist/sim-plugin-ci/sim-plugin-b.identity.json
+      - name: Validate SIM HEAD portable manifest
+        run: python tools/validate_agent_plugin_schema.py dist/sim-plugin-a/plugin.json
       - name: Independently validate deterministic SIM plugin candidates
         shell: bash
         run: |
-          python tools/validate_sim_plugin.py check --repo-root . --source-sha "$GITHUB_SHA" --candidate dist/sim-plugin-a
-          python tools/validate_sim_plugin.py check --repo-root . --source-sha "$GITHUB_SHA" --candidate dist/sim-plugin-b
-      - name: Compare SIM plugin candidate identities
+          python tools/validate_sim_plugin.py check --repo-root . --source-sha "$SIM_SOURCE_SHA" --candidate dist/sim-plugin-a
+          python tools/validate_sim_plugin.py check --repo-root . --source-sha "$SIM_SOURCE_SHA" --candidate dist/sim-plugin-b
+      - name: Verify SIM HEAD reproducibility
         shell: bash
         run: |
           python - <<'PY'
@@ -64,12 +85,22 @@ jobs:
           assert a["candidate_tree_sha256"] == b["candidate_tree_sha256"]
           print(f"SIM_PLUGIN_REPRODUCIBLE: {a['candidate_tree_sha256']}")
           PY
+      - name: Build deterministic SIM personal-plugin bundle
+        shell: bash
+        run: |
+          python tools/build_sim_plugin_bundle.py --candidate dist/sim-plugin-a --output "dist/sim-$SIM_VERSION.plugin.zip" --report-out "dist/sim-$SIM_VERSION.plugin-report.json"
+      - name: Verify deterministic SIM personal-plugin bundle
+        shell: bash
+        run: |
+          python tools/verify_sim_plugin_bundle.py --candidate dist/sim-plugin-a --zip "dist/sim-$SIM_VERSION.plugin.zip" --report "dist/sim-$SIM_VERSION.plugin-report.json"
       - name: Upload deterministic SIM plugin candidate evidence
         uses: actions/upload-artifact@v4
         with:
-          name: sim-plugin-candidate-${{ github.sha }}
+          name: sim-plugin-candidate-${{ env.SIM_SOURCE_SHA }}
           path: |
             dist/sim-plugin-a
             dist/sim-plugin-ci/sim-plugin-a.identity.json
             dist/sim-plugin-ci/sim-plugin-b.identity.json
+            dist/sim-${{ env.SIM_VERSION }}.plugin.zip
+            dist/sim-${{ env.SIM_VERSION }}.plugin-report.json
           if-no-files-found: error

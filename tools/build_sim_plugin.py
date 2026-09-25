@@ -141,8 +141,6 @@ def _validate_runtime_policy(runtime: dict, policy: dict, sim_manifest: dict) ->
         raise ValueError("root skill projection must be exact-byte copy")
     if policy.get("internal_skill_relation") != "REMAP_EXACT_BYTE_COPY":
         raise ValueError("internal skill projection must be exact-byte remap")
-    if sim_manifest.get("version") != "0.2.2-preview":
-        raise ValueError("SIM plugin builder requires version 0.2.2-preview")
     if (
         runtime.get("canonical_game_target")
         != sim_manifest.get("canonical_game_target")
@@ -167,25 +165,32 @@ def _validate_runtime_policy(runtime: dict, policy: dict, sim_manifest: dict) ->
 def _generated_manifests(
     runtime: dict,
     sim_manifest: dict,
+    plugin_interface: dict,
 ) -> tuple[dict, dict]:
+    target = runtime["canonical_game_target"]
+    description = f"SIM — Software Inc modding workflows for {target}."
+    interface = {
+        key: value
+        for key, value in plugin_interface.items()
+        if key != "schema_version"
+    }
     portable = {
-        "schema_version": 1,
+        "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
         "name": runtime["plugin_identity"],
-        "display_name": "SIM",
         "version": sim_manifest["version"],
-        "entrypoint": runtime["public_entrypoint"],
-        "runtime_skill": "skills/sim/SKILL.md",
-        "public_skill_count": runtime["public_skill_count"],
-        "canonical_game_target": runtime["canonical_game_target"],
+        "description": description,
+        "extensions": {
+            "com.openai": {
+                "interface": interface,
+            }
+        },
     }
     compatibility = {
-        "schema_version": 1,
         "name": runtime["plugin_identity"],
-        "displayName": "SIM",
         "version": sim_manifest["version"],
-        "entrypoint": runtime["public_entrypoint"],
-        "skill": "skills/sim/SKILL.md",
-        "publicSkillCount": runtime["public_skill_count"],
+        "description": description,
+        "skills": "./skills/",
+        "interface": interface,
     }
     return portable, compatibility
 
@@ -202,6 +207,10 @@ def build_candidate(
     policy, policy_raw = _load_object(source, POLICY_PATH)
     runtime, runtime_raw = _load_object(source, RUNTIME_PATH)
     sim_manifest, _ = _load_object(source, SIM_MANIFEST_PATH)
+    plugin_interface_path = str(policy.get("plugin_interface_source", ""))
+    if plugin_interface_path != "production/sim/manifests/plugin-interface.json":
+        raise ValueError("unexpected SIM plugin interface source")
+    plugin_interface, _ = _load_object(source, plugin_interface_path)
     _validate_runtime_policy(runtime, policy, sim_manifest)
 
     output = _prepare_output(output_root)
@@ -279,8 +288,7 @@ def build_candidate(
             raise ValueError(f"invalid tool surfaces: {tool_name}")
         bundled = any(
             isinstance(surface, dict) and surface.get("bundled") is True
-            for surface_name, surface in surfaces.items()
-            if surface_name in {"ChatGPT", "Codex"}
+            for surface in surfaces.values()
         )
         if not bundled:
             continue
@@ -300,7 +308,9 @@ def build_candidate(
             data,
         )
 
-    portable, compatibility = _generated_manifests(runtime, sim_manifest)
+    portable, compatibility = _generated_manifests(
+        runtime, sim_manifest, plugin_interface
+    )
     portable_path = normalize_archive_member(policy["portable_manifest_path"])
     compatibility_path = normalize_archive_member(
         policy["compatibility_manifest_path"]

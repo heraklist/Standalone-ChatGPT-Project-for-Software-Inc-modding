@@ -51,17 +51,44 @@ def test_evidence_readme_forbids_synthetic_live_passes() -> None:
     assert "NOT_TESTED" in text
 
 
-def test_compatibility_matrix_uses_observation_status_vocabulary() -> None:
+def test_compatibility_matrix_uses_v023_observation_records() -> None:
     matrix = json.loads(MATRIX.read_text(encoding="utf-8"))
-    allowed = {"SUPPORTED", "PLATFORM_LIMITATION", "CAPABILITY_DEPENDENT", "NOT_TESTED"}
-    for capabilities in matrix["surfaces"].values():
-        assert set(capabilities) == {
-            "explicit_invocation",
+    assert matrix["schema_version"] == 2
+    records = matrix["records"]
+    assert records
+    required = {
+        "surface",
+        "transport",
+        "discovery",
+        "installation",
+        "resolver_activation",
+        "thread_persistence",
+        "script_execution",
+        "artifact_creation",
+        "last_verified_release_id",
+        "status",
+    }
+    allowed_observations = {
+        "PASS",
+        "FAIL",
+        "BLOCKED",
+        "NOT_TESTED",
+        "NOT_VERIFIED",
+        "CAPABILITY_DEPENDENT",
+        "PLATFORM_LIMITATION",
+    }
+    for record in records:
+        assert set(record) == required
+        for key in (
+            "discovery",
+            "installation",
+            "resolver_activation",
             "thread_persistence",
             "script_execution",
             "artifact_creation",
-        }
-        assert set(capabilities.values()) <= allowed
+            "status",
+        ):
+            assert record[key] in allowed_observations
 
 
 def test_cross_surface_section_matches_v022_certification_profile() -> None:

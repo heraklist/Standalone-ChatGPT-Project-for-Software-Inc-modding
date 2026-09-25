@@ -14,6 +14,10 @@ SCHEMA_NAMES = (
     "sim-specialist-result.schema.json",
     "sim-reference-map.schema.json",
     "sim-release-manifest.schema.json",
+    "sim-installation-evidence.schema.json",
+    "sim-personal-plugin-release-evidence.schema.json",
+    "sim-certification-report.schema.json",
+    "sim-plugin-interface.schema.json",
     "sim-eval.schema.json",
 )
 
@@ -152,7 +156,7 @@ def reference_map() -> dict[str, object]:
 
 def release_manifest() -> dict[str, object]:
     return {
-        "sim_version": "0.2.0-preview",
+        "sim_version": "0.2.3-preview.1",
         "channel": "PREVIEW",
         "target": "Beta 1.8.42",
         "evidence_grade": "GENERATION_GRADE",
@@ -318,21 +322,26 @@ def test_release_manifest_requires_bundle_and_file_hashes() -> None:
         assert_invalid("sim-release-manifest.schema.json", invalid_manifest)
 
 
-def test_v022_certification_profile_freezes_required_surface_cases() -> None:
+def test_v023_certification_profile_freezes_required_surface_cases() -> None:
     profile = json.loads(
         (ROOT / "production/sim/manifests/certification-profile.json").read_text(
             encoding="utf-8"
         )
     )
-    assert profile["schema_version"] == 1
-    assert profile["protocol_version"] == "sim-live-v2"
-    assert profile["surfaces"]["ChatGPT"]["required_cases"] == [
+    assert profile["schema_version"] == 2
+    assert profile["protocol_version"] == "sim-live-v3"
+    assert profile["production_transport"] == "OPENAI_PERSONAL_PLUGIN"
+    assert profile["surfaces"]["CHATGPT_WEB_NORMAL_CHAT"]["required_cases"] == [
         f"A{index:02d}" for index in range(1, 13)
     ]
-    assert profile["surfaces"]["Codex"]["required_cases"] == [
+    assert profile["surfaces"]["CHATGPT_DESKTOP_NORMAL_CHAT"]["required_cases"] == [
+        "A01", "A03", "A06", "A09", "A10", "A12"
+    ]
+    assert profile["surfaces"]["CODEX"]["required_cases"] == [
         "A01", "A03", "A09", "A10", "A12"
     ]
-    assert profile["surfaces"]["ChatGPT Project"]["release_blocking"] is False
+    assert profile["surfaces"]["CHATGPT_WORK"]["release_blocking"] is False
+    assert profile["surfaces"]["LOCAL_MARKETPLACE"]["release_blocking"] is False
 
 
 def test_session_schema_accepts_finalization_metadata(
@@ -346,3 +355,12 @@ def test_session_schema_accepts_finalization_metadata(
     session["artifact"]["family"] = "DATA_TYD"
     session["artifact"]["claim_class"] = "STATIC_DELIVERY"
     validator("sim-session.schema.json").validate(session)
+
+
+def test_plugin_interface_manifest_is_schema_valid() -> None:
+    payload = json.loads(
+        (ROOT / "production/sim/manifests/plugin-interface.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    validator("sim-plugin-interface.schema.json").validate(payload)

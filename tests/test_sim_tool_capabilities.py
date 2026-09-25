@@ -16,8 +16,11 @@ def test_tool_capability_manifest_distinguishes_bundle_from_execution() -> None:
 
     assert tool["repository_source"] == "tools/validate_code_profile.py"
     assert tool["package_path"] == "tools/validate_code_profile.py"
-    assert tool["surfaces"]["ChatGPT"]["bundled"] is True
-    assert tool["surfaces"]["ChatGPT"]["execution"] == "CAPABILITY_DEPENDENT"
+    assert tool["surfaces"]["CHATGPT_WEB_NORMAL_CHAT"]["bundled"] is True
+    assert (
+        tool["surfaces"]["CHATGPT_WEB_NORMAL_CHAT"]["execution"]
+        == "CAPABILITY_DEPENDENT"
+    )
     assert tool["unavailable_result"] == "NOT_EXECUTED"
 
 
@@ -43,3 +46,29 @@ def test_runtime_contract_never_equates_bundled_tool_with_execution() -> None:
     assert "bundled does not mean executable" in code
     assert "record the check as `NOT_EXECUTED`" in code
     assert "Bundled tool presence is not execution evidence" in sim
+
+
+def test_tool_capabilities_are_surface_complete_and_include_archive_inspector() -> None:
+    data = json.loads(CAPABILITIES.read_text(encoding="utf-8"))
+    expected_surfaces = {
+        "CHATGPT_WEB_NORMAL_CHAT",
+        "CHATGPT_DESKTOP_NORMAL_CHAT",
+        "CHATGPT_WORK",
+        "CODEX",
+        "REPOSITORY_CI",
+    }
+
+    for tool in data["tools"].values():
+        assert set(tool["surfaces"]) == expected_surfaces
+
+    inspector = data["tools"]["inspect_archive"]
+    assert inspector["repository_source"] == "tools/inspect_archive.py"
+    assert inspector["package_path"] == "tools/inspect_archive.py"
+    assert inspector["surfaces"]["CHATGPT_WEB_NORMAL_CHAT"]["bundled"] is True
+    assert (
+        inspector["surfaces"]["CHATGPT_WEB_NORMAL_CHAT"]["execution"]
+        == "CAPABILITY_DEPENDENT"
+    )
+    assert inspector["surfaces"]["REPOSITORY_CI"]["bundled"] is False
+    assert inspector["surfaces"]["REPOSITORY_CI"]["execution"] == "SUPPORTED"
+    assert inspector["unavailable_result"] == "NOT_EXECUTED"

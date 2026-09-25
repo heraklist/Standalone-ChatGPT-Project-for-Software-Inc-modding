@@ -4,6 +4,8 @@ import argparse
 import hashlib
 import json
 import sys
+
+import jsonschema
 from pathlib import Path
 from zipfile import ZIP_DEFLATED, ZipFile, ZipInfo
 
@@ -36,6 +38,7 @@ def build_sim_release(
     root: Path,
     channel: str = "preview",
     out_dir: Path | None = None,
+    certification_report: Path | None = None,
 ) -> tuple[Path, dict]:
     if channel.lower() != "preview":
         raise RuntimeError("SIM v0.2 builder supports preview channel only")
@@ -56,8 +59,8 @@ def build_sim_release(
         (root / "production/sim/manifests/sim-manifest.json").read_text(encoding="utf-8")
     )
     version = sim_manifest["version"]
-    if version != "0.2.2-preview":
-        raise RuntimeError("unexpected SIM Preview version")
+    if not isinstance(version, str) or not version:
+        raise RuntimeError("SIM manifest version must be a non-empty string")
 
     payload_root = root / "production/sim"
     payload: dict[str, bytes] = {}
@@ -87,6 +90,47 @@ def build_sim_release(
         "release_status": "PREVIEW_VALIDATED",
     }
 
+    if certification_report is not None:
+        try:
+            certification = json.loads(
+                Path(certification_report).read_text(encoding="utf-8")
+            )
+            schema = json.loads(
+                (root / "schemas/sim-certification-report.schema.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+        except (OSError, UnicodeError, json.JSONDecodeError) as exc:
+            raise RuntimeError(f"invalid certification report: {exc}") from exc
+        errors = sorted(
+            jsonschema.Draft202012Validator(schema).iter_errors(certification),
+            key=lambda error: tuple(str(part) for part in error.absolute_path),
+        )
+        if errors:
+            raise RuntimeError(
+                "invalid certification report: " + errors[0].message
+            )
+        if certification.get("certification_protocol_version") == "sim-live-v3":
+            # v3 certifies the distinct OpenAI personal-plugin artifact (P5/B5/O5),
+            # never this production/sim source ZIP.
+            report["surface_acceptance"] = "NOT_EVALUATED"
+            report["known_gaps"] = []
+            report["release_status"] = "PREVIEW_VALIDATED"
+        else:
+            # Historical v2 composition remains readable for immutable legacy
+            # evidence. New v3 code must not create these states for source ZIPs.
+            surface_results = certification["surface_results"]
+            report["known_gaps"] = list(certification["known_gaps"])
+            if certification["release_blocking_complete"] is True:
+                report["surface_acceptance"] = "PASS"
+                report["release_status"] = "PREVIEW_CERTIFIED"
+            elif any(value == "FAIL" for value in surface_results.values()):
+                report["surface_acceptance"] = "FAIL"
+                report["release_status"] = "PREVIEW_LIVE_FAILED"
+            else:
+                report["surface_acceptance"] = "INCOMPLETE"
+                report["release_status"] = "PREVIEW_LIVE_INCOMPLETE"
+
     output = out_dir or (root / "dist")
     output.mkdir(parents=True, exist_ok=True)
     zip_path = output / f"sim-{version}.zip"
@@ -108,9 +152,15 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--root", type=Path, default=ROOT)
     parser.add_argument("--channel", default="preview")
     parser.add_argument("--out-dir", type=Path)
+    parser.add_argument("--certification-report", type=Path)
     args = parser.parse_args(argv)
     try:
-        zip_path, report = build_sim_release(args.root, channel=args.channel, out_dir=args.out_dir)
+        zip_path, report = build_sim_release(
+            args.root,
+            channel=args.channel,
+            out_dir=args.out_dir,
+            certification_report=args.certification_report,
+        )
     except RuntimeError as exc:
         print(exc)
         return 1

@@ -138,6 +138,9 @@ def test_build_candidate_projects_one_public_skill_and_internal_modules(
     assert (output / "skills/sim/tools/validate_code_profile.py").read_bytes() == (
         source.read_bytes("tools/validate_code_profile.py")
     )
+    assert (output / "skills/sim/tools/inspect_archive.py").read_bytes() == (
+        source.read_bytes("tools/inspect_archive.py")
+    )
     assert len(result.semantic_aggregate_sha256) == 64
     assert len(result.candidate_tree_sha256) == 64
 
@@ -202,7 +205,7 @@ def _make_minimal_projection_repo(tmp_path: Path) -> tuple[Path, str]:
             {
                 "product": "SIM",
                 "display_name": "Software Inc Modding",
-                "version": "0.2.2-preview",
+                "version": "0.2.3-preview.1",
                 "channel": "PREVIEW",
                 "canonical_game_target": "Beta 1.8.42",
                 "evidence_grade": "GENERATION_GRADE",
@@ -210,6 +213,18 @@ def _make_minimal_projection_repo(tmp_path: Path) -> tuple[Path, str]:
         ).encode(),
         "production/sim/manifests/tool-capabilities.json": json.dumps(
             {"schema_version": 1, "tools": {}}
+        ).encode(),
+        "production/sim/manifests/plugin-interface.json": json.dumps(
+            {
+                "schema_version": 1,
+                "displayName": "SIM",
+                "shortDescription": "Software Inc modding for Beta 1.8.42.",
+                "longDescription": "Create and verify Software Inc mods.",
+                "developerName": "Heraklis",
+                "category": "Developer Tools",
+                "capabilities": ["Create Software Inc mods"],
+                "defaultPrompt": ["Create a Software Inc mod for Beta 1.8.42."]
+            }
         ).encode(),
         "production/sim/references/example.md": b"reference\n",
     }
@@ -242,3 +257,76 @@ def test_build_candidate_rejects_nonempty_output(tmp_path: Path) -> None:
     (output / "rogue.txt").write_text("occupied", encoding="utf-8")
     with pytest.raises(ValueError, match="output"):
         build_candidate(ROOT, source_sha, output)
+
+
+def test_build_candidate_emits_portable_agent_plugins_and_codex_manifests(
+    tmp_path: Path,
+) -> None:
+    import json
+
+    from tools.build_sim_plugin import build_candidate
+
+    source_sha = _current_head(ROOT)
+    output = tmp_path / "candidate"
+    build_candidate(ROOT, source_sha, output)
+
+    portable = json.loads((output / "plugin.json").read_text(encoding="utf-8"))
+    compatibility = json.loads(
+        (output / ".codex-plugin/plugin.json").read_text(encoding="utf-8")
+    )
+
+    assert portable["$schema"] == "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json"
+    assert portable["name"] == "sim"
+    assert portable["version"] == "0.2.3-preview.1"
+    assert isinstance(portable["description"], str) and portable["description"]
+    assert "schema_version" not in portable
+    assert "display_name" not in portable
+    assert "entrypoint" not in portable
+    assert "runtime_skill" not in portable
+    assert "public_skill_count" not in portable
+    assert "canonical_game_target" not in portable
+
+    assert compatibility["name"] == "sim"
+    assert compatibility["version"] == "0.2.3-preview.1"
+    assert isinstance(compatibility["description"], str) and compatibility["description"]
+    assert compatibility["skills"] == "./skills/"
+    assert compatibility["interface"]["displayName"] == "SIM"
+    assert "schema_version" not in compatibility
+    assert "displayName" not in compatibility
+    assert "entrypoint" not in compatibility
+    assert "skill" not in compatibility
+    assert "publicSkillCount" not in compatibility
+
+
+def test_build_candidate_emits_canonical_openai_interface_metadata(
+    tmp_path: Path,
+) -> None:
+    import json
+
+    from tools.build_sim_plugin import build_candidate
+
+    source_sha = _current_head(ROOT)
+    output = tmp_path / "candidate"
+    build_candidate(ROOT, source_sha, output)
+
+    portable = json.loads((output / "plugin.json").read_text(encoding="utf-8"))
+    compatibility = json.loads(
+        (output / ".codex-plugin/plugin.json").read_text(encoding="utf-8")
+    )
+
+    assert "extensions" in portable
+    assert "com.openai" in portable["extensions"]
+    interface = portable["extensions"]["com.openai"]["interface"]
+
+    assert interface["displayName"] == "SIM"
+    assert interface["developerName"] == "Heraklis"
+    assert interface["category"] == "Developer Tools"
+    assert len(interface["defaultPrompt"]) == 3
+    assert all(
+        isinstance(prompt, str)
+        and prompt
+        and "\n" not in prompt
+        and len(prompt) <= 128
+        for prompt in interface["defaultPrompt"]
+    )
+    assert compatibility["interface"] == interface

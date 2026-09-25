@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "source_commit": "9e2d009743f5f405b31460936ad47651f0e3f832",
+  "plugin_version": "0.2.3-preview.1",
+  "candidate_tree_sha256": "84c783d20485ed157fc7b47ea7d47c40f24db1a9a6ce14d31a55e60489c1fb5a",
+  "semantic_aggregate_sha256": "6e4a84ad7873a5a72bbfe915b8d0ad653a0a579bbb02c9fce95bc6563c839d94",
+  "exact_target_manifest_sha256": "00fb0a1628c1be1ccaa9ac2a53e619b941599e9ad723375ede4213ca50ba95d3",
+  "projection_policy_sha256": "a422fca4689bff98f04bd11414fa26078791f7ee8d517ee16f9851df02dfbd37",
+  "agent_plugin_schema_sha256": "bd0cfd6388f7d5c5c1b4c5edd70df030276345df115274686a0e6d52a92366ed",
+  "distribution_bundle_sha256": "ecdffc947bfc971ebcf299a81d312d92a4bba20c1e3ff8eba724ededb1499cc5",
+  "certification_protocol_version": "sim-live-v3",
+  "verification": "REPOSITORY_PLUGIN_BUNDLE_AND_PERSONAL_RELEASE_NORMALIZED_VALIDATED",
+  "supersedes_source_commit": "8e0644cab262ef5317e11ec8ffcfee3665d6512a",
+  "diagnostic_predecessor_release_id": "pluginrel_6ab4ed624e888191a1a841c409afa613"
+}

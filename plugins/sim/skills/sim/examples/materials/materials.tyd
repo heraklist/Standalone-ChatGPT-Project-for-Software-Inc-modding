@@ -1,0 +1,6 @@
+# Synthetic room material example
+SIM_EXAMPLE_MATERIAL {
+    Base "example-base.png"
+    Bump "example-bump.png"
+    Extra "example-extra.png"
+}

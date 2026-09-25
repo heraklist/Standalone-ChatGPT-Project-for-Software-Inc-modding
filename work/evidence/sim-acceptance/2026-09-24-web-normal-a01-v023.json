@@ -1,0 +1,50 @@
+{
+  "schema_version": 3,
+  "case_id": "A01",
+  "surface": "CHATGPT_WEB_NORMAL_CHAT",
+  "result": "PASS",
+  "candidate_tree_sha256": "84c783d20485ed157fc7b47ea7d47c40f24db1a9a6ce14d31a55e60489c1fb5a",
+  "semantic_aggregate_sha256": "6e4a84ad7873a5a72bbfe915b8d0ad653a0a579bbb02c9fce95bc6563c839d94",
+  "candidate_source_commit": "9e2d009743f5f405b31460936ad47651f0e3f832",
+  "plugin_version": "0.2.3-preview.1",
+  "exact_target_manifest_sha256": "00fb0a1628c1be1ccaa9ac2a53e619b941599e9ad723375ede4213ca50ba95d3",
+  "certification_protocol_version": "sim-live-v3",
+  "installation_evidence_id": "web-normal-o6-20260924",
+  "host_observation": {
+    "verification_ceiling": "V2",
+    "explicit_sim_activation": true,
+    "data_tyd_routing": true,
+    "beta_1_8_42_evidence_discipline": true,
+    "required_outcomes_observed": [
+      "Explicit SIM activation recognized on Web normal chat",
+      "Data/TyD route selected for a small SoftwareType task",
+      "Beta 1.8.42 exact-target discipline remained visible"
+    ],
+    "forbidden_outcomes_observed": [],
+    "runtime_verification_claimed": false,
+    "artifact_state_observed": "CANDIDATE_ARTIFACT",
+    "artifact_static_review_observed": "PASS",
+    "supplied_artifact_payload": "EvoWorkflowManager/SoftwareTypes/WorkflowManager.tyd",
+    "independent_static_checks": {
+      "archive_single_payload": true,
+      "path_traversal_observed": false,
+      "braces_balanced": true,
+      "brackets_balanced": true,
+      "canonical_boolean_form": true,
+      "override_absent": true,
+      "categories_plural_used": true,
+      "deprecated_singular_category_field_absent": true,
+      "submarket_vectors_are_triplets": true
+    }
+  },
+  "evidence_refs": [
+    "owner-observation-web-normal-chat-a01-2026-09-24",
+    "independent-static-review-evo-workflow-manager-2026-09-24",
+    "official-software-inc-data-modding-docs-spot-check-2026-09-24"
+  ],
+  "retest_of": null,
+  "recorded_at": "2026-09-24T23:38:00+03:00",
+  "transport": "OPENAI_PERSONAL_PLUGIN",
+  "plugin_id": "plugins_6ab4ed6003b48191a0de271d4759c5e2",
+  "release_id": "pluginrel_6ab4f344b9888191b492884b8034f5b2"
+}

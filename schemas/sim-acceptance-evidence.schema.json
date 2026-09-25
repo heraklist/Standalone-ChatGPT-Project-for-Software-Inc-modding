@@ -2,107 +2,253 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://evochia.local/schemas/sim-acceptance-evidence.schema.json",
   "title": "SIM Acceptance Evidence",
-  "type": "object",
-  "additionalProperties": false,
-  "required": [
-    "schema_version",
-    "case_id",
-    "surface",
-    "result",
-    "candidate_tree_sha256",
-    "semantic_aggregate_sha256",
-    "candidate_source_commit",
-    "plugin_version",
-    "exact_target_manifest_sha256",
-    "certification_protocol_version",
-    "installation_evidence_id",
-    "host_observation",
-    "evidence_refs",
-    "retest_of",
-    "recorded_at"
-  ],
-  "properties": {
-    "schema_version": {
-      "const": 2
-    },
-    "case_id": {
-      "enum": [
-        "A01",
-        "A02",
-        "A03",
-        "A04",
-        "A05",
-        "A06",
-        "A07",
-        "A08",
-        "A09",
-        "A10",
-        "A11",
-        "A12"
-      ]
-    },
-    "surface": {
-      "enum": [
-        "ChatGPT",
-        "Codex",
-        "ChatGPT Project"
-      ]
-    },
-    "result": {
-      "enum": [
-        "PASS",
-        "FAIL",
-        "PLATFORM_LIMITATION",
-        "NOT_TESTED"
-      ]
-    },
-    "candidate_tree_sha256": {
-      "type": "string",
-      "pattern": "^[a-f0-9]{64}$"
-    },
-    "semantic_aggregate_sha256": {
-      "type": "string",
-      "pattern": "^[a-f0-9]{64}$"
-    },
-    "candidate_source_commit": {
-      "type": "string",
-      "pattern": "^[a-f0-9]{40}$"
-    },
-    "plugin_version": {
-      "type": "string",
-      "minLength": 1
-    },
-    "exact_target_manifest_sha256": {
-      "type": "string",
-      "pattern": "^[a-f0-9]{64}$"
-    },
-    "certification_protocol_version": {
-      "type": "string",
-      "minLength": 1
-    },
-    "installation_evidence_id": {
-      "type": "string",
-      "minLength": 1
-    },
-    "host_observation": {
-      "type": "object"
-    },
-    "evidence_refs": {
-      "type": "array",
-      "items": {
-        "type": "string",
-        "minLength": 1
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "case_id",
+        "surface",
+        "result",
+        "candidate_tree_sha256",
+        "semantic_aggregate_sha256",
+        "candidate_source_commit",
+        "plugin_version",
+        "exact_target_manifest_sha256",
+        "certification_protocol_version",
+        "installation_evidence_id",
+        "host_observation",
+        "evidence_refs",
+        "retest_of",
+        "recorded_at"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": 2
+        },
+        "surface": {
+          "enum": [
+            "ChatGPT",
+            "Codex",
+            "ChatGPT Project"
+          ]
+        },
+        "case_id": {
+          "enum": [
+            "A01",
+            "A02",
+            "A03",
+            "A04",
+            "A05",
+            "A06",
+            "A07",
+            "A08",
+            "A09",
+            "A10",
+            "A11",
+            "A12"
+          ]
+        },
+        "result": {
+          "enum": [
+            "PASS",
+            "FAIL",
+            "PLATFORM_LIMITATION",
+            "NOT_TESTED"
+          ]
+        },
+        "candidate_tree_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "semantic_aggregate_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "candidate_source_commit": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{40}$"
+        },
+        "plugin_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "exact_target_manifest_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "certification_protocol_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "installation_evidence_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "host_observation": {
+          "type": "object"
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "retest_of": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "recorded_at": {
+          "type": "string",
+          "format": "date-time"
+        }
       }
     },
-    "retest_of": {
-      "type": [
-        "string",
-        "null"
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "case_id",
+        "surface",
+        "result",
+        "candidate_tree_sha256",
+        "semantic_aggregate_sha256",
+        "candidate_source_commit",
+        "plugin_version",
+        "exact_target_manifest_sha256",
+        "certification_protocol_version",
+        "installation_evidence_id",
+        "host_observation",
+        "evidence_refs",
+        "retest_of",
+        "recorded_at",
+        "transport"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": 3
+        },
+        "surface": {
+          "enum": [
+            "CHATGPT_WEB_NORMAL_CHAT",
+            "CHATGPT_DESKTOP_NORMAL_CHAT",
+            "CODEX",
+            "CHATGPT_WORK",
+            "LOCAL_MARKETPLACE"
+          ]
+        },
+        "case_id": {
+          "enum": [
+            "A01",
+            "A02",
+            "A03",
+            "A04",
+            "A05",
+            "A06",
+            "A07",
+            "A08",
+            "A09",
+            "A10",
+            "A11",
+            "A12"
+          ]
+        },
+        "result": {
+          "enum": [
+            "PASS",
+            "FAIL",
+            "PLATFORM_LIMITATION",
+            "NOT_TESTED"
+          ]
+        },
+        "candidate_tree_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "semantic_aggregate_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "candidate_source_commit": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{40}$"
+        },
+        "plugin_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "exact_target_manifest_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "certification_protocol_version": {
+          "const": "sim-live-v3"
+        },
+        "installation_evidence_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "host_observation": {
+          "type": "object"
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "retest_of": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "recorded_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "transport": {
+          "enum": [
+            "OPENAI_PERSONAL_PLUGIN",
+            "MARKETPLACE_GIT_SUBDIR",
+            "LOCAL_MARKETPLACE"
+          ]
+        },
+        "plugin_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "release_id": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "transport": {
+                "const": "OPENAI_PERSONAL_PLUGIN"
+              }
+            },
+            "required": [
+              "transport"
+            ]
+          },
+          "then": {
+            "required": [
+              "plugin_id",
+              "release_id"
+            ]
+          }
+        }
       ]
-    },
-    "recorded_at": {
-      "type": "string",
-      "format": "date-time"
     }
-  }
+  ]
 }

@@ -28,7 +28,7 @@ def test_sim_truth_copy_and_orchestrator_do_not_globalize_claim_specific_gaps() 
     assert "do not describe the canonical Beta 1.8.42 target as pending" in skill
 
 
-def test_a01_records_observed_failure_and_supported_explicit_invocation() -> None:
+def test_a01_historical_failure_is_preserved_and_current_marketplace_resolver_is_blocked() -> None:
     record = json.loads(A01.read_text(encoding="utf-8"))
     assert record["case_id"] == "A01"
     assert record["surface"] == "ChatGPT"
@@ -39,4 +39,12 @@ def test_a01_records_observed_failure_and_supported_explicit_invocation() -> Non
     assert record["forbidden_outcomes_observed"] == []
 
     matrix = json.loads(MATRIX.read_text(encoding="utf-8"))
-    assert matrix["surfaces"]["ChatGPT"]["explicit_invocation"] == "SUPPORTED"
+    marketplace = next(
+        item
+        for item in matrix["records"]
+        if item["surface"] == "CHATGPT_WEB_NORMAL_CHAT"
+        and item["transport"] == "MARKETPLACE_GIT_SUBDIR"
+    )
+    assert marketplace["discovery"] == "PASS"
+    assert marketplace["resolver_activation"] == "BLOCKED"
+    assert marketplace["status"] == "BLOCKED"

@@ -276,3 +276,57 @@ def test_validator_rejects_undeclared_app_requirement(tmp_path: Path) -> None:
 
     findings = validate_candidate(ROOT, candidate, source_sha)
     assert "SIM_PLUGIN_FORBIDDEN_REQUIREMENT" in _codes(findings)
+
+
+def test_validator_rejects_legacy_custom_portable_manifest_shape(
+    tmp_path: Path,
+) -> None:
+    from tools.validate_sim_plugin import validate_candidate
+
+    candidate, source_sha, _ = _build(tmp_path)
+    path = candidate / "plugin.json"
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    payload.pop("$schema", None)
+    payload["schema_version"] = 1
+    payload["display_name"] = "SIM"
+    payload["entrypoint"] = "@sim"
+    path.write_text(json.dumps(payload, sort_keys=True), encoding="utf-8")
+
+    assert "SIM_PLUGIN_PORTABLE_MANIFEST_INVALID" in _codes(
+        validate_candidate(ROOT, candidate, source_sha)
+    )
+
+
+def test_validator_rejects_legacy_custom_codex_manifest_shape(
+    tmp_path: Path,
+) -> None:
+    from tools.validate_sim_plugin import validate_candidate
+
+    candidate, source_sha, _ = _build(tmp_path)
+    path = candidate / ".codex-plugin/plugin.json"
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    payload.pop("skills", None)
+    payload.pop("interface", None)
+    payload["displayName"] = "SIM"
+    payload["skill"] = "skills/sim/SKILL.md"
+    path.write_text(json.dumps(payload, sort_keys=True), encoding="utf-8")
+
+    assert "SIM_PLUGIN_COMPATIBILITY_MANIFEST_INVALID" in _codes(
+        validate_candidate(ROOT, candidate, source_sha)
+    )
+
+
+def test_validator_rejects_official_schema_root_extension_drift(
+    tmp_path: Path,
+) -> None:
+    from tools.validate_sim_plugin import validate_candidate
+
+    candidate, source_sha, _ = _build(tmp_path)
+    path = candidate / "plugin.json"
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    payload["unexpected_root_field"] = True
+    path.write_text(json.dumps(payload, sort_keys=True), encoding="utf-8")
+
+    assert "SIM_PLUGIN_OFFICIAL_SCHEMA_INVALID" in _codes(
+        validate_candidate(ROOT, candidate, source_sha)
+    )

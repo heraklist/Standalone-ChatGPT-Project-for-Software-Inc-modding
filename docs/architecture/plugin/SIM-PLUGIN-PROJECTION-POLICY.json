@@ -42,5 +42,6 @@
     "provenance/path_inventory.json",
     "provenance/file_hashes.json",
     "provenance/plugin_manifest.json"
-  ]
+  ],
+  "plugin_interface_source": "production/sim/manifests/plugin-interface.json"
 }

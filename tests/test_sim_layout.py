@@ -25,18 +25,86 @@ SCHEMA_NAMES = (
 SIM_MANIFEST = {
     "product": "SIM",
     "display_name": "Software Inc Modding",
-    "version": "0.2.2-preview",
+    "version": "0.2.3-preview.1",
     "channel": "PREVIEW",
     "canonical_game_target": "Beta 1.8.42",
     "evidence_grade": "GENERATION_GRADE",
 }
 
-COMPATIBILITY_CAPABILITIES = {
-    "explicit_invocation": "NOT_TESTED",
-    "thread_persistence": "NOT_TESTED",
-    "script_execution": "CAPABILITY_DEPENDENT",
-    "artifact_creation": "CAPABILITY_DEPENDENT",
-}
+COMPATIBILITY_RECORDS = [
+    {
+        "surface": "CHATGPT_WEB_NORMAL_CHAT",
+        "transport": "OPENAI_PERSONAL_PLUGIN",
+        "discovery": "NOT_TESTED",
+        "installation": "NOT_TESTED",
+        "resolver_activation": "NOT_TESTED",
+        "thread_persistence": "NOT_TESTED",
+        "script_execution": "CAPABILITY_DEPENDENT",
+        "artifact_creation": "CAPABILITY_DEPENDENT",
+        "last_verified_release_id": None,
+        "status": "NOT_VERIFIED",
+    },
+    {
+        "surface": "CHATGPT_DESKTOP_NORMAL_CHAT",
+        "transport": "OPENAI_PERSONAL_PLUGIN",
+        "discovery": "NOT_TESTED",
+        "installation": "NOT_TESTED",
+        "resolver_activation": "NOT_TESTED",
+        "thread_persistence": "NOT_TESTED",
+        "script_execution": "CAPABILITY_DEPENDENT",
+        "artifact_creation": "CAPABILITY_DEPENDENT",
+        "last_verified_release_id": None,
+        "status": "NOT_VERIFIED",
+    },
+    {
+        "surface": "CODEX",
+        "transport": "OPENAI_PERSONAL_PLUGIN",
+        "discovery": "NOT_TESTED",
+        "installation": "NOT_TESTED",
+        "resolver_activation": "NOT_TESTED",
+        "thread_persistence": "NOT_TESTED",
+        "script_execution": "CAPABILITY_DEPENDENT",
+        "artifact_creation": "CAPABILITY_DEPENDENT",
+        "last_verified_release_id": None,
+        "status": "NOT_VERIFIED",
+    },
+    {
+        "surface": "CHATGPT_WORK",
+        "transport": "OPENAI_PERSONAL_PLUGIN",
+        "discovery": "NOT_TESTED",
+        "installation": "NOT_TESTED",
+        "resolver_activation": "NOT_TESTED",
+        "thread_persistence": "NOT_TESTED",
+        "script_execution": "CAPABILITY_DEPENDENT",
+        "artifact_creation": "CAPABILITY_DEPENDENT",
+        "last_verified_release_id": None,
+        "status": "NOT_VERIFIED",
+    },
+    {
+        "surface": "CHATGPT_WEB_NORMAL_CHAT",
+        "transport": "MARKETPLACE_GIT_SUBDIR",
+        "discovery": "PASS",
+        "installation": "NOT_VERIFIED",
+        "resolver_activation": "BLOCKED",
+        "thread_persistence": "NOT_TESTED",
+        "script_execution": "CAPABILITY_DEPENDENT",
+        "artifact_creation": "CAPABILITY_DEPENDENT",
+        "last_verified_release_id": None,
+        "status": "BLOCKED",
+    },
+    {
+        "surface": "LOCAL_MARKETPLACE",
+        "transport": "LOCAL_MARKETPLACE",
+        "discovery": "NOT_TESTED",
+        "installation": "NOT_TESTED",
+        "resolver_activation": "NOT_TESTED",
+        "thread_persistence": "NOT_TESTED",
+        "script_execution": "CAPABILITY_DEPENDENT",
+        "artifact_creation": "CAPABILITY_DEPENDENT",
+        "last_verified_release_id": None,
+        "status": "NOT_VERIFIED",
+    },
+]
 
 
 def write_sim_contracts(root: Path) -> None:
@@ -60,14 +128,7 @@ def write_sim_contracts(root: Path) -> None:
         json.dumps({"schema_version": 1, "entries": []}), encoding="utf-8"
     )
     (manifests / "compatibility-matrix.json").write_text(
-        json.dumps(
-            {
-                "surfaces": {
-                    surface: COMPATIBILITY_CAPABILITIES
-                    for surface in ("ChatGPT", "ChatGPT Project", "Codex")
-                }
-            }
-        ),
+        json.dumps({"schema_version": 2, "records": COMPATIBILITY_RECORDS}),
         encoding="utf-8",
     )
 
@@ -102,14 +163,7 @@ def test_compatibility_matrix_matches_current_acceptance_contract() -> None:
         )
     )
 
-    expected = {
-        "surfaces": {
-            surface: dict(COMPATIBILITY_CAPABILITIES)
-            for surface in ("ChatGPT", "ChatGPT Project", "Codex")
-        }
-    }
-    expected["surfaces"]["ChatGPT"]["explicit_invocation"] = "SUPPORTED"
-    assert matrix == expected
+    assert matrix == {"schema_version": 2, "records": COMPATIBILITY_RECORDS}
 
 
 def test_verify_sim_layout_accepts_complete_pr_c_core_domain_contract(tmp_path: Path) -> None:

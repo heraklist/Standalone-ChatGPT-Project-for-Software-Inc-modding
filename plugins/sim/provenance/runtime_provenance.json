@@ -1,0 +1,342 @@
+{
+  "entries": [
+    {
+      "package_path": "skills/sim/RUNTIME.json",
+      "package_sha256": "a78a99a862c2f5784a2844bdbb4943ab5d6c6710805925378975261b313f9752",
+      "relation": "EXACT_BYTE_COPY",
+      "source_path": "production/sim/RUNTIME.json",
+      "source_sha256": "a78a99a862c2f5784a2844bdbb4943ab5d6c6710805925378975261b313f9752"
+    },
+    {
+      "package_path": "skills/sim/SKILL.md",
+      "package_sha256": "2aa69c45212f6a64c341f56383b0a12eb49720d3ff826f81cab33de79c92a4ef",
+      "relation": "EXACT_BYTE_COPY",
+      "source_path": "production/sim/SKILL.md",
+      "source_sha256": "2aa69c45212f6a64c341f56383b0a12eb49720d3ff826f81cab33de79c92a4ef"
+    },
+    {
+      "package_path": "skills/sim/examples/README.md",
+      "package_sha256": "692ea80ca416d1cbcd54d1d45e209bfcd7e28705c6360818707906e29e8d00eb",
+      "relation": "EXACT_BYTE_COPY",
+      "source_path": "production/sim/examples/README.md",
+      "source_sha256": "692ea80ca416d1cbcd54d1d45e209bfcd7e28705c6360818707906e29e8d00eb"
+    },
+    {
+      "package_path": "skills/sim/examples/code/GameCompiledMinimal.cs",
+      "package_sha256": "9060affe423577d35a5ed94f081a97c16fac2e06f4770557870bcc5afe46be26",
+      "relation": "EXACT_BYTE_COPY",
+      "source_path": "production/sim/examples/code/GameCompiledMinimal.cs",
+      "source_sha256": "9060affe423577d35a5ed94f081a97c16fac2e06f4770557870bcc5afe46be26"
+    },
+    {
+      "package_path": "skills/sim/examples/furniture/transform-parent.tyd",
+      "package_sha256": "a7a4720cff31a2fed883eb0b6aff5b046daf74bd077c6796eb01644b359d92b0",
+      "relation": "EXACT_BYTE_COPY",
+      "source_path": "production/sim/examples/furniture/transform-parent.tyd",
+      "source_sha256": "a7a4720cff31a2fed883eb0b6aff5b046daf74bd077c6796eb01644b359d92b0"
+    },
+    {
+      "package_path": "skills/sim/examples/manifest.json",
+      "package_sha256": "c08a342960ec49d1bcbc8dadb7dbbde4630725277ea4b54f3919624ebca4862b",
+      "relation": "EXACT_BYTE_COPY",
+      "source_path": "production/sim/examples/manifest.json",
+      "source_sha256": "c08a342960ec49d1bcbc8dadb7dbbde4630725277ea4b54f3919624ebca4862b"
+    },
+    {
+      "package_path": "skills/sim/examples/materials/materials.tyd",
+      "package_sha256": "713c5fdb2d9f6d98262ddb3d83bb281d5eaceb0a352b5e0c4adc4e5f85d72a68",
+      "relation": "EXACT_BYTE_COPY",
+      "source_path": "production/sim/examples/materials/materials.tyd",
+      "source_sha256": "713c5fdb2d9f6d98262ddb3d83bb281d5eaceb0a352b5e0c4adc4e5f85d72a68"
+    },
+    {
+      "package_path": "skills/sim/examples/sipl/end-of-day.tyd",
+      "package_sha256": "489c84d7b24fd24498c22463ebe38ac953960f2cb0d237d931232692b4b2cc51",
+      "relation": "EXACT_BYTE_COPY",
+      "source_path": "production/sim/examples/sipl/end-of-day.tyd",
+      "source_sha256": "489c84d7b24fd24498c22463ebe38ac953960f2cb0d237d931232692b4b2cc51"
+    },
+    {
+      "package_path": "skills/sim/examples/tyd/list-and-comments.tyd",
+      "package_sha256": "08b865cb4b323cafc51f3c62817d144cdab0ab7f06020e3456be1ce6866548e9",
+      "relation": "EXACT_BYTE_COPY",
+      "source_path": "production/sim/examples/tyd/list-and-comments.tyd",
+      "source_sha256": "08b865cb4b323cafc51f3c62817d144cdab0ab7f06020e3456be1ce6866548e9"
+    },
+    {
+      "package_path": "skills/sim/manifests/archive-safety-policy.json",
+      "package_sha256": "23c3c756d5021d65d0c7bba613e229e7873c021981b2657c12d7f55ce9e1806a",
+      "relation": "EXACT_BYTE_COPY",
+      "source_path": "production/sim/manifests/archive-safety-policy.json",
+      "source_sha256": "23c3c756d5021d65d0c7bba613e229e7873c021981b2657c12d7f55ce9e1806a"
+    },
+    {
+      "package_path": "skills/sim/manifests/certification-profile.json",
+      "package_sha256": "3c03c12acf8fe3ad8e5561bdc01e35e31602fdcefc356c9388a1bf95a391481c",
+      "relation": "EXACT_BYTE_COPY",
+      "source_path": "production/sim/manifests/certification-profile.json",
+      "source_sha256": "3c03c12acf8fe3ad8e5561bdc01e35e31602fdcefc356c9388a1bf95a391481c"
+    },
+    {
+      "package_path": "skills/sim/manifests/compatibility-matrix.json",
+      "package_sha256": "1992fff4e185316df5e7a2297c32d13e6f7f8d5d49367c4dc02856f4959455b6",
+      "relation": "EXACT_BYTE_COPY",
+      "source_path": "production/sim/manifests/compatibility-matrix.json",
+      "source_sha256": "1992fff4e185316df5e7a2297c32d13e6f7f8d5d49367c4dc02856f4959455b6"
+    },
+    {
+      "package_path": "skills/sim/manifests/finalization-policy.json",
+      "package_sha256": "987de4b1a0bc4b7b42424603942bf28bca6c7cdf9e15981d878c2f6af92a5040",
+      "relation": "EXACT_BYTE_COPY",
+      "source_path": "production/sim/manifests/finalization-policy.json",
+      "source_sha256": "987de4b1a0bc4b7b42424603942bf28bca6c7cdf9e15981d878c2f6af92a5040"
+    },
+    {
+      "package_path": "skills/sim/manifests/plugin-interface.json",
+      "package_sha256": "e46d24449a7e8c731ce5e253e418bff817a90bc054fac8c21007d6b035059e5d",
+      "relation": "EXACT_BYTE_COPY",
+      "source_path": "production/sim/manifests/plugin-interface.json",
+      "source_sha256": "e46d24449a7e8c731ce5e253e418bff817a90bc054fac8c21007d6b035059e5d"
+    },
+    {
+      "package_path": "skills/sim/manifests/reference-source-map.json",
+      "package_sha256": "60610bef72b50b5a466423029bba460ef20de725f0e9d81a75bb31635ecadef6",
+      "relation": "EXACT_BYTE_COPY",
+      "source_path": "production/sim/manifests/reference-source-map.json",
+      "source_sha256": "60610bef72b50b5a466423029bba460ef20de725f0e9d81a75bb31635ecadef6"
+    },
+    {
+      "package_path": "skills/sim/manifests/sim-manifest.json",
+      "package_sha256": "d5d5b6ba2d50582a5c56b0f40c6bffb2a2d94b3cddd0ed4df5104c25c5d6d78d",
+      "relation": "EXACT_BYTE_COPY",
+      "source_path": "production/sim/manifests/sim-manifest.json",
+      "source_sha256": "d5d5b6ba2d50582a5c56b0f40c6bffb2a2d94b3cddd0ed4df5104c25c5d6d78d"
+    },
+    {
+      "package_path": "skills/sim/manifests/tool-capabilities.json",
+      "package_sha256": "3654c502fbb4c4a4f210f848c06586fb26233dabedf3663a73e7b4023946872e",
+      "relation": "EXACT_BYTE_COPY",
+      "source_path": "production/sim/manifests/tool-capabilities.json",
+      "source_sha256": "3654c502fbb4c4a4f210f848c06586fb26233dabedf3663a73e7b4023946872e"
+    },
+    {
+      "package_path": "skills/sim/references/code-core.md",
+      "package_sha256": "99cba314757c59165f483f077c41848bc7cf4b4f90955a67ad35b4eedc142ebc",
+      "relation": "EXACT_BYTE_COPY",
+      "source_path": "production/sim/references/code-core.md",
+      "source_sha256": "99cba314757c59165f483f077c41848bc7cf4b4f90955a67ad35b4eedc142ebc"
+    },
+    {
+      "package_path": "skills/sim/references/code-runtime.md",
+      "package_sha256": "a55cb9c479f098d019fa9206b6c9f3c6bed4969b6badedf8387fb8ebde9bfef9",
+      "relation": "EXACT_BYTE_COPY",
+      "source_path": "production/sim/references/code-runtime.md",
+      "source_sha256": "a55cb9c479f098d019fa9206b6c9f3c6bed4969b6badedf8387fb8ebde9bfef9"
+    },
+    {
+      "package_path": "skills/sim/references/compatibility.md",
+      "package_sha256": "5c4711d3e1d8feef2430326de13dd6ac4c14c21ee8a51c214e739528a55d53b1",
+      "relation": "EXACT_BYTE_COPY",
+      "source_path": "production/sim/references/compatibility.md",
+      "source_sha256": "5c4711d3e1d8feef2430326de13dd6ac4c14c21ee8a51c214e739528a55d53b1"
+    },
+    {
+      "package_path": "skills/sim/references/data.md",
+      "package_sha256": "e00ec71b668ce5c331aa6caa9cc378bc24267dc0446a18ffedc240fdf7f6a8af",
+      "relation": "EXACT_BYTE_COPY",
+      "source_path": "production/sim/references/data.md",
+      "source_sha256": "e00ec71b668ce5c331aa6caa9cc378bc24267dc0446a18ffedc240fdf7f6a8af"
+    },
+    {
+      "package_path": "skills/sim/references/debugging.md",
+      "package_sha256": "8b361a726bcaf8629b7668d3923add0e4b5a60b3f99dab8c4de289b8d21e7628",
+      "relation": "EXACT_BYTE_COPY",
+      "source_path": "production/sim/references/debugging.md",
+      "source_sha256": "8b361a726bcaf8629b7668d3923add0e4b5a60b3f99dab8c4de289b8d21e7628"
+    },
+    {
+      "package_path": "skills/sim/references/delivery.md",
+      "package_sha256": "3620141dae7a67473655f3b4a1f3aa044b5b3ce4670661bae4cf204f23573a28",
+      "relation": "EXACT_BYTE_COPY",
+      "source_path": "production/sim/references/delivery.md",
+      "source_sha256": "3620141dae7a67473655f3b4a1f3aa044b5b3ce4670661bae4cf204f23573a28"
+    },
+    {
+      "package_path": "skills/sim/references/ecosystem-router.md",
+      "package_sha256": "489a6e0ef67c0c1ce26040bb992881843f8c85073ccb5228ba453949f9c91661",
+      "relation": "EXACT_BYTE_COPY",
+      "source_path": "production/sim/references/ecosystem-router.md",
+      "source_sha256": "489a6e0ef67c0c1ce26040bb992881843f8c85073ccb5228ba453949f9c91661"
+    },
+    {
+      "package_path": "skills/sim/references/editor-content.md",
+      "package_sha256": "0afe4931806d107d83bfa7d1f9d9a81c5fd5bd212dde3251d3a974239a5dfa14",
+      "relation": "EXACT_BYTE_COPY",
+      "source_path": "production/sim/references/editor-content.md",
+      "source_sha256": "0afe4931806d107d83bfa7d1f9d9a81c5fd5bd212dde3251d3a974239a5dfa14"
+    },
+    {
+      "package_path": "skills/sim/references/evidence-truth.md",
+      "package_sha256": "79b36a572f9cb680e961f2e3ac15241effbea530bc113e0313c9587eeb39a93e",
+      "relation": "EXACT_BYTE_COPY",
+      "source_path": "production/sim/references/evidence-truth.md",
+      "source_sha256": "79b36a572f9cb680e961f2e3ac15241effbea530bc113e0313c9587eeb39a93e"
+    },
+    {
+      "package_path": "skills/sim/references/furniture.md",
+      "package_sha256": "0f70344e272505a157ce771ccf8e2c462e90e3f20f0ffd6d84d5ff462db42230",
+      "relation": "EXACT_BYTE_COPY",
+      "source_path": "production/sim/references/furniture.md",
+      "source_sha256": "0f70344e272505a157ce771ccf8e2c462e90e3f20f0ffd6d84d5ff462db42230"
+    },
+    {
+      "package_path": "skills/sim/references/internal/domains/code-modding.md",
+      "package_sha256": "6627dd1d99d888f2e5e66c0f440c22d393306ba9c5ca31f4967ffd900e86880e",
+      "relation": "REMAP_EXACT_BYTE_COPY",
+      "source_path": "production/sim/domains/code-modding/SKILL.md",
+      "source_sha256": "6627dd1d99d888f2e5e66c0f440c22d393306ba9c5ca31f4967ffd900e86880e"
+    },
+    {
+      "package_path": "skills/sim/references/internal/domains/compatibility-packaging.md",
+      "package_sha256": "b1d74292c1120a882aef5409637d990880dba2f6d698943779947415baf1ced5",
+      "relation": "REMAP_EXACT_BYTE_COPY",
+      "source_path": "production/sim/domains/compatibility-packaging/SKILL.md",
+      "source_sha256": "b1d74292c1120a882aef5409637d990880dba2f6d698943779947415baf1ced5"
+    },
+    {
+      "package_path": "skills/sim/references/internal/domains/data-tyd.md",
+      "package_sha256": "704e75bcfc7fa4c3b03a2cf726bd2cb83399710268fc9b329b1460300adfd745",
+      "relation": "REMAP_EXACT_BYTE_COPY",
+      "source_path": "production/sim/domains/data-tyd/SKILL.md",
+      "source_sha256": "704e75bcfc7fa4c3b03a2cf726bd2cb83399710268fc9b329b1460300adfd745"
+    },
+    {
+      "package_path": "skills/sim/references/internal/domains/editor-native.md",
+      "package_sha256": "4f164671d9a65327414067de1e48baf3d6efffe195c51cecb40c6571798932fa",
+      "relation": "REMAP_EXACT_BYTE_COPY",
+      "source_path": "production/sim/domains/editor-native/SKILL.md",
+      "source_sha256": "4f164671d9a65327414067de1e48baf3d6efffe195c51cecb40c6571798932fa"
+    },
+    {
+      "package_path": "skills/sim/references/internal/domains/furniture.md",
+      "package_sha256": "3aa7eb1726f061d9911d435659b08bd37a948df6cfc55aa359b853d42399fb79",
+      "relation": "REMAP_EXACT_BYTE_COPY",
+      "source_path": "production/sim/domains/furniture/SKILL.md",
+      "source_sha256": "3aa7eb1726f061d9911d435659b08bd37a948df6cfc55aa359b853d42399fb79"
+    },
+    {
+      "package_path": "skills/sim/references/internal/domains/localization.md",
+      "package_sha256": "b82c7353a9b4e17337855037258919465feabb06f92852701873d18b2cc92cf2",
+      "relation": "REMAP_EXACT_BYTE_COPY",
+      "source_path": "production/sim/domains/localization/SKILL.md",
+      "source_sha256": "b82c7353a9b4e17337855037258919465feabb06f92852701873d18b2cc92cf2"
+    },
+    {
+      "package_path": "skills/sim/references/internal/domains/materials.md",
+      "package_sha256": "3a9b45b6457326620b514707c88ab66ec0001f8b37b5b1d6b20d961d29475190",
+      "relation": "REMAP_EXACT_BYTE_COPY",
+      "source_path": "production/sim/domains/materials/SKILL.md",
+      "source_sha256": "3a9b45b6457326620b514707c88ab66ec0001f8b37b5b1d6b20d961d29475190"
+    },
+    {
+      "package_path": "skills/sim/references/internal/domains/sipl.md",
+      "package_sha256": "bd64d0444de31347a25d70dfba1ce8dbb1d1cd6c824b3908c085ab3d02991d80",
+      "relation": "REMAP_EXACT_BYTE_COPY",
+      "source_path": "production/sim/domains/sipl/SKILL.md",
+      "source_sha256": "bd64d0444de31347a25d70dfba1ce8dbb1d1cd6c824b3908c085ab3d02991d80"
+    },
+    {
+      "package_path": "skills/sim/references/internal/lifecycle/brainstorm-design.md",
+      "package_sha256": "42389ae33e194990040b714770c3213040f16fbb30bb579c3ec3d61a092b8971",
+      "relation": "REMAP_EXACT_BYTE_COPY",
+      "source_path": "production/sim/lifecycle/brainstorm-design/SKILL.md",
+      "source_sha256": "42389ae33e194990040b714770c3213040f16fbb30bb579c3ec3d61a092b8971"
+    },
+    {
+      "package_path": "skills/sim/references/internal/lifecycle/implementation.md",
+      "package_sha256": "ffaf5d4d54da5e0cb157b13cf8ad1321456b4114c34ffa01a0c7e149bdc60aac",
+      "relation": "REMAP_EXACT_BYTE_COPY",
+      "source_path": "production/sim/lifecycle/implementation/SKILL.md",
+      "source_sha256": "ffaf5d4d54da5e0cb157b13cf8ad1321456b4114c34ffa01a0c7e149bdc60aac"
+    },
+    {
+      "package_path": "skills/sim/references/internal/lifecycle/research-evidence.md",
+      "package_sha256": "14cb64080455c43e6cdc20c2cb4f7078a45242ddbe2f25794b8efd2ff5c94f45",
+      "relation": "REMAP_EXACT_BYTE_COPY",
+      "source_path": "production/sim/lifecycle/research-evidence/SKILL.md",
+      "source_sha256": "14cb64080455c43e6cdc20c2cb4f7078a45242ddbe2f25794b8efd2ff5c94f45"
+    },
+    {
+      "package_path": "skills/sim/references/internal/lifecycle/systematic-debugging.md",
+      "package_sha256": "2069b9e2a16471e7f9bb98319a1df9a45a5f80ae065585a606f58af338bf98a8",
+      "relation": "REMAP_EXACT_BYTE_COPY",
+      "source_path": "production/sim/lifecycle/systematic-debugging/SKILL.md",
+      "source_sha256": "2069b9e2a16471e7f9bb98319a1df9a45a5f80ae065585a606f58af338bf98a8"
+    },
+    {
+      "package_path": "skills/sim/references/internal/lifecycle/verification-delivery.md",
+      "package_sha256": "ea525a494d7e6c8d7ace21865d77bef06ecab83e27a56d87221f80bcf08661b2",
+      "relation": "REMAP_EXACT_BYTE_COPY",
+      "source_path": "production/sim/lifecycle/verification-delivery/SKILL.md",
+      "source_sha256": "ea525a494d7e6c8d7ace21865d77bef06ecab83e27a56d87221f80bcf08661b2"
+    },
+    {
+      "package_path": "skills/sim/references/localization.md",
+      "package_sha256": "31b557e9520d341738bda8b40ed1c05dfcbbda28cd070243741236e7b4698835",
+      "relation": "EXACT_BYTE_COPY",
+      "source_path": "production/sim/references/localization.md",
+      "source_sha256": "31b557e9520d341738bda8b40ed1c05dfcbbda28cd070243741236e7b4698835"
+    },
+    {
+      "package_path": "skills/sim/references/materials.md",
+      "package_sha256": "a12409e8baab7d62a4fdd2b6d1becf241993f4c1ca35f124b8a4c789ba4ab4a8",
+      "relation": "EXACT_BYTE_COPY",
+      "source_path": "production/sim/references/materials.md",
+      "source_sha256": "a12409e8baab7d62a4fdd2b6d1becf241993f4c1ca35f124b8a4c789ba4ab4a8"
+    },
+    {
+      "package_path": "skills/sim/references/sipl.md",
+      "package_sha256": "7d53e34311b26cf24268fdbb496e46cd15695c95262cdb553a7b8617b5e8c817",
+      "relation": "EXACT_BYTE_COPY",
+      "source_path": "production/sim/references/sipl.md",
+      "source_sha256": "7d53e34311b26cf24268fdbb496e46cd15695c95262cdb553a7b8617b5e8c817"
+    },
+    {
+      "package_path": "skills/sim/references/state-vocabulary.md",
+      "package_sha256": "f555b12af92b97551df6e7d4073d568fb9982d424640c526c07a05162d704bce",
+      "relation": "EXACT_BYTE_COPY",
+      "source_path": "production/sim/references/state-vocabulary.md",
+      "source_sha256": "f555b12af92b97551df6e7d4073d568fb9982d424640c526c07a05162d704bce"
+    },
+    {
+      "package_path": "skills/sim/references/tyd.md",
+      "package_sha256": "a227bd6464160e3a08e945be6886cd01bee4c48f3375f3da53cc2df6cb844649",
+      "relation": "EXACT_BYTE_COPY",
+      "source_path": "production/sim/references/tyd.md",
+      "source_sha256": "a227bd6464160e3a08e945be6886cd01bee4c48f3375f3da53cc2df6cb844649"
+    },
+    {
+      "package_path": "skills/sim/references/verification.md",
+      "package_sha256": "af3e69c1d2f07e7fd4400aad36eca5e4a919d72a0e9c3ce9aadd60522fc13561",
+      "relation": "EXACT_BYTE_COPY",
+      "source_path": "production/sim/references/verification.md",
+      "source_sha256": "af3e69c1d2f07e7fd4400aad36eca5e4a919d72a0e9c3ce9aadd60522fc13561"
+    },
+    {
+      "package_path": "skills/sim/tools/inspect_archive.py",
+      "package_sha256": "5b9ce316b3e909a78d4b5d6ce91da6f0d12959049453bceb5eeb2c02ecdd9fbe",
+      "relation": "EXACT_BYTE_COPY",
+      "source_path": "tools/inspect_archive.py",
+      "source_sha256": "5b9ce316b3e909a78d4b5d6ce91da6f0d12959049453bceb5eeb2c02ecdd9fbe"
+    },
+    {
+      "package_path": "skills/sim/tools/validate_code_profile.py",
+      "package_sha256": "b54c8aad33e430297482a4711819a39be0f42138638877ede7fe1be714cc61c0",
+      "relation": "EXACT_BYTE_COPY",
+      "source_path": "tools/validate_code_profile.py",
+      "source_sha256": "b54c8aad33e430297482a4711819a39be0f42138638877ede7fe1be714cc61c0"
+    }
+  ],
+  "schema_version": 1,
+  "source_commit": "9e2d009743f5f405b31460936ad47651f0e3f832"
+}
