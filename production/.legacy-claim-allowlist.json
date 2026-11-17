@@ -1,0 +1,39 @@
+{
+  "_comment": "Golden snapshot of reviewed legacy-claim matches in production/. Entries are pattern CODES from tools/scan_legacy_claims.py, not myth text. Regenerate with: python tools/guard_production_claims.py --update",
+  "allowed": {
+    "evals/core.json": [
+      "INVENTED_BLUEPRINTS",
+      "INVENTED_BUILDINGS",
+      "INVENTED_DATA_ADDONS",
+      "INVENTED_DATA_FEATURES",
+      "INVENTED_DATA_MANUFACTURING",
+      "TYD_SIPL_ARRAY_CONFUSION"
+    ],
+    "evals/migration.json": [
+      "INVENTED_BUILDINGS",
+      "INVENTED_DATA_FEATURES",
+      "LOWERCASE_BOOLEAN",
+      "MODFORGE_ENGINE_TRUTH"
+    ],
+    "knowledge/03_TYD_FOUNDATIONS.md": [
+      "TYD_SIPL_ARRAY_CONFUSION"
+    ],
+    "knowledge/04_DATA_MODDING.md": [
+      "INVENTED_DATA_ADDONS",
+      "INVENTED_DATA_FEATURES",
+      "INVENTED_DATA_MANUFACTURING"
+    ],
+    "knowledge/05_SIPL.md": [
+      "TYD_SIPL_ARRAY_CONFUSION"
+    ],
+    "knowledge/11_EDITOR_CONTENT_HARDWARE_BLUEPRINTS_BUILDINGS.md": [
+      "INVENTED_BLUEPRINTS"
+    ],
+    "knowledge/17_EVIDENCE_REGISTRY.json": [
+      "TYD_SIPL_ARRAY_CONFUSION"
+    ],
+    "project-instructions/PROJECT_INSTRUCTIONS.md": [
+      "MODSPEC"
+    ]
+  }
+}

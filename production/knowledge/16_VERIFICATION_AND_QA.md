@@ -36,5 +36,8 @@ Native content exists in the intended editor/share surface; required editor reco
 ## Family minimum runtime profiles
 Data: STANDARD when gameplay behavior/override/balance semantics matter. SIPL: STANDARD with the real entry point/scope/RunType. Code: DEEP. Furniture: STANDARD with fresh placement. Materials: STANDARD with restart when the loaded-set limitation applies. Localization: STANDARD on affected UI/key surfaces. Hardware Design: STANDARD. Building Blueprint: STANDARD. Building: STANDARD. Hybrids test each component, cross-component contract and end-to-end behavior; Hybrid + Code is DEEP.
 
+## Pre-delivery reliability checklist
+Before returning any artifact, confirm in order: (1) identity and target version recorded; (2) minimum-sufficient surface chosen and any full-access or installation-global dependency escalation justified and disclosed; (3) every referenced asset present with loader roots at the install-ready level; (4) hard syntax/reference rules pass per family; (5) collision preflight run against available corpora with intentional overrides distinguished from accidental collisions; (6) no invented load-order, dependency, filesystem, or API construct introduced; (7) the correct artifact-surface Definition of Done and minimum runtime profile identified; (8) verification state (`V0`–`V5`) and any blocked state reported truthfully. A failed item downgrades the artifact to an accurate blocked state rather than a completion claim.
+
 ## Known gaps / evidence limits
 If the game cannot be executed here, collaborate on a user-run test loop but keep the artifact candidate until matching evidence is returned.

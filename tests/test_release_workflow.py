@@ -18,13 +18,23 @@ def test_release_workflow_publishes_generation_grade_tagged_release():
         "python tools/validate_evals.py production/evals",
         "python tools/validate_exact_target.py",
         "python tools/build_release.py --generation-grade",
-        "software-inc-mod-studio-project-0.1.0.zip",
-        "software-inc-mod-studio-project-0.1.0.release-report.json",
+        "software-inc-mod-studio-project-${{ env.VERSION }}.zip",
+        "software-inc-mod-studio-project-${{ env.VERSION }}.release-report.json",
         "actions/upload-artifact@v4",
         "softprops/action-gh-release@v2",
     )
     for fragment in required_fragments:
         assert fragment in text
+
+
+def test_release_workflow_does_not_hardcode_pack_version():
+    """The build/upload/publish steps must derive the version from the manifest,
+    not pin a specific release number, so a version bump does not silently break
+    artifact verification and upload."""
+    text = WORKFLOW.read_text(encoding="utf-8")
+    assert "project-0.1.0.zip" not in text
+    assert "--expected-version 0.1.0" not in text
+    assert "Software Inc Mod Studio v0.1.0" not in text
 
 
 def test_release_workflow_verifies_bundle_sha_before_publish():

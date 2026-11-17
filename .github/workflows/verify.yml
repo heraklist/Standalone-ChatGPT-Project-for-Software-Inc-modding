@@ -5,6 +5,9 @@ on:
   push:
     branches: [main]
 
+permissions:
+  contents: read
+
 jobs:
   verify:
     runs-on: ubuntu-latest
@@ -14,7 +17,9 @@ jobs:
         with:
           python-version: '3.11'
       - name: Install test dependencies
-        run: python -m pip install --upgrade pip pytest jsonschema
+        run: python -m pip install --upgrade pip pytest jsonschema ruff
+      - name: Lint (ruff)
+        run: ruff check .
       - name: Run tests
         run: python -m pytest -v
       - name: Verify repository structure and release gates
@@ -29,3 +34,15 @@ jobs:
         run: python tools/validate_exact_target.py
       - name: Build generation-grade release bundle
         run: python tools/build_release.py --generation-grade
+      - name: Build Claude skill / plugin from the same source
+        run: python tools/build_claude_skill.py
+      - name: Verify built release artifacts
+        shell: bash
+        run: |
+          VERSION=$(python -c "import json; print(json.load(open('production/manifests/knowledge-pack-manifest.json', encoding='utf-8'))['pack_version'])")
+          python tools/verify_release_artifacts.py \
+            "dist/software-inc-mod-studio-project-${VERSION}.zip" \
+            "dist/software-inc-mod-studio-project-${VERSION}.release-report.json" \
+            --expected-version "${VERSION}"
+      - name: Guard production against reintroduced legacy claims
+        run: python tools/guard_production_claims.py

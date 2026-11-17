@@ -44,6 +44,16 @@ python tools/build_release.py --generation-grade
 
 The release bundle contains Project Instructions, the exact 18 knowledge files, and generated manifests. Repository evals, migration work, research archives, and raw/private evidence are not part of the ChatGPT Project upload bundle.
 
+## Platforms
+
+The same authored knowledge surface drives both ChatGPT and Claude from one source in `production/` — the base is never forked. Build the Claude Skill (and Claude Code plugin wrapper) with:
+
+```bash
+python tools/build_claude_skill.py
+```
+
+See `docs/governance/dual-platform.md` for the single-source-of-truth mapping.
+
 ## Verification
 
 Pull requests run the same release gates used locally:

@@ -1,11 +1,11 @@
-from pathlib import Path
 import hashlib
 import sys
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from tools.analyze_unity_data_probe import classify_payload, extract_top_level_identifiers, analyze_records
+from tools.analyze_unity_data_probe import analyze_records, classify_payload, extract_top_level_identifiers
 
 
 def test_classifies_supported_data_families():
@@ -75,7 +75,7 @@ def test_analyze_records_builds_nonempty_collision_namespaces():
 
 
 def test_write_and_bundle_outputs_are_metadata_only(tmp_path):
-    from tools.analyze_unity_data_probe import write_sanitized_outputs, create_sanitized_bundle
+    from tools.analyze_unity_data_probe import create_sanitized_bundle, write_sanitized_outputs
     result = {
         'complete': True,
         'probe_zip_sha256': 'a' * 64,
