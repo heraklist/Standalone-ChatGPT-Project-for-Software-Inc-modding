@@ -1,6 +1,35 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
+  "$defs": {
+    "currency": {
+      "enum": [
+        "EXACT_TARGET",
+        "TARGET_BRANCH",
+        "OLDER_VERSION",
+        "FUTURE_DEV",
+        "UNKNOWN_VERSION",
+        "NOT_VERSION_SENSITIVE"
+      ]
+    },
+    "scope": {
+      "enum": [
+        "ENGINE_GENERAL",
+        "MOD_FAMILY",
+        "API_OR_SCHEMA",
+        "VANILLA_CONTENT",
+        "ARTIFACT",
+        "ENVIRONMENT"
+      ]
+    },
+    "confidence": {
+      "enum": [
+        "LOW",
+        "MEDIUM",
+        "HIGH"
+      ]
+    }
+  },
   "required": [
     "sources",
     "claims",
@@ -44,8 +73,8 @@
             ]
           },
           "canonical_url_or_origin": {"type": "string"},
-          "currency": {"type": "string"},
-          "scope": {"type": "string"},
+          "currency": {"$ref": "#/$defs/currency"},
+          "scope": {"$ref": "#/$defs/scope"},
           "retrieved_at": {"type": "string"},
           "status": {"type": "string"},
           "revision_id": {},
@@ -76,9 +105,9 @@
           "owner_document": {"type": "string"},
           "description": {"type": "string"},
           "evidence_refs": {"type": "array", "items": {"type": "string"}},
-          "currency": {"type": "string"},
-          "scope": {"type": "string"},
-          "confidence": {"type": "string"},
+          "currency": {"$ref": "#/$defs/currency"},
+          "scope": {"$ref": "#/$defs/scope"},
+          "confidence": {"$ref": "#/$defs/confidence"},
           "verification": {"type": "string"},
           "conflict_state": {
             "enum": [
