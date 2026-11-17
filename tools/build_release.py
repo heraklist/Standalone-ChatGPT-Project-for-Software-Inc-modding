@@ -4,7 +4,7 @@ import argparse
 import hashlib
 import json
 import sys
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from zipfile import ZIP_DEFLATED, ZipFile
 
@@ -54,7 +54,7 @@ def build_release(root: Path, *, generation_grade: bool = False, out_dir: Path |
     release = dict(release_template)
     release["release_status"] = "GENERATION_GRADE" if generation_grade else "STRUCTURAL_PREVIEW"
     release["generation_grade"] = bool(generation_grade)
-    release["generated_at"] = datetime.now(timezone.utc).isoformat()
+    release["generated_at"] = datetime.now(UTC).isoformat()
     release["exact_target_manifest"] = str(exact_manifest_path.relative_to(root)).replace("\\", "/")
     release["exact_target_gate_errors"] = gate_errors
 

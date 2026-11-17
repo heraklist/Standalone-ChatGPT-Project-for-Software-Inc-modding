@@ -4,7 +4,6 @@ import hashlib
 import json
 import re
 import shutil
-import sys
 import zipfile
 from collections import Counter
 from pathlib import Path

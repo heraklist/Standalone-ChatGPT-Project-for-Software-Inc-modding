@@ -1,8 +1,11 @@
-import hashlib, json, sys
+import hashlib
+import json
+import sys
 from pathlib import Path
+
 ROOT=Path(__file__).resolve().parents[1]; sys.path.insert(0,str(ROOT))
-from tools.validate_registry import validate_registry
 from tools.validate_exact_target import generation_grade_errors
+from tools.validate_registry import validate_registry
 
 
 def test_registry_has_required_critical_claims():

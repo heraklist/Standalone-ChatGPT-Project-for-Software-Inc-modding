@@ -1,4 +1,5 @@
 from pathlib import Path
+
 ROOT=Path(__file__).resolve().parents[1]/"production/knowledge"
 def read(n): return (ROOT/n).read_text(encoding="utf-8")
 

@@ -3,5 +3,26 @@ name = "software-inc-mod-studio-knowledge"
 version = "0.1.0"
 requires-python = ">=3.11"
 
+[project.optional-dependencies]
+dev = [
+    "pytest>=8",
+    "jsonschema>=4",
+    "ruff>=0.6",
+]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+# Correctness- and modernization-focused only. Cosmetic whitespace rules (E/W) are
+# intentionally excluded to avoid reformatting the repository's deliberate compact style.
+select = ["F", "I", "UP", "B"]
+
+[tool.ruff.lint.per-file-ignores]
+# Tools and tests bootstrap sys.path before importing sibling modules, so those imports
+# are deliberately not at the top of the file.
+"tools/*.py" = ["E402"]
+"tests/*.py" = ["E402"]

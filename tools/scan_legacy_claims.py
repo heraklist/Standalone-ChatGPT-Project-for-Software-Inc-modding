@@ -1,5 +1,8 @@
 from __future__ import annotations
-import argparse, json, re
+
+import argparse
+import json
+import re
 from pathlib import Path
 
 PATTERNS = {

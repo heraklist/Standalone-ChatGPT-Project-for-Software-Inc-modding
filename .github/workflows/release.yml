@@ -55,29 +55,30 @@ jobs:
         run: python tools/build_release.py --generation-grade
 
       - name: Verify release artifacts before publication
+        shell: bash
         run: |
           python tools/verify_release_artifacts.py \
-            dist/software-inc-mod-studio-project-0.1.0.zip \
-            dist/software-inc-mod-studio-project-0.1.0.release-report.json \
-            --expected-version 0.1.0
+            "dist/software-inc-mod-studio-project-${VERSION}.zip" \
+            "dist/software-inc-mod-studio-project-${VERSION}.release-report.json" \
+            --expected-version "${VERSION}"
 
       - name: Upload verified release artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: software-inc-mod-studio-v0.1.0
+          name: software-inc-mod-studio-v${{ env.VERSION }}
           if-no-files-found: error
           path: |
-            dist/software-inc-mod-studio-project-0.1.0.zip
-            dist/software-inc-mod-studio-project-0.1.0.release-report.json
+            dist/software-inc-mod-studio-project-${{ env.VERSION }}.zip
+            dist/software-inc-mod-studio-project-${{ env.VERSION }}.release-report.json
 
       - name: Publish GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ env.VERSION }}
           target_commitish: ${{ github.sha }}
-          name: Software Inc Mod Studio v0.1.0
+          name: Software Inc Mod Studio v${{ env.VERSION }}
           generate_release_notes: true
           fail_on_unmatched_files: true
           files: |
-            dist/software-inc-mod-studio-project-0.1.0.zip
-            dist/software-inc-mod-studio-project-0.1.0.release-report.json
+            dist/software-inc-mod-studio-project-${{ env.VERSION }}.zip
+            dist/software-inc-mod-studio-project-${{ env.VERSION }}.release-report.json

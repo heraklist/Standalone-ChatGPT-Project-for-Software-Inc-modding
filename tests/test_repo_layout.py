@@ -1,13 +1,13 @@
-from pathlib import Path
 import csv
 import hashlib
 import sys
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from tools.verify_repo import KNOWLEDGE_FILES, META_KEYS, verify
 from tools.validate_registry import validate_registry
+from tools.verify_repo import KNOWLEDGE_FILES, META_KEYS, verify
 
 REQUIRED_DIRS = {"archive", "work", "production", "docs", "schemas", "tools", "tests"}
 CANONICAL_SPEC_SHA256 = "7b77f04c522fb48e087e1b1a0be190a27b8614cd598abf7f7ed243e3e52c31f2"

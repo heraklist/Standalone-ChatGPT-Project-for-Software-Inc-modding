@@ -1,8 +1,11 @@
-import json, sys
+import json
+import sys
 from pathlib import Path
+
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT))
 from tools.validate_evals import validate_dir
+
 
 def load(name): return json.loads((ROOT/'production/evals'/name).read_text(encoding='utf-8'))
 

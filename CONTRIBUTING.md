@@ -45,8 +45,13 @@ python -m pytest -v
 python tools/verify_repo.py
 python tools/validate_registry.py production/knowledge/17_EVIDENCE_REGISTRY.json
 python tools/validate_evals.py production/evals
-python tools/validate_exact_target.py --structural
+python tools/validate_exact_target.py work/corpus/beta-1.8.42/capture-manifest.template.json --structural
+python tools/validate_exact_target.py
 ```
+
+The `--structural` check must target the unresolved capture **template** explicitly. Run without a
+manifest argument, `validate_exact_target.py` resolves the committed exact-target capture manifest,
+which is expected to pass the gate; passing `--structural` against it would report a spurious failure.
 
 A structural preview release may be built with `python tools/build_release.py`. `--generation-grade` must remain blocked until the exact Beta 1.8.42 evidence gate passes.
 
