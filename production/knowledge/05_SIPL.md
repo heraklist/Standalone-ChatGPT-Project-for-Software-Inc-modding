@@ -38,3 +38,5 @@ Use `LIST_SCOPE_MEMBERS X` for documented scope/member inspection and drill down
 
 ## Known gaps / evidence limits
 A syntactically plausible reflected member is not accepted unless documented, shipped, assembly-observed, or runtime-proven for the relevant scope.
+
+A sixth Level-3 entry point, `Script_OnUpdate`, was announced for the post-Beta 1.8.42 "overhaul" branch, which explicitly breaks save compatibility. It is `FUTURE_DEV` relative to the canonical Beta 1.8.42 target: do not add it to the exact-target five-entry-point surface until it ships in a released target version with its scope confirmed.

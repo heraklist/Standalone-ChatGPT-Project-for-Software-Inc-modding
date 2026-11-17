@@ -16,7 +16,7 @@ known_version_gaps: [Beta 1.8.42 exact environment corpus pending]
 # Data Modding
 
 ## Public Data package structure
-Documented public Data package structure is `Mods/<ModName>/SoftwareTypes/`, `CompanyTypes/`, `NameGenerators/`, with optional root `Personalities.tyd`. `Categories`, `Features`, `AddOns`, and `Manufacturing` are nested concepts in SoftwareType definitions, not canonical `Data/Features.tyd`, `Data/AddOns.tyd`, or `Data/Manufacturing.tyd` files.
+Documented public Data package structure is `Mods/<ModName>/SoftwareTypes/`, `CompanyTypes/`, `NameGenerators/`, with optional root `Personalities.tyd`. A mod takes its name from its folder; an optional root `meta.tyd` overrides the mod's `Name`, `Description`, and `Author` (in-game auto-creation of this file was still unimplemented as of the documented editor version). `Categories`, `Features`, `AddOns`, and `Manufacturing` are nested concepts in SoftwareType definitions, not canonical `Data/Features.tyd`, `Data/AddOns.tyd`, or `Data/Manufacturing.tyd` files.
 
 ## SoftwareTypes
 SoftwareType TyD owns Categories, Features/SubFeatures/SpecFeatures, AddOns, hardware/manufacturing data, balancing values, and references such as Hardware `Design`/`FeatureBinding` where documented.

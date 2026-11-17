@@ -80,3 +80,37 @@ The newest **public** vanilla data archive is **Beta 1.7.15**, and the wiki page
 repository's core stance: official documentation is not automatically exact-target current, so
 Beta 1.8.42 claims genuinely require the direct exact-target evidence gate. The verification **does not**
 lift that gate.
+
+## Primary-source addendum (official wiki + patch notes, provided directly)
+
+Primary-source copies of the official `Modding` wiki page (revision 1374, last edited 6 Apr 2026)
+and the Coredumping site's news/patch-note stream were obtained directly, confirming earlier
+search-based findings and adding version-scoped evidence:
+
+- **`meta.tyd` CONFIRMED (coverage gap closed).** The Modding page documents an optional root
+  `meta.tyd` overriding a mod's `Name`/`Description`/`Author`; otherwise the folder name is the mod
+  name. In-game auto-creation is noted as "not implemented yet as of Alpha 11.4.7". Added to `04`.
+- **Loader roots CONFIRMED verbatim.** `Mods` (software types + personalities), `Furniture`,
+  `Materials` (room/path/roof textures), `DLLMods` (C#/dll), `Localization` (translations) — exactly
+  as the pack documents. Furniture may be added with `.obj` 3D object files.
+- **Localization CONFIRMED verbatim.** `femalefirstnames.txt`/`malefirstnames.txt`/`lastnames.txt`,
+  newline-separated, ordered by commonness; `COMPARE_LOCALIZATION`, `CONVERT_LOCALIZATION_TYD`
+  (XML→TyD), `RELOAD_LOCALIZATION` (does not refresh live UI).
+- **NEW entry point `Script_OnUpdate` → `FUTURE_DEV`.** The "Final Overhaul update" (2026-10-04)
+  lists "Added Script_OnUpdate to level 3 feature modding." This update is **after** Beta 1.8.42
+  (patch notes dated 2026-08-20) and **explicitly breaks save compatibility** (overhaul testing
+  branch). It is therefore NOT part of the canonical Beta 1.8.42 five-entry-point surface; recorded
+  as a forthcoming `FUTURE_DEV` addition in `05` known gaps. This is a textbook case for the version
+  firewall: a real, official change that must not be back-applied to the target.
+- **Beta 1.8.42 CONFIRMED as a real version** (official patch notes, 2026-08-20), validating the
+  canonical target identity.
+- **Overhaul-branch modding changes (FUTURE_DEV, not for 1.8.42):** furniture must be explicitly
+  marked as ceiling fixtures for modding (instead of relying on building boundary); software box art
+  becomes customizable/moddable (overrides floppy/CD illustration); room material window respects
+  interior/exterior toggles; xml files whitelisted for code mods; code-mod error handling stabilized.
+- **Version-labeling note.** The game is Early Access and the dev uses both "Beta 1.8.x" (patch notes)
+  and internal "Alpha 11.x" (wiki) labels in the same period; treat version strings carefully when
+  classifying currency.
+
+These primary sources do not alter the exact-target gate, which still requires the direct Beta 1.8.42
+environment/assembly evidence the capture manifest defines.
