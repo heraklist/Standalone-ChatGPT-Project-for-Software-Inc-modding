@@ -114,3 +114,69 @@ search-based findings and adding version-scoped evidence:
 
 These primary sources do not alter the exact-target gate, which still requires the direct Beta 1.8.42
 environment/assembly evidence the capture manifest defines.
+
+## Full-page primary-source verification (Code, Material, Data, TyD, Furniture, Hardware)
+
+Complete official wiki pages were obtained and read. The knowledge pack matches them, in most
+cases verbatim. Page revisions/dates: Code Modding (rev 1375, 14 Apr 2026), Material Modding
+(rev 939, 12 Mar 2023), Data Modding (rev 956, 30 Oct 2023), TyD (rev 548, 3 Feb 2020),
+Furniture Modding (rev 1246, 29 Aug 2025), Hardware Design (rev 898, 8 Mar 2022).
+
+### Previously-unverified items, now CONFIRMED verbatim
+
+- **SIPL scope ↔ entry-point mapping** (the main open item): the Data Modding table lists exactly
+  `Script_EndOfDay→ProductScope`, `Script_AfterSales→SaleScope`, `Script_OnRelease→ProductScope`,
+  `Script_NewCopies→CopyScope`, `Script_WorkItemChange→DevScope` — an exact match to `05`. The
+  earlier search summary that suggested a different mapping was wrong. RunType rules, scope members,
+  and `Product.GetVar/PutVar` also match verbatim.
+- **Material Extra channel = red occlusion**: "red channel controls occlusion… green controls
+  smoothness/specularity… blue controls metallic… alpha controls snow and rain" — exact match to `09`.
+  Plus `(4096²)/(256²)=256` materials, 3 atlases, single draw call, up to 8 presets, `Skirting`,
+  `FloorType` (Carpet default) — all confirmed.
+- **Code `SWINCTYPE`/`SWINCTYPEMAJOR`/`SWINCTYPEMAJOR_MINOR`** (`SWINCBETA`/`SWINCRELEASE`,
+  `SWINCBETA1`, `SWINCBETA1_7`/`SWINCBETA1_8`): confirmed verbatim.
+- **Code `RegisterNetworkID` "between 1-255"**, auto de-registered on deactivation, host-must-enable:
+  confirmed verbatim.
+- **Code persistence**: `SaveSetting`/`LoadSetting` (+`TryLoadSetting`/`DeleteSetting`), and per-save
+  `Serialize`/`Deserialize` over `WriteDictionary` with `[System.NonSerialized]`/empty-constructor
+  rules: confirmed verbatim.
+- **Code `WindowManager.GenerateUI` tag set** (`empty,panel,button,label,list,input,checkbox,
+  progressbar,slider,combo,scrollbar,scrollview,window,image,rawimage` + layout tags): exact match
+  to `07`, including case-sensitivity and the Unity 2018.2 layout links.
+- **`ParentMod` loaders** (`LoadTexture/LoadXMLFile/LoadFullXMLFile/LoadTydFile/LoadAudio/LoadGLTF/
+  LoadOBJ`): exact match to `07`.
+- **Furniture `Thumbnail` 128×128** and **`Height2` max 2** (−0.1/−0.05 for carpets): confirmed
+  verbatim, closing the last furniture gap. `FURNITURE_DEBUG` colours, `replacements.tyd`,
+  TransformParent ordering, snap/interaction point names: all match `08`.
+- **Hardware Design 2×2×2** cube at origin, base mesh + morph targets + attachment points on faces,
+  sub-atlas UV textures: exact match to `11`.
+- **TyD**: Tynan Sylvester's language; Software Inc uses a fork of the C# implementation
+  (`khornel/TyDSharp`, upstream `TynanSylvester/TyD`); `#` comments, `[a; b]` lists, `{}` tables,
+  `null`, quoted strings with `\"`; XML→TyD migration: exact match to `03`.
+
+### Correction refined
+
+The earlier `OnActive → OnActivate` note is kept but made precise: the Code Modding wiki **prose
+literally says `OnActive`**, so the pack's original text faithfully quoted the wiki. Shipped mods
+compile `OnActivate` (symmetric with `OnDeactivate`), which is the real `Assembly-CSharp` method;
+`06` now records this as a `SOURCE_CONFLICT` resolved in favour of `OnActivate`.
+
+### Additional primary-source-confirmed coverage (candidates for governed additions)
+
+- **Furniture Extra/`ExtraMap` channels differ from room Materials**: furniture uses R=smoothness,
+  G=emission, B=player-colour-mapping (room Materials use R=occlusion/G=smoothness/B=metallic).
+- **Window lifecycle controls** `OnlyHide`/`StartHidden`/`Shown`/`OnClose`.
+- **Console**: `GENERATE_LOCALIZATION`, `EXPORT_FURNITURE_POINTS`, `FURNITURE_THUMBNAIL`,
+  `UNLOCK_FURNITURE`, `INSTA_DEVELOP_DESIGN`, `SHOW_INSPECTOR`, `SHOW_ICONS`, `EXECUTE`.
+- **Add-on built-ins** `LocalizePlural('Employee', x)` and `Switch(x, clampBool, localizeBool, …)`.
+- **Material `Skirting`** record and **`FloorType` default = Carpet**; **component Thumbnail 128×128**.
+- **Vanilla data archive list** ends at **Beta 1.7.15** (official), directly confirming the pack's
+  `OLDER_VANILLA_CORPUS` basis and the need for the exact-target gate.
+
+### Overall verdict
+
+Across every family, the knowledge pack is confirmed accurate against the current official wiki.
+One real error was found and corrected (`OnActivate`), one documented gap closed (`meta.tyd`), and
+one post-target change scoped as `FUTURE_DEV` (`Script_OnUpdate`). No claim required weakening; the
+exact-target Beta 1.8.42 gate remains necessary and unchanged, since the public wiki is explicitly
+version-lagged and the newest public vanilla data is Beta 1.7.15.
